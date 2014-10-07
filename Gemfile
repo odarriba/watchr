@@ -35,6 +35,16 @@ gem 'jquery-rails'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
+#################
+# Documetnation #
+#################
+group :doc do
+  # RDoc is used to generate automatic documentation.
+  gem 'sdoc', require: false
+  # RDoc theme using bootstrap
+  gem 'hanna-bootstrap', require: false
+end
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
