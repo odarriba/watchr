@@ -1,0 +1,16 @@
+en:
+  ui:
+    navbar:
+      logo_text: "Watchr"
+      toogle_navigation: "Toggle navigation"
+      sections:
+        home: "Home"
+        services: "Services"
+        status_pages: "Status pages"
+        incidents: "Incidents"
+        monitoring: "Monitoring"
+        alerts: "Alerts"
+        users: "Users"
+      user:
+        preferences: "Preferences"
+        log_out: "Log out"
