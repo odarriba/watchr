@@ -14,17 +14,20 @@ gem 'devise-async', '~> 0.9.0'
 gem 'therubyracer', platforms: :ruby
 
 ##########
-# ASSETS #
+# Assets #
 ##########
 
 # Use SASS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 
+# Used for LESS stylesheets
+gem 'less-rails', '~> 2.4.2'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # Use Bootstrap themes
-gem 'twbs_sass_rails'
+gem 'twbs_less_rails'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
@@ -36,7 +39,7 @@ gem 'jquery-rails'
 gem 'spring',        group: :development
 
 #################
-# Documetnation #
+# Documentation #
 #################
 group :doc do
   # RDoc is used to generate automatic documentation.
@@ -56,4 +59,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
