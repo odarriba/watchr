@@ -21,7 +21,7 @@ gem 'therubyracer', platforms: :ruby
 gem 'sass-rails', '~> 4.0.3'
 
 # Used for LESS stylesheets
-gem 'less-rails', '~> 2.4.2'
+gem 'less-rails', '~> 2.5.0'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -33,7 +33,7 @@ gem 'twbs_less_rails'
 gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 3.1.2'
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
@@ -41,9 +41,10 @@ gem 'spring',        group: :development
 #################
 # Documentation #
 #################
+
 group :doc do
   # RDoc is used to generate automatic documentation.
-  gem 'sdoc', require: false
+  gem 'rdoc', require: false
   # RDoc theme using bootstrap
   gem 'hanna-bootstrap', require: false
 end
