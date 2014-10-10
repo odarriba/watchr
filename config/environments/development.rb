@@ -1,6 +1,12 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Secret key base
+  config.secret_key_base = Watchr::Application::CONFIG["security"]["secret_key_base"]
+
+  # Use SSL?
+  config.force_ssl = Watchr::Application::CONFIG["app"]["use_ssl"]
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -32,5 +38,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  # Domain configuration for routes in the application and e-mails
+  config.action_mailer.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+  config.action_dispatch.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+
+  # Default sender in e-mails
+  config.action_mailer.default :from => Watchr::Application::CONFIG["email"]["default_sender"]
 end

@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
-  root 'panel#index'
+  devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  root 'panel#index'
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

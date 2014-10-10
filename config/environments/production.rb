@@ -1,6 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Secret key base
+  config.secret_key_base = Watchr::Application::CONFIG["security"]["secret_key_base"]
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -39,7 +42,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = Watchr::Application::CONFIG["app"]["use_ssl"]
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
@@ -72,4 +75,11 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Domain configuration for routes in the application and e-mails
+  config.action_mailer.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+  config.action_dispatch.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+
+  # Default sender in e-mails
+  config.action_mailer.default :from => Watchr::Application::CONFIG["email"]["default_sender"]
 end

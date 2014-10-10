@@ -1,6 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Secret key base
+  config.secret_key_base = Watchr::Application::CONFIG["security"]["secret_key_base"]
+
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
@@ -36,4 +39,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Domain configuration for routes in the application and e-mails
+  config.action_mailer.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+  config.action_dispatch.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
+
+  # Default sender in e-mails
+  config.action_mailer.default :from => Watchr::Application::CONFIG["email"]["default_sender"]
 end

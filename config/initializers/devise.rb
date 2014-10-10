@@ -5,16 +5,16 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = 'CHANGE-ME-806354158cf76dbb111a5f833790228d901792c55c3e64db99ad0cf697d1ca7d3c85a17bb836981e59130d07ea98f26c1480e435480f93133cf66c744408edb4'
+  config.secret_key = Watchr::Application::CONFIG["security"]["secret_key_devise"]
 
   # Setup a pepper to generate the encrypted password.
-  config.pepper = 'CHANGE-ME-74a85a962897287efa0bd23fda47645f27a0a9770e2514cfbde7f0a13d6f91b763e938143bb539778d5ae1e2eefe6e950eacf36da83b30e9bd22a80d9aec8b65'
+  config.pepper = Watchr::Application::CONFIG["security"]["pepper_devise"]
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'no-reply@your-domain.tld'
+  config.mailer_sender = Watchr::Application::CONFIG["email"]["default_sender"]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
