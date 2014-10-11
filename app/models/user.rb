@@ -35,7 +35,7 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  # Funcrion to avoid the compatibility issues between Devise and Rails 4.1
+  # Function to avoid the compatibility issues between Devise and Rails 4.1
   def self.serialize_from_session(key, salt)
     record = to_adapter.get(key[0]["$oid"])
     record if record && record.authenticatable_salt == salt

@@ -80,6 +80,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
   config.action_dispatch.default_url_options = { host: Watchr::Application::CONFIG["app"]["domain"] }
 
+  # Hosts for assets delivery
+  config.action_controller.asset_host = Watchr::Application::CONFIG["app"]["assets_host"]
+  config.action_mailer.asset_host = Watchr::Application::CONFIG["app"]["assets_host"]
+
   # Default sender in e-mails
   config.action_mailer.default :from => Watchr::Application::CONFIG["email"]["default_sender"]
 end

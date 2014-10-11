@@ -1,0 +1,17 @@
+<html>
+  <head>
+  </head>
+  <body style="font-family:'Verdana','Arial';font-size:14px;color:#555;width:100%;">
+    <div id='center' style="width:500px;margin:0 auto;">
+      <%= image_tag "email/logo.png", :id => "logo", :title => "Watchr", :alt => "Watchr", :style => "max-width:150px;margin:10px 0px;padding:0;" %>
+      <hr size="1" style="padding:0;margin:0;"/>
+      <div id='text' style="margin:10px 0px;">
+        <%= yield %>
+      </div>
+      <hr size="1" style="padding:0;margin:0;"/>
+      <div id="footer" style="margin:10px 5px;font-style:italic; font-size:12px">
+        <%= t("ui.email.footer_text") %> <%= link_to "Watchr", root_url() %>.
+      </div>
+    </div>
+  </body>
+</html>

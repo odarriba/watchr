@@ -14,6 +14,8 @@ development:
     time_zone: "Madrid"
     # Default language for users
     default_language: "en"
+    # Assets host WITH PROTOCOL (the same domain used above if you don't use CDNs)
+    assets_host: "http://localhost:3000"
   email:
     # Default sender for e-mails
     default_sender: "no-reply@your-company.tld"
@@ -48,6 +50,7 @@ production:
     use_ssl: false
     time_zone: "Madrid"
     default_language: "en"
+    assets_host: "http://your-company.tld"
   email:
     default_sender: "no-reply@your-company.tld"
     smtp:
@@ -71,6 +74,7 @@ test:
     use_ssl: false 
     time_zone: "Madrid" 
     default_language: "en"
+    assets_host: "http://your-company.tld"
   email:
     default_sender: "no-reply@your-company.tld"
     smtp:
