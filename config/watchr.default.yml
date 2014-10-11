@@ -1,23 +1,64 @@
 development:
-  security: # Change this values using rendom values or the output executing 'rake secret'.
+  # Change this values using random values or the output executing 'rake secret'.
+  security: 
+    secret_key_base: "CHANGEME"
+    secret_key_devise: "CHANGEME"
+    # A change in Devise's pepper can invalidate all your user's passwords
+    pepper_devise: "CHANGEME"
+  app:
+    # Your domain, without protocol (only host:port)
+    domain: "localhost:3000" 
+    # Use SSL? (connections and cookies)
+    use_ssl: false 
+    # Time zone (run 'rake time:zones:all' to view all available)
+    time_zone: "Madrid"
+    # Default language for users
+    default_language: "en"
+  email:
+    # Default sender for e-mails
+    default_sender: "no-reply@your-company.tld"
+    smtp: # SMTP configuration
+      # SMTP host
+      host: "smtp.your-company.tld"
+      # SMTP port (default 25 for plain connections and 465 for secure connections)
+      port: 465
+      # Domain in case a special HELO message is needed (Google for Apps for example).
+      domain: "your-company.tld"
+      # Username and password in the mail service
+      username: "no-reply@your-company.tld"
+      password: "CHANGEME"
+      # Authentication method. It can be 'plain', 'login' or 'cram_md5'
+      authentication: "plain" 
+      # Use encryption in the connection with SMTP (using SSL/TLS)?
+      enable_ssl: false
+      # Use encryption in the connection with SMTP (using STARTTLS)?
+      enable_starttls: false
+
+# Variables for production environment.
+# IMPORTANT: Set this carefully (specially the security keys) because it's a basic
+# security need in production environment.
+# The privacy of this keys is the base of the application security.
+production:
+  security:
     secret_key_base: "CHANGEME"
     secret_key_devise: "CHANGEME"
     pepper_devise: "CHANGEME"
   app:
-    domain: "localhost:3000" # Your domain, without protocol (only host:port)
-    use_ssl: false # Use SSL? (connections and cookies)
-    time_zone: "Madrid" # Time zone (run 'rake time:zones:all' to view all available)
-    default_language: "en" # Default language for users
+    domain: "your-company.tld" 
+    use_ssl: false
+    time_zone: "Madrid"
+    default_language: "en"
   email:
-    default_sender: "no-reply@your-company.tld" # Default sender for e-mails
-    smtp: # SMTP configuration
+    default_sender: "no-reply@your-company.tld"
+    smtp:
       host: "smtp.your-company.tld"
       port: 465
-      domain: "your-company.tld" # in case a special HELO message is needed.
+      domain: "your-company.tld"
       username: "no-reply@your-company.tld"
       password: "CHANGEME"
-      authentication: "plain" # Can be 'plain', 'login' or 'cram_md5'
-      enable_tls: true # True or false to use encryption
+      authentication: "plain"
+      enable_ssl: false
+      enable_starttls: false
 
 # Variables for test environment.
 test:
@@ -39,28 +80,5 @@ test:
       username: "no-reply@your-company.tld"
       password: "CHANGEME"
       authentication: "plain"
-      enable_tls: true
-
-# Variables for production environment.
-# Set this carefully (specially the security keys) because it's a basic
-# security need in production environment.
-production:
-  security:
-    secret_key_base: "CHANGEME"
-    secret_key_devise: "CHANGEME"
-    pepper_devise: "CHANGEME"
-  app:
-    domain: "your-company.tld" 
-    use_ssl: false
-    time_zone: "Madrid"
-    default_language: "en"
-  email:
-    default_sender: "no-reply@your-company.tld"
-    smtp:
-      host: "smtp.your-company.tld"
-      port: 465
-      domain: "your-company.tld"
-      username: "no-reply@your-company.tld"
-      password: "CHANGEME"
-      authentication: "plain"
-      enable_tls: true
+      enable_ssl: false
+      enable_starttls: false

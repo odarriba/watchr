@@ -20,6 +20,7 @@ module Watchr
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = CONFIG["app"]["time_zone"]
 
+    # E-mail sending configuration
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       address:              CONFIG["email"]["smtp"]["host"],
@@ -28,7 +29,8 @@ module Watchr
       user_name:            CONFIG["email"]["smtp"]["username"],
       password:             CONFIG["email"]["smtp"]["password"],
       authentication:       CONFIG["email"]["smtp"]["authentication"],
-      enable_starttls_auto: CONFIG["email"]["smtp"]["enable_tls"]  
+      ssl:                  CONFIG["email"]["smtp"]["enable_ssl"],
+      enable_starttls_auto: CONFIG["email"]["smtp"]["enable_starttls"]  
     }
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
