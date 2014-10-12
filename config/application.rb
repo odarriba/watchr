@@ -45,5 +45,10 @@ module Watchr
     # By default, use SASS and plain JS.
     config.app_generators.stylesheet_engine :sass
     config.app_generators.javascript_engine :js
+
+    # Set the default layout for Devise e-mails
+    config.to_prepare do
+      Devise::Mailer.layout "email"
+    end
   end
 end

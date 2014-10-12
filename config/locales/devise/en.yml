@@ -1,0 +1,24 @@
+en:
+  devise:
+    login:
+      email_placeholder: "E-mail"
+      password_placeholder: "Password"
+      remember_me: "Remember me (for 2 weeks)"
+      log_in: "Log in"
+      forgot_password: "Forgot your password?"
+    password:
+      new:
+        text: "If you've forgotten your account's password, give us your e-mail address and we'll send you an e-mail with instructions to change it."
+        email_placeholder: "E-mail"
+        send_email: "Send me an e-mail"
+        back_login: "Back to login"
+      edit:
+        text: "To set a new password for your account, type the password twice in the fields below."
+        password_placeholder: "New password"
+        password_confirmation_placeholder: "Repeat the new password"
+        change_password: "Change my password"
+        back_login: "Back to login"
+    email:
+      password:
+        instructions: "Hello %{name}!<br /><br />The reason of this e-mail is that someone has requested a password change for your account (without log into your account).<br /><br />If you are the person who requested it, click in the link below to continue:<br ><br /><div style='text-align:center; font-size:14px'>%{link}</div><br />If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one."
+        link_text: "Change my password"
