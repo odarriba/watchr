@@ -1,15 +1,20 @@
-<div class="alert bg-primary">
-  <%= t("devise.password.edit.text").html_safe %>
+<% content_for :title, t("devise.password.edit.title") %>
+<% if (!resource.errors[:reset_password_token].blank?) %>
+<div class='alert alert-danger'>
+  <%= t("devise.password.edit.error_token.text").html_safe %>
 </div>
+<%= link_to t("devise.password.edit.error_token.button_text"), new_user_password_path(), :class => "btn btn-primary btn-block" %>
+<% else %>
+<b><%= t("devise.password.edit.text").html_safe %></b>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div class="form-group">
+  <div class="form-group<% if (!resource.errors[:password].blank?)%> has-error<% end %>">
     <%= f.password_field :password, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_placeholder"), :required => :true %>
   </div>
 
-  <div class="form-group">
+  <div class="form-group<% if (!resource.errors[:password_confirmation].blank?)%> has-error<% end %>">
     <%= f.password_field :password_confirmation, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_confirmation_placeholder"), :required => :true %>
   </div>
 
@@ -19,3 +24,4 @@
 <% end %>
 
 <%= link_to "<i class='fa fa-chevron-left'></i>&nbsp;&nbsp;".html_safe+t("devise.password.edit.back_login"), new_session_path(resource_name) %>
+<% end %>

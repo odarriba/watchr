@@ -114,6 +114,8 @@ class User
     end
   end
 
+  # After creation method to send to the user it's log in details vie e-mail.
+  #
   def send_welcome_email
     UserMailer.welcome_email(self).deliver
   end

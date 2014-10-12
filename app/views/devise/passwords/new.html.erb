@@ -1,9 +1,8 @@
-<div class="alert bg-primary">
-  <%= t("devise.password.new.text").html_safe %>
-</div>
+<% content_for :title, t("devise.password.new.title") %>
+<b><%= t("devise.password.new.text").html_safe %></b>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <div class="form-group">
+  <div class="form-group<% if (!resource.errors[:email].blank?)%> has-error<% end %>">
     <%= f.email_field :email, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.new.email_placeholder"), :required => :true %>
   </div>
 
