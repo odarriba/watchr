@@ -1,0 +1,6 @@
+en:
+  users:
+    email:
+      welcome:
+        subject: "Welcome to Watchr"
+        body: "Welcome %{name}!<br /><br />Your account in Watchr has been created succesfully. Now you can login into the app this credentials:<br /><ul><li><b>E-mail:</b> %{email}</li><li><b>Password:</b> %{password}</li><li><b>Login URL:</b><a href='%{login_url}' alt='Login URL' title='Login URL'>%{login_url}</a></li></ul><br />We recommend you to check your profile, so you can change whatever you like (avatar, password, language, etc).<br /><br />If you've any trouble, please contact with the IT stuff."

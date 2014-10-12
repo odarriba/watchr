@@ -65,6 +65,9 @@ class User
   # Before validations, get rid of e-mails
   before_validation :transform_emails
 
+  # After creation, send an e-mail
+  after_create :send_welcome_email
+
   # Returns the url of the user's avatar using Gravatar
   #
   # [size] The size of the image needed.
@@ -99,5 +102,9 @@ class User
     else
       self.gravatar_email.downcase!
     end
+  end
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver
   end
 end
