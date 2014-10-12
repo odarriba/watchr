@@ -6,11 +6,11 @@
   <%= f.hidden_field :reset_password_token %>
 
   <div class="form-group">
-    <%= f.password_field :password, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_placeholder") %>
+    <%= f.password_field :password, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_placeholder"), :required => :true %>
   </div>
 
   <div class="form-group">
-    <%= f.password_field :password_confirmation, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_confirmation_placeholder") %>
+    <%= f.password_field :password_confirmation, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.edit.password_confirmation_placeholder"), :required => :true %>
   </div>
 
   <div class="form-group">

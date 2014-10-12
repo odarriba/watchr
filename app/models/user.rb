@@ -81,6 +81,16 @@ class User
     return "#{protocol}://www.gravatar.com/avatar/#{email_hash}.png?s=#{size}&d=mm"
   end
 
+  # Returns an automatically generated password using upcase and downcase
+  # letters and numbers.
+  #
+  # [length] The length of the password needed
+  #
+  def self.generate_random_password(length = 8)
+    o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
+    return (0...length).map { o[rand(o.length)] }.join
+  end
+
   # :nodoc:
   # Function to avoid the compatibility issues between Devise and Rails 4.1
   #

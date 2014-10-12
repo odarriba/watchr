@@ -1,0 +1,12 @@
+en:
+  installation:
+    start:
+      title: "Installation"
+      text: "To create an user with administrative rights, write your account's data and click on the button to continue."
+      name_placeholder: "Your name"
+      email_placeholder: "Your e-mail"
+      note_password: "<b>Note:</b> your password will be automatically generated and will be sent to your e-mail."
+      create_account: "Create my account"
+    messages:
+      correct: "Your account has been created.<br />Please, check your e-mail."
+      error: "Something you entered isn't valid."

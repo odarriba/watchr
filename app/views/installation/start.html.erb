@@ -1,0 +1,18 @@
+<h2><%= t("installation.start.title") %></h2>
+<b><%= raw t("installation.start.text") %></b>
+<%= form_tag(apply_installation_path(), :method => :post, :class => "form-group") do -%>
+  <div class="form-group<% if (!@user.errors[:name].blank?)%> has-error<% end %>">
+    <%= text_field_tag "user[name]", @user.name, :autocomplete => "off", :class => "form-control", :placeholder => t("installation.start.name_placeholder"), :required => :true %>
+  </div>
+  <div class="form-group<% if (!@user.errors[:email].blank?)%> has-error<% end %>">
+    <%= email_field_tag "user[email]", @user.email, :autocomplete => "off", :class => "form-control", :placeholder => t("installation.start.email_placeholder"), :required => true %>
+  </div>
+
+  <div class="form-group alert alert-warning">
+    <%= raw t("installation.start.note_password") %>
+  </div>
+
+  <div class="form-group">
+    <%= submit_tag t("installation.start.create_account"), :class => "btn btn-primary btn-block" %>
+  </div>
+<% end %>

@@ -1,8 +1,25 @@
 class ApplicationController < ActionController::Base
+  # Check if exists any user
+  before_action :check_installation
+  # Check if the user is logged in
   before_action :authenticate_user!
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  protected
+
+  # Function to check if there is any administrator user.
+  # If there isn't one, redirect the user to the installtion
+  # form.
+  #
+  def check_installation
+    if (User.where(:level => User::ADMINISTRATOR).count == 0)
+      redirect_to start_installation_url()
+      return
+    end
+  end
 
   private
 

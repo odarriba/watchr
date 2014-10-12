@@ -3,6 +3,10 @@ Rails.application.routes.draw do
 
   root 'panel#index'
 
+  # Installation operations
+  get '/installation' => 'installation#start', :as => :start_installation
+  post '/installation' => 'installation#apply', :as => :apply_installation
+
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

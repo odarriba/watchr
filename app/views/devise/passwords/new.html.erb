@@ -4,7 +4,7 @@
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <div class="form-group">
-    <%= f.email_field :email, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.new.email_placeholder") %>
+    <%= f.email_field :email, :autocomplete => "off", :class => "form-control", :placeholder => t("devise.password.new.email_placeholder"), :required => :true %>
   </div>
 
   <div class="form-group">
