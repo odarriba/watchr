@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   before_action :check_installation
   # Check if the user is logged in
   before_action :authenticate_user!
+  # Set a correct locale
+  before_filter :set_locale
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -18,6 +20,20 @@ class ApplicationController < ActionController::Base
     if (User.where(:level => User::ADMINISTRATOR).count == 0)
       redirect_to start_installation_url()
       return
+    end
+  end
+
+  # Before action that applies the locale preferred by the user, if
+  # logged in.
+  #
+  def set_locale
+    if (user_signed_in? && I18n.available_locales.include?(current_user.lang))
+      # If a user is signed in, put the last language used.
+      I18n.locale = current_user.lang
+    else
+      # If there is not user logged in, use the default value
+      # defined in config.
+      I18n.locale = I18n.default_locale
     end
   end
 

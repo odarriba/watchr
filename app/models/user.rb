@@ -18,6 +18,7 @@ class User
   field :encrypted_password,  type: String, default: ""
   field :name,                type: String, default: ""
   field :level,               type: Integer, default: 1
+  field :lang,                type: Symbol, default: I18n.default_locale
 
   # Gravatar
   field :gravatar_email,      type: String, default: ""
@@ -53,6 +54,7 @@ class User
   validates_numericality_of :level, greater_than_or_equal_to: 0
   validates_numericality_of :level, less_than_or_equal_to: 2
   validates_numericality_of :level, only_integer: true
+  validates_inclusion_of :lang, in: I18n.available_locales
 
   # Check Gravatar's e-mail format
   validates_format_of :gravatar_email, with: /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
@@ -61,6 +63,7 @@ class User
   validates_presence_of :name
   validates_presence_of :gravatar_email
   validates_presence_of :level
+  validates_presence_of :lang
 
   # Before validations, get rid of e-mails
   before_validation :transform_emails
