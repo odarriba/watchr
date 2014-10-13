@@ -6,6 +6,10 @@ gem 'rails', '4.1.6'
 # MongoID for data storage
 gem 'mongoid', '~> 4.0.0'
 
+# Easy pagination for MongoID results
+gem 'kaminari', '~> 0.16.1'
+gem 'kaminari-bootstrap', '~> 3.0.1'
+
 # Devise for users
 gem 'devise', '~> 3.4.0'
 gem 'devise-async', '~> 0.9.0'

@@ -5,9 +5,12 @@ class User
   include Mongoid::Timestamps
 
   # Diferent levels of users
-  ADMINISTRATOR = 0
-  USER = 1
-  GUEST = 2
+  ADMINISTRATOR_USER = 0
+  NORMAL_USER = 1
+  GUEST_USER = 2
+
+  # Array with available level values
+  LEVELS = [ADMINISTRATOR_USER, NORMAL_USER, GUEST_USER]
 
   # Include default devise modules. Others available are:
   # :registarable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -100,6 +103,28 @@ class User
   def self.serialize_from_session(key, salt)
     record = to_adapter.get(key[0]["$oid"])
     record if record && record.authenticatable_salt == salt
+  end
+
+  # Returns true if the user has administrator privilege level .
+  # Returns false if the user has a different privilege level.
+  #
+  def is_administrator?
+    return (self.level == User::ADMINISTRATOR_USER)
+  end
+
+  # Returns true if the user has a normal privilege level.
+  # Returns false if the user has a different privilege level.
+  #
+  def is_normal?
+    return (self.level == User::NORMAL_USER)
+  end
+
+  # Returns true if the user has a guest privilege level.
+  # Returns false if the user has a different privilege level.
+  #
+  def is_guest?
+    # This will return true always, but it is checked just in case.
+    return (self.level == User::GUEST_USER)
   end
 
   private

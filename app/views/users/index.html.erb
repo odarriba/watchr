@@ -1,0 +1,47 @@
+<div class='row-fluid'>
+  <div class='col-lg-2 col-sm-3 sidebar'>
+    <%= render :partial => "sidebar", :params => params %>
+  </div>
+  <div class='col-lg-10 col-sm-9'>
+    <div class="page-header">
+      <h1>
+        <%= t("users.index.title") %>
+        <small>
+          <% if (@level.blank?) %>
+          <%= t("users.index.subtitle.all") %>
+          <% elsif (@level == User::ADMINISTRATOR_USER) %>
+          <%= t("users.index.subtitle.administrator") %>
+          <% elsif (@level == User::NORMAL_USER) %>
+          <%= t("users.index.subtitle.normal") %>
+          <% elsif (@level == User::GUEST_USER) %>
+          <%= t("users.index.subtitle.guest") %>
+          <% end %>
+        </small>
+      </h1>
+    </div>
+    <%= page_entries_info @users %>
+    <table class="table table-hover table-striped datatable">
+      <thead>
+        <tr>
+          <th class='col-xs-1'></th>
+          <th class='col-xs-3'>Name</th>
+          <th class='col-xs-4'>E-mail</th>
+          <th class='col-xs-4'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+        <tr>
+          <td><%= image_tag user.avatar_url(30) %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class='pull-right clearfix'>
+      <%= paginate @users %>
+    </div>
+  </div>
+</div>

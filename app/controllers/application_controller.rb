@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   # form.
   #
   def check_installation
-    if (User.where(:level => User::ADMINISTRATOR).count == 0)
+    if (User.where(:level => User::ADMINISTRATOR_USER).count == 0)
       redirect_to start_installation_url()
       return
     end
@@ -35,6 +35,34 @@ class ApplicationController < ActionController::Base
       # defined in config.
       I18n.locale = I18n.default_locale
     end
+  end
+
+  # Before action to check the administrator privilege level of 
+  # the current user. 
+  # This function is used by other controllers in order to allow 
+  # privilege-based actions.
+  #
+  def check_administrator_user
+    return (current_user.is_administrator?)
+  end
+
+  # Before action to check the normal privilege level of 
+  # the current user. 
+  # This function is used by other controllers in order to allow 
+  # privilege-based actions.
+  #
+  def check_normal_user
+    return ((current_user.is_administrator?) || (current_user.is_normal?))
+  end
+
+  # Before action to check the normal privilege level of 
+  # the current user. 
+  # This function is used by other controllers in order to allow 
+  # privilege-based actions.
+  #
+  def check_guest_user
+    # This will return true always, but it is checked just in case.
+    return ((current_user.is_administrator?) || (current_user.is_normal?) || (current_user.is_guest?))
   end
 
   private

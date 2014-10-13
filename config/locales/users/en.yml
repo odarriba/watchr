@@ -1,5 +1,17 @@
 en:
   users:
+    index:
+      title: "User management"
+      subtitle:
+        all: "Listing all users"
+        administrator: "Listing administrator users"
+        normal: "Listing normal users"
+        guest: "Listing guest users"
+    sidebar:
+      all_users: "All users"
+      administrator_users: "Administrator users"
+      normal_users: "Normal users"
+      guest_users: "Guest users"
     email:
       welcome:
         subject: "Welcome to Watchr"

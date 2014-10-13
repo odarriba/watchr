@@ -8,7 +8,8 @@ class InstallationController < ApplicationController
   # Action to show a form to get the data needed to
   # perform a valid installation.
   #
-  # [Method] GET /installation
+  # [URL] GET /installation
+  # [Params] None.
   #
   def start
     @user = User.new
@@ -20,7 +21,8 @@ class InstallationController < ApplicationController
 
   # Action to perform the installation.
   #
-  # [Method] POST /installation
+  # [URL] POST /installation
+  # [Params] :user => Hash with user data containing the :name and the :email.
   #
   def apply
     # Check if the data was received and valid
@@ -30,9 +32,12 @@ class InstallationController < ApplicationController
     end
 
     password = User.generate_random_password()
-    user_data = {:name => params[:user][:name], :email => params[:user][:email], :level => User::ADMINISTRATOR, :password => password, :password_confirmation => password}
+    user_data = {:name => params[:user][:name], :email => params[:user][:email], :level => User::ADMINISTRATOR_USER, :password => password, :password_confirmation => password}
 
     @user = User.new(user_data)
+
+    # If the user is valid, clean the user collection
+    User.destroy_all if (@user.valid?)
 
     respond_to do |format|
       format.html {
@@ -53,7 +58,7 @@ class InstallationController < ApplicationController
   # when another administrator already exists in the database.
   #
   def installation_exists?
-    if (User.where(:level => User::ADMINISTRATOR).count > 0)
+    if (User.where(:level => User::ADMINISTRATOR_USER).count > 0)
       redirect_to root_url()
       return
     end
