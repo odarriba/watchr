@@ -1,5 +1,16 @@
 <% content_for :title, t("installation.start.title") %>
 <h2><%= t("installation.start.title") %></h2>
+<% if (!@user.errors[:name].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("devise.errors.name_invalid") %>
+  </div>
+<% elsif (!@user.errors[:email].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("devise.errors.email_invalid") %>
+  </div>
+<% end %>
 <b><%= raw t("installation.start.text") %></b>
 <%= form_tag(apply_installation_path(), :method => :post, :class => "form-group") do -%>
   <div class="form-group<% if (!@user.errors[:name].blank?)%> has-error<% end %>">

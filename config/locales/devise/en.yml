@@ -25,6 +25,11 @@ en:
         error_token:
           text: "<b>The request token is invalid.</b><br />Please, fill the form for request a password change again."
           button_text: "Request a new password"
+    errors:
+      name_invalid: "The length of the name must be between 2 and 30 characters."
+      email_invalid: "The e-mail introduced isn't a valid one."
+      password_invalid: "The length of the password must be between 8 and 128 characters."
+      password_repeat_invalid: "The passwords you've written aren't the same."
     email:
       password:
         instructions: "Hello %{name}!<br /><br />The reason of this e-mail is that someone has requested a password change for your account (without log into your account).<br /><br />If you are the person who requested it, click in the link below to continue:<br ><br /><div style='text-align:center; font-size:14px'>%{link}</div><br />If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one."

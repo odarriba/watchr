@@ -48,7 +48,7 @@ class User
   # field :locked_at,       type: Time
 
   # Validations of the fields added (the devise's default fields have validation with Devise)
-  validates_length_of :name, minimum: 3, maximum: 30
+  validates_length_of :name, minimum: 2, maximum: 30
   validates_length_of :gravatar_email, minimum: 6, maximum: 255
   validates_numericality_of :level, greater_than_or_equal_to: 0
   validates_numericality_of :level, less_than_or_equal_to: 2

@@ -40,7 +40,6 @@ class InstallationController < ApplicationController
           flash[:notice] = t("installation.messages.correct")
           redirect_to new_user_session_path()
         else
-          flash[:error] = t("installation.messages.error")
           render :action => :start
         end
         return

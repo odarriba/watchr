@@ -9,4 +9,3 @@ en:
       create_account: "Create my account"
     messages:
       correct: "Your account has been created.<br />Please, check your e-mail."
-      error: "Something you entered isn't valid."
