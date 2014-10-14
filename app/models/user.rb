@@ -87,24 +87,6 @@ class User
     return "#{protocol}://www.gravatar.com/avatar/#{email_hash}.png?s=#{size}&d=mm"
   end
 
-  # Returns an automatically generated password using upcase and downcase
-  # letters and numbers.
-  #
-  # [length] The length of the password needed
-  #
-  def self.generate_random_password(length = 8)
-    o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
-    return (0...length).map { o[rand(o.length)] }.join
-  end
-
-  # :nodoc:
-  # Function to avoid the compatibility issues between Devise and Rails 4.1
-  #
-  def self.serialize_from_session(key, salt)
-    record = to_adapter.get(key[0]["$oid"])
-    record if record && record.authenticatable_salt == salt
-  end
-
   # Returns true if the user has administrator privilege level .
   # Returns false if the user has a different privilege level.
   #
@@ -125,6 +107,36 @@ class User
   def is_guest?
     # This will return true always, but it is checked just in case.
     return (self.level == User::GUEST_USER)
+  end
+
+  # Returns true if the level received is a valid one.
+  # Returns false if the user received isn't a valid one.
+  #
+  # [level] The level to check
+  #
+  def self.valid_level?(level)
+    return false if (level.blank?)
+
+    # Is a valid level?
+    return User::LEVELS.include?(level)
+  end
+
+  # Returns an automatically generated password using upcase and downcase
+  # letters and numbers.
+  #
+  # [length] The length of the password needed
+  #
+  def self.generate_random_password(length = 8)
+    o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
+    return (0...length).map { o[rand(o.length)] }.join
+  end
+
+  # :nodoc:
+  # Function to avoid the compatibility issues between Devise and Rails 4.1
+  #
+  def self.serialize_from_session(key, salt)
+    record = to_adapter.get(key[0]["$oid"])
+    record if record && record.authenticatable_salt == salt
   end
 
   private

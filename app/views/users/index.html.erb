@@ -2,7 +2,7 @@
   <div class='col-lg-2 col-sm-3 sidebar'>
     <%= render :partial => "sidebar", :params => params %>
   </div>
-  <div class='col-lg-10 col-sm-9'>
+  <div class='col-lg-10 col-sm-9 content'>
     <div class="page-header">
       <h1>
         <%= t("users.index.title") %>
@@ -17,10 +17,36 @@
           <%= t("users.index.subtitle.guest") %>
           <% end %>
         </small>
+        <span class='pull-right'>
+          <%= link_to "<i class='fa fa-plus'></i>&nbsp;&nbsp;<b>#{t("users.index.button_new")}</b>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button_new") %>
+        </span>
       </h1>
     </div>
-    <%= page_entries_info @users %>
-    <table class="table table-hover table-striped datatable">
+    <div class='table-header clearfix'>
+      <div class='pull-left'>
+        <% if (@query.blank?) %>
+        <%= raw t("ui.table.showing_all", :entry_name => @users.model_name.human(count: 2)) %>
+        <% else %>
+        <%= raw t("ui.table.showing_results", :entry_name => @users.model_name.human(count: 2), :query => @query) %>
+        <% end %>
+        <br /><%= page_entries_info @users%>
+      </div>
+      <div class='pull-right'>
+        <%= form_tag users_path(), :method => :get, :class => "form-inline", :role => "form" do -%>
+          <% if (!@level.blank?) %>
+          <%= hidden_field_tag "level", @level %>
+          <% end %>
+          <div class="form-group">
+            <%= text_field_tag "q", @query, :placeholder => t("ui.table.search_placeholder"), :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= button_tag "<i class='fa fa-chevron-right'></i>".html_safe, {:type => "submit", :class => "btn btn-primary"} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <table class="table table-hover table-elements">
       <thead>
         <tr>
           <th class='col-xs-1'></th>
@@ -31,12 +57,27 @@
       </thead>
       <tbody>
         <% @users.each do |user| %>
-        <tr>
-          <td><%= image_tag user.avatar_url(30) %></td>
+        <tr class='element'>
+          <td align="center"><%= image_tag user.avatar_url(35), :class => "with-border color" %></td>
           <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td></td>
         </tr>
+        <% end %>
+        <% if (@users.count == 0) %>
+          <% if (!@query.blank?) %>
+            <tr class="no-elements">
+              <td colspan="4">
+                <%= raw t("ui.table.no_result") %>
+              </td>
+            </tr>
+          <% else %>
+            <tr class="no-elements">
+              <td colspan="4">
+                <%= raw t("ui.table.no_element") %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
