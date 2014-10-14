@@ -64,12 +64,15 @@ class UsersController < ApplicationController
   # [Param :user] All the parameters of the user.
   #
   def create
+    # Apply the params received
     @user = User.new(user_params)
 
+    # Generate an user password
     @user.password = User.generate_random_password
 
     respond_to do|format|
       format.html{
+        # Can be saved?
         if (@user.save)
           flash[:notice] = t("users.notice.created", :email => @user.email)
           redirect_to user_path(@user)
@@ -88,7 +91,6 @@ class UsersController < ApplicationController
   #
   def show
     load_user
-
     return if (@user.blank?)
 
     respond_to do|format|
@@ -103,7 +105,6 @@ class UsersController < ApplicationController
   #
   def edit
     load_user
-
     return if (@user.blank?)
 
     respond_to do|format|
@@ -122,15 +123,19 @@ class UsersController < ApplicationController
 
     return if (@user.blank?)
 
+    # Read the params and check if the password must be changed
     user_values = user_params
     new_password = (user_values[:change_password] == "true")
     user_values.delete(:change_password)
 
+    # Change the password if needed
     user_values[:password] = User::generate_random_password if (new_password)
 
     respond_to do|format|
       format.html{
+        # The user can be updated?
         if (@user.update_attributes(user_values))
+          # Send an e-mail of password changed if needed
           UserMailer.change_password_email(@user).deliver if (new_password)
 
           flash[:notice] = t("users.notice.updated", :email => @user.email)
@@ -150,11 +155,11 @@ class UsersController < ApplicationController
   #
   def destroy
     load_user
-
     return if (@user.blank?)
 
     respond_to do|format|
       format.html{
+        # The user can be destroyed?
         if (@user.destroy)
           flash[:notice] = t("users.notice.destroyed", :email => @user.email)
           redirect_to users_path()
@@ -202,6 +207,10 @@ class UsersController < ApplicationController
   # StrongParameters method to prevent from massive assignment in the User model.
   #
   def user_params
-    params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang, :change_password)
+    if (params[:action] == "update")
+      params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang, :change_password)
+    else
+      params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang)
+    end
   end
 end
