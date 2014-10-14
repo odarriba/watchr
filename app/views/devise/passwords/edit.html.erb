@@ -8,12 +8,12 @@
   <% if (!resource.errors[:password].blank?) %>
     <div class="alert alert-danger">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <%= raw t("devise.errors.password_invalid") %>
+      <%= raw t("users.error.password_invalid") %>
     </div>
   <% elsif (!resource.errors[:password_confirmation].blank?) %>
     <div class="alert alert-danger">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <%= raw t("devise.errors.password_repeat_invalid") %>
+      <%= raw t("users.error.password_repeat_invalid") %>
     </div>
   <% end %>
   <b><%= t("devise.password.edit.text").html_safe %></b>

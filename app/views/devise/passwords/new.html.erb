@@ -2,7 +2,7 @@
 <% if (!resource.errors[:email].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("devise.errors.email_invalid") %>
+    <%= raw t("users.error.email_invalid") %>
   </div>
 <% end %>
 <b><%= t("devise.password.new.text").html_safe %></b>

@@ -3,12 +3,12 @@
 <% if (!@user.errors[:name].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("devise.errors.name_invalid") %>
+    <%= raw t("users.error.name_invalid") %>
   </div>
 <% elsif (!@user.errors[:email].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("devise.errors.email_invalid") %>
+    <%= raw t("users.error.email_invalid") %>
   </div>
 <% end %>
 <b><%= raw t("installation.start.text") %></b>

@@ -1,3 +1,29 @@
+<% if (!resource.errors[:email].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("users.error.email_invalid") %>
+  </div>
+<% elsif (!resource.errors[:level].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("users.error.level_invalid") %>
+  </div>
+<% elsif (!resource.errors[:name].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("users.error.name_invalid") %>
+  </div>
+<% elsif (!resource.errors[:gravatar_email].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("users.error.gravatar_email_invalid") %>
+  </div>
+<% elsif (!resource.errors[:lang].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("users.error.lang_invalid") %>
+  </div>
+<% end %>
 <%= form_for resource, :html => {:class => "form-horizontal"} do |f| %>
   <div class="form-group<% if (!resource.errors[:email].blank?) %> has-error<% end %>">
     <label for="user_email" class="col-sm-2 control-label"><%= t("users.form.email") %></label>
