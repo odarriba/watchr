@@ -94,6 +94,44 @@ class UsersController < ApplicationController
     end
   end
 
+  # Action to show a form to edit an user.
+  #
+  # [URL] GET /users/:id/edit
+  # [Param :id] The id of the user.
+  #
+  def edit
+    load_user
+
+    return if (@user.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to update an existing user with the data from the edit form.
+  #
+  # [URL] PUT /users/:id
+  # [Param :id] The id of the user.
+  # [Param :user] All the parameters of the user.
+  #
+  def update
+    load_user
+
+    return if (@user.blank?)
+
+    respond_to do|format|
+      format.html{
+        if (@user.update_attributes(user_params))
+          redirect_to user_path(@user)
+        else
+          render :action => :edit
+        end
+        return
+      }
+    end
+  end
+
   protected
 
   # Auxiliar function to check the existence of params[:level].

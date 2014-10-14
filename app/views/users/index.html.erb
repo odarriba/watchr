@@ -69,7 +69,7 @@
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i>&nbsp;&nbsp;#{t("users.index.button.show")}".html_safe, user_path(user), :class => "btn btn-sm btn-success", :title => t("users.index.button.show") %>
             <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("users.index.button.edit")}".html_safe, edit_user_path(user), :class => "btn btn-sm btn-info", :title => t("users.index.button.edit") %>
-            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("users.index.button.destroy"), :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
           </td>
         </tr>
         <% end %>

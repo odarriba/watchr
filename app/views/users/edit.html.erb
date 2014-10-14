@@ -1,0 +1,16 @@
+<div class='row-fluid'>
+  <div class='col-lg-2 col-sm-3 sidebar'>
+    <%= render :partial => "sidebar", :params => params %>
+  </div>
+  <div class='col-lg-10 col-sm-9 content'>
+    <div class="page-header">
+      <h1>
+        <%= t("users.edit.title") %>
+        <small>
+          <%= @user.email %>
+        </small>
+      </h1>
+    </div>
+    <%= render "form", :resource => @user %>
+  </div>
+</div>

@@ -28,7 +28,9 @@ en:
       continue: "Create the user"
       back: "Back to the list"
     show:
-      title: "View user"
+      title: "View an user"
+    edit:
+      title: "Edit an user"
     form:
       avatar: "Avatar"
       email: "E-mail"

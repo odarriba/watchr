@@ -79,7 +79,7 @@ class User
   # [size] The size of the image needed.
   #
   def avatar_url(size=150)
-    email_hash = Digest::MD5.hexdigest(self.email.downcase)
+    email_hash = Digest::MD5.hexdigest(self.gravatar_email.downcase)
 
     protocol = "http"
     protocol = "https" if (Watchr::Application::CONFIG["app"]["use_ssl"] == true)
