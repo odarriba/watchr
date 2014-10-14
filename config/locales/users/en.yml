@@ -16,13 +16,21 @@ en:
         administrator: "Listing administrator users"
         normal: "Listing normal users"
         guest: "Listing guest users"
-      button_new: "Create a user"
+      button:
+        new: "Create a user"
+        show: "View"
+        edit: "Edit"
+        destroy: "Destroy"
+        destroy_confirmation: "Do you really want to destroy this user?"
     new:
       title: "Create a new user"
       subtitle: "user details"
       continue: "Create the user"
       back: "Back to the list"
+    show:
+      title: "View user"
     form:
+      avatar: "Avatar"
       email: "E-mail"
       email_placeholder: "E-mail"
       password: "Password"
@@ -35,6 +43,10 @@ en:
       gravatar_email_placeholder: "Gravatar e-mail"
       gravatar_email_helper: "Leave blank if you want to use the user e-mail."
       language: "Language"
+      created_at: "Created at"
+      updated_at: "Updated at"
+      current_login: "Current login"
+      last_login: "Last login"
     sidebar:
       all_users: "All users"
       administrator_users: "Administrator users"
@@ -44,3 +56,5 @@ en:
       welcome:
         subject: "Welcome to Watchr"
         body: "Welcome %{name}!<br /><br />Your account of Watchr has been created succesfully. Now you can log in the application using this credentials:<br /><ul><li><b>E-mail:</b> %{email}</li><li><b>Password:</b> %{password}</li><li><b>Login URL:</b> <a href='%{login_url}' alt='Login URL' title='Login URL'>%{login_url}</a></li></ul><br />We recommend you to check your account settings, so you can change whatever you like (avatar, password, language, etc).<br /><br />If you've any trouble, feel free to contact with the IT staff."
+    error:
+      not_found: "The user with the requested ID doesn't exist."

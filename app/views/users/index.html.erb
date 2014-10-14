@@ -1,8 +1,9 @@
 <div class='row-fluid'>
   <div class='col-lg-2 col-sm-3 sidebar'>
-    <%= render :partial => "sidebar", :params => params %>
+    <%= render :partial => "sidebar" %>
   </div>
   <div class='col-lg-10 col-sm-9 content'>
+    <%= bootstrap_flash %>
     <div class="page-header">
       <h1>
         <%= t("users.index.title") %>
@@ -18,7 +19,7 @@
           <% end %>
         </small>
         <span class='pull-right'>
-          <%= link_to "<i class='fa fa-plus'></i>&nbsp;&nbsp;<b>#{t("users.index.button_new")}</b>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button_new") %>
+          <%= link_to "<i class='fa fa-plus'></i>&nbsp;&nbsp;<b>#{t("users.index.button.new")}</b>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button.new") %>
         </span>
       </h1>
     </div>
@@ -59,9 +60,17 @@
         <% @users.each do |user| %>
         <tr class='element'>
           <td align="center"><%= image_tag user.avatar_url(35), :class => "with-border color" %></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td></td>
+          <td>
+            <%= user.name %>
+          </td>
+          <td>
+            <%= user.email %>
+          </td>
+          <td align='right'>
+            <%= link_to "<i class='fa fa-eye'></i>&nbsp;&nbsp;#{t("users.index.button.show")}".html_safe, user_path(user), :class => "btn btn-sm btn-success", :title => t("users.index.button.show") %>
+            <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("users.index.button.edit")}".html_safe, edit_user_path(user), :class => "btn btn-sm btn-info", :title => t("users.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+          </td>
         </tr>
         <% end %>
         <% if (@users.count == 0) %>

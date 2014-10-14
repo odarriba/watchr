@@ -1,0 +1,106 @@
+<div class='row-fluid'>
+  <div class='col-lg-2 col-sm-3 sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='col-lg-10 col-sm-9 content'>
+    <div class="page-header">
+      <h1>
+        <%= t("users.show.title") %>
+        <small>
+          <%= @user.email %>
+        </small>
+      </h1>
+    </div>
+    <div class='form-horizontal'>
+      <div class="form-group">
+        <label for="user_email" class="col-sm-3 control-label"><%= t("users.form.avatar") %></label>
+        <div class="col-sm-6">
+          <%= image_tag @user.avatar_url(100), :title => @user.name, :alt => @user.name %>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_email" class="col-sm-3 control-label"><%= t("users.form.email") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.email %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_level" class="col-sm-3 control-label"><%= t("users.form.privilege_level") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= t("users.levels.level_#{@user.level}") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-offset-3 col-sm-7">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_name" class="col-sm-3 control-label"><%= t("users.form.name") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.name %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_gravatar_email" class="col-sm-3 control-label"><%= t("users.form.gravatar_email") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.gravatar_email %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_lang" class="col-sm-3 control-label"><%= t("users.form.language") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= t("languages.#{@user.lang}") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-offset-3 col-sm-7">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_created_at" class="col-sm-3 control-label"><%= t("users.form.current_login") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.current_sign_in_at.strftime("%d/%m/%Y - %H:%M") %> (IP: <%= @user.current_sign_in_ip %>)</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_created_at" class="col-sm-3 control-label"><%= t("users.form.last_login") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.last_sign_in_at.strftime("%d/%m/%Y - %H:%M") %> (IP: <%= @user.last_sign_in_ip %>)</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-offset-3 col-sm-7">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_created_at" class="col-sm-3 control-label"><%= t("users.form.created_at") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.created_at.strftime("%m/%d/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="user_created_at" class="col-sm-3 control-label"><%= t("users.form.updated_at") %></label>
+        <div class="col-sm-7">
+          <p class="form-control-static"><%= @user.updated_at.strftime("%m/%d/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-offset-3 col-sm-7">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7">
+          <div class='pull-right'>
+            <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("users.index.button.edit")}".html_safe, edit_user_path(@user), :class => "btn btn-info", :title => t("users.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(@user), :method => :delete, :class => "btn btn-danger", :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+          </div>
+          <%= link_to t("users.new.back"), users_path(:level => @level), :class => "btn btn-default pull-left" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -79,6 +79,21 @@ class UsersController < ApplicationController
     end
   end
 
+  # Action to show the information available of an user.
+  #
+  # [URL] GET /users/:id
+  # [Param :id] The id of the user.
+  #
+  def show
+    load_user
+
+    return if (@user.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
   protected
 
   # Auxiliar function to check the existence of params[:level].
@@ -94,13 +109,26 @@ class UsersController < ApplicationController
     return @level
   end
 
+  # Function lo load a user from the database using params[:id] identificator
+  #
+  # It returns the User object and makes it available at @user.
+  #
+  def load_user
+    @user = User.where(:_id => params[:id]).first
+
+    if (@user.blank?)
+      flash[:error] = t("users.error.not_found")
+      redirect_to users_path()
+    end
+
+    return @user
+  end
+
   private
 
-    # Using a private method to encapsulate the permissible parameters is
-    # just a good pattern since you'll be able to reuse the same permit
-    # list between create and update. Also, you can specialize this method
-    # with per-user checking of permissible attributes.
-    def user_params
-      params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang)
-    end
+  # StrongParameters method to prevent from massive assignment in the User model.
+  #
+  def user_params
+    params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang)
+  end
 end

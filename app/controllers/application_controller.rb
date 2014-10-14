@@ -43,7 +43,14 @@ class ApplicationController < ActionController::Base
   # privilege-based actions.
   #
   def check_administrator_user
-    return (current_user.is_administrator?)
+    result = (current_user.is_administrator?)
+
+    if (!result)
+      # If it doesn't meet the minimum privilege level, redirect.
+      redirect_to root_path()
+    end
+
+    return result
   end
 
   # Before action to check the normal privilege level of 
@@ -52,7 +59,14 @@ class ApplicationController < ActionController::Base
   # privilege-based actions.
   #
   def check_normal_user
-    return ((current_user.is_administrator?) || (current_user.is_normal?))
+    result = ((current_user.is_administrator?) || (current_user.is_normal?))
+    
+    if (!result)
+      # If it doesn't meet the minimum privilege level, redirect.
+      redirect_to root_path()
+    end
+
+    return result
   end
 
   # Before action to check the normal privilege level of 
@@ -62,7 +76,14 @@ class ApplicationController < ActionController::Base
   #
   def check_guest_user
     # This will return true always, but it is checked just in case.
-    return ((current_user.is_administrator?) || (current_user.is_normal?) || (current_user.is_guest?))
+    result = ((current_user.is_administrator?) || (current_user.is_normal?) || (current_user.is_guest?))
+
+    if (!result)
+      # If it doesn't meet the minimum privilege level, redirect.
+      redirect_to root_path()
+    end
+
+    return result
   end
 
   private
