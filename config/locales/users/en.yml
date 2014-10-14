@@ -31,12 +31,13 @@ en:
       title: "View an user"
     edit:
       title: "Edit an user"
+      continue: "Save changes"
     form:
       avatar: "Avatar"
       email: "E-mail"
       email_placeholder: "E-mail"
       password: "Password"
-      password_generated: "Auto-generated and sent by e-mail."
+      password_generated: "New password auto-generated (user notified by e-mail)."
       password_unchanged: "Password remain unchanged."
       privilege_level: "Privilege level"
       name: "Name"
@@ -56,8 +57,11 @@ en:
       guest_users: "Guest users"
     email:
       welcome:
-        subject: "Welcome to Watchr"
+        subject: "Watchr - Welcome to Watchr"
         body: "Welcome %{name}!<br /><br />Your account of Watchr has been created succesfully. Now you can log in the application using this credentials:<br /><ul><li><b>E-mail:</b> %{email}</li><li><b>Password:</b> %{password}</li><li><b>Login URL:</b> <a href='%{login_url}' alt='Login URL' title='Login URL'>%{login_url}</a></li></ul><br />We recommend you to check your account settings, so you can change whatever you like (avatar, password, language, etc).<br /><br />If you've any trouble, feel free to contact with the IT staff."
+      change_password:
+        subject: "Watchr - Password changed succesfully"
+        body: "Hello %{name}!<br /><br />The password of your account on Watchr has been changed by a member of our staff. Your credentials now are:<br /><ul><li><b>E-mail:</b> %{email}</li><li><b>Password:</b> %{password}</li></ul><br />We recommend you to change your password to make it more easy to remember.<br /><br /><b>Note:</b> this password was automatically generated, and no one except you have seen it, so your account remains secure."
     notice:
       created: "User (%{email}) <b>created succesfully</b>."
       updated: "User (%{email}) <b>updated succesfully</b>."

@@ -98,7 +98,7 @@ class User
   # Returns false if the user has a different privilege level.
   #
   def is_normal?
-    return (self.level == User::NORMAL_USER)
+    return ((self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
   end
 
   # Returns true if the user has a guest privilege level.
@@ -106,7 +106,7 @@ class User
   #
   def is_guest?
     # This will return true always, but it is checked just in case.
-    return (self.level == User::GUEST_USER)
+    return ((self.level == User::GUEST_USER) || (self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
   end
 
   # Returns true if the level received is a valid one.

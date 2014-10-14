@@ -20,7 +20,7 @@
         <li><a href="#"><%= t("ui.navbar.sections.incidents") %></a></li>
         <li><a href="#"><%= t("ui.navbar.sections.monitoring") %></a></li>
         <li><a href="#"><%= t("ui.navbar.sections.alerts") %></a></li>
-        <% if (current_user.is_administrator?) %>
+        <% if (current_user.is_normal?) %>
           <li><%= link_to t("ui.navbar.sections.users"), users_path() %></li>
         <% end %>
       </ul>

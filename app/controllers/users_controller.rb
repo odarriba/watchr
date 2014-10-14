@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # Check the privilege level required.
-  before_action :check_administrator_user, :except => [:edit, :update]
+  before_action :check_administrator_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :check_normal_user, :only => [:index, :show]
 
   # Action to list all the users in the system.
   # It also allows to search in the users by name and/or e-mail
@@ -121,9 +122,17 @@ class UsersController < ApplicationController
 
     return if (@user.blank?)
 
+    user_values = user_params
+    new_password = (user_values[:change_password] == "true")
+    user_values.delete(:change_password)
+
+    user_values[:password] = User::generate_random_password if (new_password)
+
     respond_to do|format|
       format.html{
-        if (@user.update_attributes(user_params))
+        if (@user.update_attributes(user_values))
+          UserMailer.change_password_email(@user).deliver if (new_password)
+
           flash[:notice] = t("users.notice.updated", :email => @user.email)
           redirect_to user_path(@user)
         else
@@ -193,6 +202,6 @@ class UsersController < ApplicationController
   # StrongParameters method to prevent from massive assignment in the User model.
   #
   def user_params
-    params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang)
+    params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang, :change_password)
   end
 end

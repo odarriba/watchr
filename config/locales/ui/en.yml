@@ -20,6 +20,8 @@ en:
       no_result: "Nothing matches your criteria."
       showing_all: "Showing all %{entry_name}."
       showing_results: "Showing %{entry_name} matching <b>'%{query}'</b>"
+    error:
+      forbidden: "You can't access to this feature."
   # Kaminari stuff (pagination)
   views:
     pagination:

@@ -95,10 +95,12 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-7">
+          <% if (current_user.is_administrator?) %>
           <div class='pull-right'>
             <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("users.index.button.edit")}".html_safe, edit_user_path(@user), :class => "btn btn-info", :title => t("users.index.button.edit") %>
             <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(@user), :method => :delete, :class => "btn btn-danger", :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
           </div>
+          <% end %>
           <%= link_to t("users.new.back"), users_path(:level => @level), :class => "btn btn-default pull-left" %>
         </div>
       </div>
