@@ -58,6 +58,10 @@ en:
       welcome:
         subject: "Welcome to Watchr"
         body: "Welcome %{name}!<br /><br />Your account of Watchr has been created succesfully. Now you can log in the application using this credentials:<br /><ul><li><b>E-mail:</b> %{email}</li><li><b>Password:</b> %{password}</li><li><b>Login URL:</b> <a href='%{login_url}' alt='Login URL' title='Login URL'>%{login_url}</a></li></ul><br />We recommend you to check your account settings, so you can change whatever you like (avatar, password, language, etc).<br /><br />If you've any trouble, feel free to contact with the IT staff."
+    notice:
+      created: "User (%{email}) <b>created succesfully</b>."
+      updated: "User (%{email}) <b>updated succesfully</b>."
+      destroyed: "User (%{email}) <b>destroyed violently</b>."
     error:
       not_found: "The user with the requested ID doesn't exist."
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
@@ -67,3 +71,4 @@ en:
       lan_invalid: "The language selected isn't available. Please, check it and try again."
       password_invalid: "The length of the password must be between 8 and 128 characters."
       password_repeat_invalid: "The passwords you've written aren't the same."
+      not_destroyed: "User (%{email}) couldn't be destroyed. Please, try again."

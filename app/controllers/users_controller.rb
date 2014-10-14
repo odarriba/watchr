@@ -70,6 +70,7 @@ class UsersController < ApplicationController
     respond_to do|format|
       format.html{
         if (@user.save)
+          flash[:notice] = t("users.notice.created", :email => @user.email)
           redirect_to user_path(@user)
         else
           render :action => :new
@@ -123,9 +124,34 @@ class UsersController < ApplicationController
     respond_to do|format|
       format.html{
         if (@user.update_attributes(user_params))
+          flash[:notice] = t("users.notice.updated", :email => @user.email)
           redirect_to user_path(@user)
         else
           render :action => :edit
+        end
+        return
+      }
+    end
+  end
+
+  # Action to destroy an existing user.
+  #
+  # [URL] DELETE /users/:id
+  # [Param :id] The id of the user.
+  #
+  def destroy
+    load_user
+
+    return if (@user.blank?)
+
+    respond_to do|format|
+      format.html{
+        if (@user.destroy)
+          flash[:notice] = t("users.notice.destroyed", :email => @user.email)
+          redirect_to users_path()
+        else
+          flash[:error] = t("users.error.not_destroyed", :email => @user.email)
+          redirect_to user_path(@user)
         end
         return
       }
