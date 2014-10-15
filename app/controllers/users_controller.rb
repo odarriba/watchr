@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   # Check the privilege level required.
   before_action :check_administrator_user, :only => [:new, :create, :edit, :update, :destroy]
   before_action :check_normal_user, :only => [:index, :show]
+  before_action :check_guest_user, :only => [:preferences]
 
   # Action to list all the users in the system.
   # It also allows to search in the users by name and/or e-mail
@@ -169,6 +170,18 @@ class UsersController < ApplicationController
         end
         return
       }
+    end
+  end
+
+  # Action to show a form to change the preferences of the current user.
+  #
+  # [URL] get /preferences
+  #
+  def preferences
+    @user = current_user
+
+    respond_to do |format|
+      format.html
     end
   end
 
