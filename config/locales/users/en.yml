@@ -32,6 +32,10 @@ en:
     edit:
       title: "Edit an user"
       continue: "Save changes"
+    preferences:
+      title: "Preferences"
+      subtitle_general: "change your account"
+      subtitle_password: "change your password"
     form:
       avatar: "Avatar"
       email: "E-mail"
@@ -44,12 +48,17 @@ en:
       name_placeholder: "Name"
       gravatar_email: "Gravatar e-mail"
       gravatar_email_placeholder: "Gravatar e-mail"
-      gravatar_email_helper: "Leave blank if you want to use the user e-mail."
+      gravatar_email_helper: "Leave blank if you want to use the login e-mail."
       language: "Language"
       created_at: "Created at"
       updated_at: "Updated at"
       current_login: "Current login"
       last_login: "Last login"
+      current_password: "Current password"
+      current_password_helper: "Your current password is needed to verify your identity."
+      new_password: "New password"
+      repeat_password: "Repeat your password"
+      repeat_password_helper: "Repeat your new password to avoid typing mistakes."
     sidebar:
       all_users: "All users"
       administrator_users: "Administrator users"

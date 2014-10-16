@@ -21,7 +21,7 @@
         <li><a href="#"><%= t("ui.navbar.sections.monitoring") %></a></li>
         <li><a href="#"><%= t("ui.navbar.sections.alerts") %></a></li>
         <% if (current_user.is_normal?) %>
-          <li><%= link_to t("ui.navbar.sections.users"), users_path() %></li>
+          <li<% if (controller_name == "users") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.users"), users_path() %></li>
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">

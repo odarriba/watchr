@@ -15,6 +15,7 @@ en:
         preferences: "Preferences"
         log_out: "Log out"
     table:
+      search_placeholder: "Search"
       search_placeholder: "Search..."
       no_element: "Nothing to show here (yet)"
       no_result: "Nothing matches your criteria."
