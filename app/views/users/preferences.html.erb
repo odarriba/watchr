@@ -5,8 +5,8 @@
       <div class="panel-body">
         <!-- Nav tabs -->
         <ul class="nav nav-pills nav-stacked" role="tablist">
-          <li class="active"><a href="#general" role="tab" data-toggle="tab"><%= t("users.preferences.sidebar.general") %></a></li>
-          <li><a href="#password" role="tab" data-toggle="tab"><%= t("users.preferences.sidebar.change_password") %></a></li>
+          <li class="<% if(@mode=="general") %>active<% end %>"><a href="#general" role="tab" data-toggle="tab"><%= t("users.preferences.sidebar.general") %></a></li>
+          <li class="<% if(@mode=="password") %>active<% end %>"><a href="#password" role="tab" data-toggle="tab"><%= t("users.preferences.sidebar.change_password") %></a></li>
         </ul>
       </div>
     </div>
@@ -14,7 +14,7 @@
   <div class='col-lg-10 col-md-9 col-sm-8 content'>
     <!-- Tab panes -->
     <div class="tab-content">
-      <div class="tab-pane active" id="general">
+      <div class="tab-pane<% if(@mode=="general") %> active<% end %>" id="general">
         <!-- Header -->
         <div class="page-header">
           <h1>
@@ -49,8 +49,14 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <%= raw t("users.error.lang_invalid") %>
           </div>
+         <% elsif (!@user.errors[:current_password].blank?) %>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= raw t("users.error.current_password_invalid") %>
+          </div>
         <% end %>
-        <%= form_for @user, :url => user_preferences_path, :method => :post, :html => {:class => "form-horizontal"} do |f| %>
+        <%= form_for @user, :url => user_preferences_path, :method => :put, :html => {:class => "form-horizontal"} do |f| %>
+          <%= hidden_field_tag "mode", "general" %>
           <div class="form-group<% if (!@user.errors[:email].blank?) %> has-error<% end %>">
             <label for="user_email" class="col-sm-2 control-label"><%= t("users.form.email") %></label>
             <div class="col-sm-7">
@@ -94,7 +100,7 @@
           <div class="form-group<% if (!@user.errors[:current_password].blank?) %> has-error<% end %>">
             <label for="user_current_password" class="col-sm-2 control-label"><%= t("users.form.current_password") %></label>
             <div class="col-sm-7">
-              <%= f.password_field :current_password, :class => "form-control" %>
+              <%= f.password_field :current_password, :autocomplete => "off", :class => "form-control" %>
               <span class="help-block"><%= t("users.form.current_password_helper") %></span>
             </div>
           </div>
@@ -110,7 +116,7 @@
           </div>
         <% end %>
       </div>
-      <div class="tab-pane" id="password">
+      <div class="tab-pane<% if(@mode=="password") %> active<% end %>" id="password">
         <div class="page-header">
           <h1>
             <%= t("users.preferences.title") %>
@@ -119,18 +125,35 @@
             </small>
           </h1>
         </div>
-        <%= form_for @user, :url => user_preferences_path, :method => :post, :html => {:class => "form-horizontal"} do |f| %>
+        <% if (!@user.errors[:password].blank?) %>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= raw t("users.error.password_invalid") %>
+          </div>
+        <% elsif (!@user.errors[:password_confirmation].blank?) %>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= raw t("users.error.password_confirmation_invalid") %>
+          </div>
+         <% elsif (!@user.errors[:current_password].blank?) %>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= raw t("users.error.current_password_invalid") %>
+          </div>
+        <% end %>
+        <%= form_for @user, :url => user_preferences_path, :method => :put, :html => {:class => "form-horizontal"} do |f| %>
+          <%= hidden_field_tag "mode", "password" %>
           <div class="form-group<% if (!@user.errors[:password].blank?) %> has-error<% end %>">
             <label for="user_password" class="col-sm-2 control-label"><%= t("users.form.new_password") %></label>
             <div class="col-sm-7">
-              <%= f.password_field :password, :class => "form-control" %>
+              <%= f.password_field :password, :autocomplete => "off", :class => "form-control" %>
             </div>
           </div>
-          <div class="form-group<% if (!@user.errors[:repeat_password].blank?) %> has-error<% end %>">
-            <label for="user_current_password" class="col-sm-2 control-label"><%= t("users.form.repeat_password") %></label>
+          <div class="form-group<% if (!@user.errors[:password_confirmation].blank?) %> has-error<% end %>">
+            <label for="user_password_confirmation" class="col-sm-2 control-label"><%= t("users.form.password_confirmation") %></label>
             <div class="col-sm-7">
-              <%= f.password_field :repeat_password, :class => "form-control" %>
-              <span class="help-block"><%= t("users.form.repeat_password_helper") %></span>
+              <%= f.password_field :password_confirmation, :autocomplete => "off", :class => "form-control" %>
+              <span class="help-block"><%= t("users.form.password_confirmation_helper") %></span>
             </div>
           </div>
           <div class="form-group">
@@ -141,7 +164,7 @@
           <div class="form-group<% if (!@user.errors[:current_password].blank?) %> has-error<% end %>">
             <label for="user_current_password" class="col-sm-2 control-label"><%= t("users.form.current_password") %></label>
             <div class="col-sm-7">
-              <%= f.password_field :current_password, :class => "form-control" %>
+              <%= f.password_field :current_password, :autocomplete => "off", :class => "form-control" %>
               <span class="help-block"><%= t("users.form.current_password_helper") %></span>
             </div>
           </div>
@@ -152,7 +175,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-7">
-              <%= f.button "#{t("users.#{action_name}.continue")}&nbsp;&nbsp;<i class='fa fa-chevron-right'></i>".html_safe, :type => "submit", :class => "btn btn-primary pull-right" %>
+              <%= f.button "#{t("users.preferences.continue")}&nbsp;&nbsp;<i class='fa fa-chevron-right'></i>".html_safe, :type => "submit", :class => "btn btn-primary pull-right" %>
             </div>
           </div>
         <% end %>

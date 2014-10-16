@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
-  
-  get '/preferences' => 'users#preferences', :as => :user_preferences
 
   root 'panel#index'
 
@@ -9,7 +7,11 @@ Rails.application.routes.draw do
   get '/installation' => 'installation#start', :as => :start_installation
   post '/installation' => 'installation#apply', :as => :apply_installation
 
+  # Users operations
   resources :users
+  get '/preferences' => 'users#preferences', :as => :user_preferences
+  put '/preferences' => 'users#save_preferences'
+  patch '/preferences' => 'users#save_preferences'
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

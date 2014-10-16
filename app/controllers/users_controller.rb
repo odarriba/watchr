@@ -175,13 +175,49 @@ class UsersController < ApplicationController
 
   # Action to show a form to change the preferences of the current user.
   #
-  # [URL] get /preferences
+  # [URL] GET /preferences
   #
   def preferences
     @user = current_user
+    @mode = "general"
 
     respond_to do |format|
       format.html
+    end
+  end
+
+  # Action to save the new preferences of the current user.
+  #
+  # [URL] PUT /preferences
+  # [URL] PATCH /preferences
+  #
+  def save_preferences
+    @user = current_user
+    @mode = params[:mode]
+
+    user_values = user_params
+
+    if (!current_user.valid_password?(user_params[:current_password]))
+      @user.errors[:current_password]=true
+      render :action => :preferences
+      return
+    end
+
+    user_values.delete(:current_password)
+
+    respond_to do |format|
+      format.html{
+        if (@user.update_attributes(user_values))
+          flash[:notice] = t("users.notice.preferences_updated") if (@mode == "general")
+          flash[:notice] = t("users.notice.password_updated") if (@mode == "password")
+
+          redirect_to root_path()
+        else
+          render :action => :preferences
+        end
+
+        return
+      }
     end
   end
 
@@ -222,6 +258,13 @@ class UsersController < ApplicationController
   def user_params
     if (params[:action] == "update")
       params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang, :change_password)
+    elsif (params[:action] == "save_preferences")
+      # Password update
+      if (params[:mode] == "password")
+        params.require(:user).permit(:password, :password_confirmation, :current_password)
+      else # General preferences update
+        params.require(:user).permit(:email, :name, :gravatar_email, :lang, :current_password)
+      end
     else
       params.require(:user).permit(:email, :level, :name, :gravatar_email, :lang)
     end
