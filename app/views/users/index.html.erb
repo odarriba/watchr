@@ -1,9 +1,9 @@
 <% content_for :title, t("users.index.title") %>
 <div class='row-fluid'>
-  <div class='col-md-3 sidebar'>
+  <div class='col-md-3 col-sm-4 sidebar'>
     <%= render :partial => "sidebar" %>
   </div>
-  <div class='col-md-9 content'>
+  <div class='col-md-9 col-sm-8 content'>
     <%= bootstrap_flash %>
     <div class="page-header clearfix">
       <h1>
@@ -20,7 +20,7 @@
           <% end %>
         </small>
         <span class='pull-right'>
-          <%= link_to "<i class='fa fa-plus'></i>&nbsp;&nbsp;<b>#{t("users.index.button.new")}</b>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button.new") %>
+          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("users.index.button.new")}</b></span>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button.new") %>
         </span>
       </h1>
     </div>
@@ -68,10 +68,10 @@
             <%= user.email %>
           </td>
           <td align='right'>
-            <%= link_to "<i class='fa fa-eye'></i>&nbsp;&nbsp;#{t("users.index.button.show")}".html_safe, user_path(user), :class => "btn btn-sm btn-success", :title => t("users.index.button.show") %>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.show")}</span>".html_safe, user_path(user), :class => "btn btn-sm btn-success", :title => t("users.index.button.show") %>
             <% if (current_user.is_administrator?) %>
-            <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("users.index.button.edit")}".html_safe, edit_user_path(user), :class => "btn btn-sm btn-info", :title => t("users.index.button.edit") %>
-            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("users.index.button.destroy")}".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("users.index.button.destroy"), :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.edit")}</span>".html_safe, edit_user_path(user), :class => "btn btn-sm btn-info", :title => t("users.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.destroy")}</span>".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("users.index.button.destroy"), :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
             <% end %>
           </td>
         </tr>

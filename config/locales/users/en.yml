@@ -36,6 +36,9 @@ en:
       title: "Preferences"
       subtitle_general: "change your account"
       subtitle_password: "change your password"
+      sidebar:
+        general: "General settings"
+        change_password: "Change password"
     form:
       avatar: "Avatar"
       email: "E-mail"
