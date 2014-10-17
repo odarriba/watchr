@@ -8,8 +8,14 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Watchr module is the main module that englobes all the application.
+#
 module Watchr
+  # Application class extends from Rails::Application class and do the configuration
+  # tasks at startup time.
+  #
   class Application < Rails::Application
+    # The main configuration object that loads the application configuration.
     CONFIG = YAML.load_file("#{Rails.root}/config/watchr.yml")[Rails.env]
 
     # Settings in config/environments/* take precedence over those specified here.

@@ -9,10 +9,10 @@ Kaminari.configure do |config|
   # config.param_name = :page
 end
 
-# :nodoc:
+# :nodoc: all
 # This is a hack to allow i18n in Kaminari model names
 #
-module Kaminari
+module Kaminari 
   module ActionViewExtension
     def page_entries_info(collection, options = {})
       entry_name = options[:entry_name] || collection.model_name

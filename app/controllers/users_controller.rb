@@ -1,16 +1,24 @@
+# Controller to perform _User_ related actions.
+#
+# It includes user administration actions and preference management
+# for logged in users.
+#
 class UsersController < ApplicationController
   # Check the privilege level required.
   before_action :check_administrator_user, :only => [:new, :create, :edit, :update, :destroy]
   before_action :check_normal_user, :only => [:index, :show]
   before_action :check_guest_user, :only => [:preferences]
 
-  # Action to list all the users in the system.
-  # It also allows to search in the users by name and/or e-mail
+  # Action to list all the users in the application.
+  # It also allows to search in the users by _name_ and/or _e-mail_
   #
-  # [URL] GET /users
-  # [Param :level] The level of the users to show (or nothing to show all).
-  # [Param :page] The number of the page to show.
-  # [Param :q] A string to search for users.
+  # [URL] 
+  #   GET /users
+  #
+  # [Parameters] 
+  #   * *level* - _(Optional)_ The privilege level of the users to show.
+  #   * *page* - _(Optional)_ The page of results to show.
+  #   * *q* - _(Optional)_ A search query to filter users.
   #
   def index
     @users = User.all
@@ -42,10 +50,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to show a form to create an user.
+  # Action to show a user creation form.
   #
-  # [URL] GET /users/new
-  # [Param :level] Optional: The default level of the users to create.
+  # [URL] 
+  #   GET /users/new
+  #
+  # [Parameters] 
+  #   * *level* - _(Optional)_ The default level of the users to create.
   #
   def new
     @user = User.new
@@ -59,16 +70,19 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to save a new user with the data received from the new user's form.
+  # Action to create a new user with the data received from the form.
   #
-  # [URL] POST /users
-  # [Param :user] All the parameters of the user.
+  # [URL] 
+  #   POST /users
+  #
+  # [Parameters]
+  #   * *user* - All the data recolected for the new user.
   #
   def create
     # Apply the params received
     @user = User.new(user_params)
 
-    # Generate an user password
+    # Generate an user password.
     @user.password = User.generate_random_password
 
     respond_to do|format|
@@ -78,6 +92,7 @@ class UsersController < ApplicationController
           flash[:notice] = t("users.notice.created", :email => @user.email)
           redirect_to user_path(@user)
         else
+          # If an error raises, show the form again.
           render :action => :new
         end
         return
@@ -85,10 +100,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to show the information available of an user.
+  # Action to show the information available about an user.
   #
-  # [URL] GET /users/:id
-  # [Param :id] The id of the user.
+  # [URL] 
+  #   GET /users/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the user.
   #
   def show
     load_user
@@ -99,10 +117,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to show a form to edit an user.
+  # Action to show a form to edit an existing user.
   #
-  # [URL] GET /users/:id/edit
-  # [Param :id] The id of the user.
+  # [URL] 
+  #   GET /users/:id/edit
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the user.
   #
   def edit
     load_user
@@ -113,11 +134,15 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to update an existing user with the data from the edit form.
+  # Action to update an existing user with the data received from the form.
   #
-  # [URL] PUT /users/:id
-  # [Param :id] The id of the user.
-  # [Param :user] All the parameters of the user.
+  # [URL] 
+  #   PUT /users/:id
+  #   PATCH /users/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the user.
+  #   * *user* - The data recolected for the user.
   #
   def update
     load_user
@@ -127,6 +152,8 @@ class UsersController < ApplicationController
     # Read the params and check if the password must be changed
     user_values = user_params
     new_password = (user_values[:change_password] == "true")
+
+    # Delete the field of change password.
     user_values.delete(:change_password)
 
     # Change the password if needed
@@ -142,6 +169,7 @@ class UsersController < ApplicationController
           flash[:notice] = t("users.notice.updated", :email => @user.email)
           redirect_to user_path(@user)
         else
+          # If an error raises, show the form again
           render :action => :edit
         end
         return
@@ -149,10 +177,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to destroy an existing user.
+  # Action to destroy an existing user from the database.
   #
-  # [URL] DELETE /users/:id
-  # [Param :id] The id of the user.
+  # [URL] 
+  #   DELETE /users/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the user.
   #
   def destroy
     load_user
@@ -175,7 +206,11 @@ class UsersController < ApplicationController
 
   # Action to show a form to change the preferences of the current user.
   #
-  # [URL] GET /preferences
+  # [URL] 
+  #   GET /preferences
+  #
+  # [Parameters]
+  #   None.
   #
   def preferences
     @user = current_user
@@ -188,8 +223,13 @@ class UsersController < ApplicationController
 
   # Action to save the new preferences of the current user.
   #
-  # [URL] PUT /preferences
-  # [URL] PATCH /preferences
+  # [URL] 
+  #   PUT /preferences
+  #   PATCH /preferences
+  #
+  # [Parameters]
+  #   * *mode* - The mode of the preferences form (_general_ or _password_)
+  #   * *user* - The preferences of the current user's account.
   #
   def save_preferences
     @user = current_user
@@ -197,22 +237,26 @@ class UsersController < ApplicationController
 
     user_values = user_params
 
+    # Check user's password
     if (!current_user.valid_password?(user_params[:current_password]))
       @user.errors[:current_password]=true
       render :action => :preferences
       return
     end
 
+    # Delete the current password from the data received
     user_values.delete(:current_password)
 
     respond_to do |format|
       format.html{
+        # Try to update the attributes
         if (@user.update_attributes(user_values))
           flash[:notice] = t("users.notice.preferences_updated") if (@mode == "general")
           flash[:notice] = t("users.notice.password_updated") if (@mode == "password")
 
           redirect_to root_path()
         else
+          # If an error raises, show the form again
           render :action => :preferences
         end
 
@@ -223,10 +267,13 @@ class UsersController < ApplicationController
 
   protected
 
-  # Auxiliar function to check the existence of params[:level].
-  # Also checks if the level received is a valid user level.
+  # Function to check the existence of the *level* parameter in the URL.
+  # Also checks if the level received is a valid privilege level of _User_ model.
   #
   # If the level exists and it's valid, the variable @level is setted to these value.
+  #
+  # [Returns]
+  #   The value of @level (the number received or _nil_)
   #
   def check_level_param
     if (!params[:level].blank? && params[:level].to_i.to_s == params[:level] && User.valid_level?(params[:level].to_i))
@@ -236,14 +283,18 @@ class UsersController < ApplicationController
     return @level
   end
 
-  # Function lo load a user from the database using params[:id] identificator
+  # Function lo load a user from the database using *id* parameter in the URL.
   #
   # It returns the User object and makes it available at @user.
+  #
+  # [Returns]
+  #   A valid _User_ object or _nil_ if it doesn't exists.
   #
   def load_user
     @user = User.where(:_id => params[:id]).first
 
     if (@user.blank?)
+      # If not found, show an error and redirect
       flash[:error] = t("users.error.not_found")
       redirect_to users_path()
     end
@@ -253,7 +304,10 @@ class UsersController < ApplicationController
 
   private
 
-  # StrongParameters method to prevent from massive assignment in the User model.
+  # Strong parameters method to prevent from massive assignment in the _User_ model.
+  #
+  # [Returns]
+  #   The filtered version of *params[:user]*.
   #
   def user_params
     if (params[:action] == "update")

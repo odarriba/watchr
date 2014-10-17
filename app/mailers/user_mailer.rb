@@ -1,3 +1,5 @@
+# Mailer class to configure and send _User_ related e-mails.
+#
 class UserMailer < ActionMailer::Base
   default from: Watchr::Application::CONFIG["email"]["default_sender"]
   default template_path: "users/mailer"
@@ -6,7 +8,8 @@ class UserMailer < ActionMailer::Base
 
   # Mailer to send the welcome email to an user with it's login details.
   #
-  # [user] The user object to wich one send the e-mail
+  # [Parameters] 
+  #   * *user* - The user object to which one send the e-mail.
   #
   def welcome_email(user)
     @user = user
@@ -15,7 +18,8 @@ class UserMailer < ActionMailer::Base
 
   # Mailer to send the ans email to an user warning about an password change.
   #
-  # [user] The user object to wich one send the e-mail
+  # [Parameters] 
+  #   * *user* - The user object to which one send the e-mail.
   #
   def change_password_email(user)
     @user = user

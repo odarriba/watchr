@@ -1,6 +1,15 @@
+# Helper functions for _ApplicationController_ actions.
+#
 module ApplicationHelper
+  # Types of alerts defined in Bootstrap
   ALERT_TYPES = [:success, :info, :warning, :danger]
 
+  # Function to translate the flash messages into HTML code
+  # using Bootstrap classes for alerts.
+  #
+  # [Returns]
+  #   HTML code with the flash messages.
+  #
   def bootstrap_flash
     flash_messages = []
     flash.each do |type, message|
@@ -8,6 +17,8 @@ module ApplicationHelper
       next if message.blank?
 
       type = type.to_sym
+
+      # translate some types into Bootstrap-likely types
       type = :success if type == :notice
       type = :danger  if type == :alert
       type = :danger  if type == :error

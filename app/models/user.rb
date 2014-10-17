@@ -1,12 +1,18 @@
 require 'digest/md5' # Required to use Gravatar
 
+# User model to store information about the users of the application.
+#
+# It includes some model logic and verifications.
+#
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  # Diferent levels of users
+  # Identificator of Administrator privilege level.
   ADMINISTRATOR_USER = 0
+  # Identificator of Normal privilege level.
   NORMAL_USER = 1
+  # Identificator of Guest privilege level.
   GUEST_USER = 2
 
   # Array with available level values
@@ -74,9 +80,13 @@ class User
   # After creation, send an e-mail
   after_create :send_welcome_email
 
-  # Returns the url of the user's avatar using Gravatar
+  # Function to generate the url of the user's avatar using _Gravatar_
   #
-  # [size] The size of the image needed.
+  # [Parameters] 
+  # * *size* - The size of the image needed
+  #
+  # [Returns]
+  #   The URL of the image.
   #
   def avatar_url(size=150)
     email_hash = Digest::MD5.hexdigest(self.gravatar_email.downcase)
@@ -87,32 +97,41 @@ class User
     return "#{protocol}://www.gravatar.com/avatar/#{email_hash}.png?s=#{size}&d=mm"
   end
 
-  # Returns true if the user has administrator privilege level .
-  # Returns false if the user has a different privilege level.
+  # Function to check if the user has an administrator privilege level.
+  #
+  # [Returns]
+  #   A boolean indicating if the user has it or not.
   #
   def is_administrator?
     return (self.level == User::ADMINISTRATOR_USER)
   end
 
-  # Returns true if the user has a normal privilege level.
-  # Returns false if the user has a different privilege level.
+  # Function to check if the user has a normal privilege level.
+  #
+  # [Returns]
+  #   A boolean indicating if the user has it or not.
   #
   def is_normal?
     return ((self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
   end
 
-  # Returns true if the user has a guest privilege level.
-  # Returns false if the user has a different privilege level.
+  # Function to check if the user has a guest privilege level.
+  #
+  # [Returns]
+  #   A boolean indicating if the user has it or not.
   #
   def is_guest?
     # This will return true always, but it is checked just in case.
     return ((self.level == User::GUEST_USER) || (self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
   end
 
-  # Returns true if the level received is a valid one.
-  # Returns false if the user received isn't a valid one.
+  # Function to check if a level identificator is a valid privilege level.
   #
-  # [level] The level to check
+  # [Parameters]
+  #   * *level* - The privilege level to check.
+  #
+  # [Returns]
+  #   A boolean indicating if the level received is valid or not.
   #
   def self.valid_level?(level)
     return false if (level.blank?)
@@ -121,28 +140,33 @@ class User
     return User::LEVELS.include?(level)
   end
 
-  # Returns an automatically generated password using upcase and downcase
+  # Function to generate a random password using upcase and downcase
   # letters and numbers.
   #
-  # [length] The length of the password needed
+  # [Parameters]
+  #   * *length* - The length of the password needed.
+  #
+  # [Returns]
+  #   The generated password.
   #
   def self.generate_random_password(length = 8)
     o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
     return (0...length).map { o[rand(o.length)] }.join
   end
 
-  # :nodoc:
-  # Function to avoid the compatibility issues between Devise and Rails 4.1
+  # Function to avoid the compatibility issues between Devise and Rails 4.1.
   #
-  def self.serialize_from_session(key, salt)
+  # It tells Rails how to serialize the objecto to be saved in the session.
+  #
+  def self.serialize_from_session(key, salt) # :nodoc:
     record = to_adapter.get(key[0]["$oid"])
     record if record && record.authenticatable_salt == salt
   end
 
   private
 
-  # It downcase both e-mail addresses stored and, if no gravatar's e-mail is setted,
-  # it copy the user's one.
+  # This function downcase both e-mail addresses of the _User_ model and, 
+  # if no gravatar's e-mail is setted, copies the login e-mail.
   #
   def transform_emails
     self.email.downcase!
@@ -154,7 +178,7 @@ class User
     end
   end
 
-  # After creation method to send to the user it's log in details vie e-mail.
+  # After creation method to send to the user it's login details vie e-mail.
   #
   def send_welcome_email
     UserMailer.welcome_email(self).deliver

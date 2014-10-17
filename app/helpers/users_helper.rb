@@ -1,5 +1,10 @@
+# Helper functions for _UsersController_ actions.
+#
 module UsersHelper
-  # Helper function to get a hash with the valid privilege levels
+  # Helper function to get a hash with the valid privilege levels of _User_ model.
+  #
+  # [Returns]
+  #   Hash with the level identificators associated to the translations of the privilege levels names.
   #
   def levels_hash
     result = Hash.new
@@ -12,6 +17,9 @@ module UsersHelper
   end
 
   # Helper function to get a hash with registered localizations of the app.
+  #
+  # [Returns]
+  #   Hash with the locale identificators associated to the translation of the locales name.
   #
   def languages_hash
     result = Hash.new
