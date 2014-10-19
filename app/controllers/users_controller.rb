@@ -155,6 +155,7 @@ class UsersController < ApplicationController
 
     # Delete the field of change password.
     user_values.delete(:change_password)
+    user_values.delete(:level) if (@user.id == current_user.id)
 
     # Change the password if needed
     user_values[:password] = User::generate_random_password if (new_password)
@@ -188,6 +189,12 @@ class UsersController < ApplicationController
   def destroy
     load_user
     return if (@user.blank?)
+
+    if (@user.id == current_user.id)
+      flash[:error] = t("users.error.destroy_yourself")
+      redirect_to user_path(@user)
+      return
+    end
 
     respond_to do|format|
       format.html{

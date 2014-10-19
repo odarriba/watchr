@@ -71,7 +71,14 @@
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.show")}</span>".html_safe, user_path(user), :class => "btn btn-sm btn-success", :title => t("users.index.button.show") %>
             <% if (current_user.is_administrator?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.edit")}</span>".html_safe, edit_user_path(user), :class => "btn btn-sm btn-info", :title => t("users.index.button.edit") %>
-            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.destroy")}</span>".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("users.index.button.destroy"), :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+              <% if (user.id != current_user.id) %>
+              <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.destroy")}</span>".html_safe, user_path(user), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("users.index.button.destroy"), :data => {:confirm => t("users.index.button.destroy_confirmation")} %>
+              <% else %>
+              <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.destroy")}</span>".html_safe, nil, :class => "btn btn-sm btn-danger disabled", :title => t("users.index.button.destroy") %>
+              <% end %>
+            <% else %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.edit")}</span>".html_safe, nil, :class => "btn btn-sm btn-info disabled", :title => t("users.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("users.index.button.destroy")}</span>".html_safe, nil, :class => "btn btn-sm btn-danger disabled", :title => t("users.index.button.destroy") %>
             <% end %>
           </td>
         </tr>

@@ -48,6 +48,7 @@ en:
       password_generated: "New password auto-generated (user notified by e-mail)."
       password_unchanged: "Password remain unchanged."
       privilege_level: "Privilege level"
+      privilege_level_yourself: "You can't change your own privilege level."
       name: "Name"
       name_placeholder: "Name"
       gravatar_email: "Gravatar e-mail"
@@ -92,3 +93,4 @@ en:
       password_confirmation_invalid: "The passwords you've written aren't the same."
       current_password_invalid: "The current password is incorrect."
       not_destroyed: "User (%{email}) couldn't be destroyed. Please, try again."
+      destroy_yourself: "<b>You can't destroy your own user.</b>"
