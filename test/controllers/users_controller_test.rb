@@ -209,6 +209,19 @@ class UsersControllerTest < ActionController::TestCase
     sign_out :user
   end
 
+  test "should not change the privilege level of the current user" do
+    sign_in :user, @user_admin
+
+    # Try to change it's own level
+    put :update, :id => @user_admin, :user => {:level => User::NORMAL_USER}
+
+    # Reload the data and checks
+    @user_admin.reload
+    assert_equal @user_admin.level, User::ADMINISTRATOR_USER
+
+    sign_out :user
+end
+
   test "should destroy users" do
     sign_in :user, @user_admin
 
@@ -218,6 +231,19 @@ class UsersControllerTest < ActionController::TestCase
     # Destroyed user shouldn't be found in database.
     assert_not User.where(:_id => @user_normal.id).first
     assert_redirected_to users_path()
+
+    sign_out :user
+  end
+
+  test "should not destroy the current user" do
+    sign_in :user, @user_admin
+
+    # Destroy user
+    delete :destroy, :id => @user_admin.id
+
+    # Destroyed user shouldn't be found in database.
+    assert User.where(:_id => @user_admin.id).first
+    assert_redirected_to user_path(@user_admin)
 
     sign_out :user
   end
