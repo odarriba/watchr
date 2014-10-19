@@ -158,9 +158,8 @@ class User
   #
   # It tells Rails how to serialize the objecto to be saved in the session.
   #
-  def self.serialize_from_session(key, salt) # :nodoc:
-    record = to_adapter.get(key[0]["$oid"])
-    record if record && record.authenticatable_salt == salt
+  def self.serialize_into_session(record) # :nodoc:
+    [record.id.to_s, record.authenticatable_salt]
   end
 
   private
