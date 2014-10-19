@@ -7,6 +7,10 @@ class InstallationControllerTest < ActionController::TestCase
     User.destroy_all
   end
 
+  def teardown
+    User.destroy_all
+  end
+
   test "should get start" do
     get :start
 
@@ -21,6 +25,7 @@ class InstallationControllerTest < ActionController::TestCase
 
     get :start
 
+    # As exists an administrator, the user must be redirected
     assert_redirected_to root_path
   end
 
@@ -53,7 +58,7 @@ class InstallationControllerTest < ActionController::TestCase
     user_data = {:name => 'Administrator', :email => "admin@test.tld"}
     post :apply, :user => user_data
 
-    assert_equal flash[:notice], I18n.t("installation.messages.correct")
+    assert User.where(:email => "admin@test.tld", :level => User::ADMINISTRATOR_USER)
     assert_redirected_to new_user_session_path
     assert_equal User.count, 1
 
