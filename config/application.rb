@@ -56,5 +56,8 @@ module Watchr
     config.to_prepare do
       Devise::Mailer.layout "email"
     end
+
+    # Rescue errors from an ERB file
+    config.exceptions_app = self.routes
   end
 end

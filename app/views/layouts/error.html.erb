@@ -22,8 +22,8 @@
     <meta name="msapplication-TileColor" content="#2780e3">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
 
-    <%= stylesheet_link_tag    'devise', media: 'all'  %>
-    <%= javascript_include_tag 'devise' %>
+    <%= stylesheet_link_tag    'error', media: 'all'  %>
+    <%= javascript_include_tag 'error' %>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,10 +35,11 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div class="main-container container">
-      <%= image_tag "ui/logo_medium.png", :class => "logo", :title => "Watchr" %>
-      <%= bootstrap_flash %>
-      <%= yield %>
+   <div class="container">
+      <div class='error-div'>
+        <%= image_tag "cat.jpg", :class => "cat" %>
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>

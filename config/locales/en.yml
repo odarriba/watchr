@@ -2,3 +2,19 @@ en:
   languages:
     en: "English"
     es: "Spanish"
+
+  error:
+    internal:
+      title_page: "Internal Error"
+      title_text: "Ooops! Something went wrong."
+      text: "Something went wrong in our servers, but we have a trained team of experts kittens working on it.<br />Meanwhile, you can inform about this with your TI staff.<br /><br /><b>Error code: 500 (Internal Error)</b>"
+
+    not_found:
+      title_page: "Not found"
+      title_text: "Ooops! Something isn't here."
+      text: "The resource you are looking for isn't here anymore. Our kittens have tried to find it, but they couldn't.<br /> If something must be here and isn't, contact your TI staff.<br /><br /><b>Error code: 404 (Not Found Error)</b>"
+
+    unprocessable:
+      title_page: "Unprocessable"
+      title_text: "Ooops! Something isn't cool."
+      text: "Our expert team of trained kittens can't do what you want with the data you sent.<br /> If this error persists, contact your TI staff.<br /><br /><b>Error code: 422 (Unprocessable Error)</b>"

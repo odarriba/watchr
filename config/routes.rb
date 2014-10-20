@@ -3,6 +3,11 @@ Rails.application.routes.draw do
 
   root 'panel#index'
 
+  # Error links
+  get "/404", :to => "application#error_not_found"
+  get "/422", :to => "application#error_unprocessable"
+  get "/500", :to => "application#error_internal"
+
   # Installation operations
   get '/installation' => 'installation#start', :as => :start_installation
   post '/installation' => 'installation#apply', :as => :apply_installation

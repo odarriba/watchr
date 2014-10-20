@@ -7,13 +7,46 @@ class ApplicationController < ActionController::Base
   # Check if exists any user
   before_action :check_installation
   # Check if the user is logged in
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => [:error_unprocessable, :error_internal, :error_not_found]
   # Set a correct locale
   before_filter :set_locale
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  # Custom action for a 404 error page
+  #
+  # [URL]
+  #   GET /404
+  #
+  def error_not_found
+    respond_to do |format|
+      format.html{render :layout => "error"}
+    end
+  end
+
+  # Custom action for a 422 error page
+  #
+  # [URL]
+  #   GET /422
+  #
+  def error_unprocessable
+    respond_to do |format|
+      format.html{render :layout => "error"}
+    end
+  end
+
+  # Custom action for a 500 error page
+  #
+  # [URL]
+  #   GET /500
+  #
+  def error_internal
+    respond_to do |format|
+      format.html{render :layout => "error"}
+    end
+  end
 
   protected
 
