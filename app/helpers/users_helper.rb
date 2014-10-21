@@ -9,7 +9,7 @@ module UsersHelper
   def levels_hash
     result = Hash.new
 
-    User::LEVELS.each do |level|
+    User::AVAILABLE_LEVELS.each do |level|
       result[t("users.levels.level_#{level}")] = level
     end
 

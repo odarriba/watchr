@@ -5,11 +5,11 @@ class UsersControllerTest < ActionController::TestCase
 
   def setup
     # Create test users
-    @user_admin = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::ADMINISTRATOR_USER)
-    @user_normal = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::NORMAL_USER)
-    @user_guest = User.create(:email => "guest@test.tld", :name => "Guest user", :password => "testtest", :password_confirmation => "testtest", :level => User::GUEST_USER)
+    @user_admin = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_ADMINISTRATOR)
+    @user_normal = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL)
+    @user_guest = User.create(:email => "guest@test.tld", :name => "Guest user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_GUEST)
 
-    @create_hash = {:email => "test@test.tld", :name => "Test user", :password => "testtest", :password_confirmation => "testtest", :level => User::NORMAL_USER}
+    @create_hash = {:email => "test@test.tld", :name => "Test user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL}
   end
 
   def teardown
@@ -213,11 +213,11 @@ class UsersControllerTest < ActionController::TestCase
     sign_in :user, @user_admin
 
     # Try to change it's own level
-    put :update, :id => @user_admin, :user => {:level => User::NORMAL_USER}
+    put :update, :id => @user_admin, :user => {:level => User::LEVEL_NORMAL}
 
     # Reload the data and checks
     @user_admin.reload
-    assert_equal @user_admin.level, User::ADMINISTRATOR_USER
+    assert_equal @user_admin.level, User::LEVEL_ADMINISTRATOR
 
     sign_out :user
 end
@@ -274,10 +274,10 @@ end
     assert_template :preferences
 
     # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_admin.name, :current_password => @user_admin.password, :level => User::NORMAL_USER}
+    post :save_preferences, :user => {:name => @user_admin.name, :current_password => @user_admin.password, :level => User::LEVEL_NORMAL}
     assert_redirected_to root_path
     @user_admin.reload
-    assert_equal @user_admin.level, User::ADMINISTRATOR_USER
+    assert_equal @user_admin.level, User::LEVEL_ADMINISTRATOR
 
     sign_out :user
   end
@@ -308,10 +308,10 @@ end
     assert_template :preferences
 
     # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_normal.name, :current_password => @user_normal.password, :level => User::ADMINISTRATOR_USER}
+    post :save_preferences, :user => {:name => @user_normal.name, :current_password => @user_normal.password, :level => User::LEVEL_ADMINISTRATOR}
     assert_redirected_to root_path
     @user_normal.reload
-    assert_not_equal @user_normal.level, User::ADMINISTRATOR_USER
+    assert_not_equal @user_normal.level, User::LEVEL_ADMINISTRATOR
 
     sign_out :user
   end
@@ -342,10 +342,10 @@ end
     assert_template :preferences
 
     # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_guest.name, :current_password => @user_guest.password, :level => User::ADMINISTRATOR_USER}
+    post :save_preferences, :user => {:name => @user_guest.name, :current_password => @user_guest.password, :level => User::LEVEL_ADMINISTRATOR}
     assert_redirected_to root_path
     @user_guest.reload
-    assert_not_equal @user_guest.level, User::ADMINISTRATOR_USER
+    assert_not_equal @user_guest.level, User::LEVEL_ADMINISTRATOR
 
     sign_out :user
   end

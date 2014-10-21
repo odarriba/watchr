@@ -9,14 +9,14 @@ class User
   include Mongoid::Timestamps
 
   # Identificator of Administrator privilege level.
-  ADMINISTRATOR_USER = 0
+  LEVEL_ADMINISTRATOR = 0
   # Identificator of Normal privilege level.
-  NORMAL_USER = 1
+  LEVEL_NORMAL = 1
   # Identificator of Guest privilege level.
-  GUEST_USER = 2
+  LEVEL_GUEST = 2
 
   # Array with available level values
-  LEVELS = [ADMINISTRATOR_USER, NORMAL_USER, GUEST_USER]
+  AVAILABLE_LEVELS = [LEVEL_ADMINISTRATOR, LEVEL_NORMAL, LEVEL_GUEST]
 
   # Include default devise modules. Others available are:
   # :registarable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -60,9 +60,8 @@ class User
   # Validations of the fields added (the devise's default fields have validation with Devise)
   validates_length_of :name, minimum: 2, maximum: 30
   validates_length_of :gravatar_email, minimum: 6, maximum: 255
-  validates_numericality_of :level, greater_than_or_equal_to: 0
-  validates_numericality_of :level, less_than_or_equal_to: 2
   validates_numericality_of :level, only_integer: true
+  validates_inclusion_of :level, in: User::AVAILABLE_LEVELS
   validates_inclusion_of :lang, in: I18n.available_locales
 
   # Check Gravatar's e-mail format
@@ -103,7 +102,7 @@ class User
   #   A boolean indicating if the user has it or not.
   #
   def is_administrator?
-    return (self.level == User::ADMINISTRATOR_USER)
+    return (self.level == User::LEVEL_ADMINISTRATOR)
   end
 
   # Function to check if the user has a normal privilege level.
@@ -112,7 +111,7 @@ class User
   #   A boolean indicating if the user has it or not.
   #
   def is_normal?
-    return ((self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
+    return ((self.level == User::LEVEL_NORMAL) || (self.level == User::LEVEL_ADMINISTRATOR))
   end
 
   # Function to check if the user has a guest privilege level.
@@ -122,7 +121,7 @@ class User
   #
   def is_guest?
     # This will return true always, but it is checked just in case.
-    return ((self.level == User::GUEST_USER) || (self.level == User::NORMAL_USER) || (self.level == User::ADMINISTRATOR_USER))
+    return ((self.level == User::LEVEL_GUEST) || (self.level == User::LEVEL_NORMAL) || (self.level == User::LEVEL_ADMINISTRATOR))
   end
 
   # Function to check if a level identificator is a valid privilege level.
@@ -137,7 +136,7 @@ class User
     return false if (level.blank?)
 
     # Is a valid level?
-    return User::LEVELS.include?(level)
+    return User::AVAILABLE_LEVELS.include?(level)
   end
 
   # Function to generate a random password using upcase and downcase

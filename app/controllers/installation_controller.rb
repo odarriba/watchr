@@ -49,7 +49,7 @@ class InstallationController < ApplicationController
 
     # Generate random password and apply to a hash with the user configuration
     password = User.generate_random_password()
-    user_data = {:name => params[:user][:name], :email => params[:user][:email], :level => User::ADMINISTRATOR_USER, :password => password, :password_confirmation => password}
+    user_data = {:name => params[:user][:name], :email => params[:user][:email], :level => User::LEVEL_ADMINISTRATOR, :password => password, :password_confirmation => password}
 
     @user = User.new(user_data)
 
@@ -80,7 +80,7 @@ class InstallationController < ApplicationController
   # is redirected to the root path.
   #
   def installation_exists?
-    if (User.where(:level => User::ADMINISTRATOR_USER).count > 0)
+    if (User.where(:level => User::LEVEL_ADMINISTRATOR).count > 0)
       redirect_to root_path()
       return
     end

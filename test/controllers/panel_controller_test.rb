@@ -4,7 +4,7 @@ class PanelControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
   def setup
-    @user = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::ADMINISTRATOR_USER)
+    @user = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_ADMINISTRATOR)
   end
 
   def teardown

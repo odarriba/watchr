@@ -2,3 +2,8 @@ en:
   monitoring:
     index:
       title: "Monitoring"
+    sidebar:
+      monitoring: "Monitoring"
+      hosts: "Hosts management"
+      services: "Services management"
+      alerts: "Alerts management"

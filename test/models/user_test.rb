@@ -4,7 +4,7 @@ class UserTest < ActiveSupport::TestCase
 
   def setup
     # MongoID hasn't got fixtures support :(
-    @user = User.new(:email => "hey@test.org", :password => "testtest", :password_confirmation => "testtest", :name => "Test User", :level => User::ADMINISTRATOR_USER, :lang => I18n.default_locale)
+    @user = User.new(:email => "hey@test.org", :password => "testtest", :password_confirmation => "testtest", :name => "Test User", :level => User::LEVEL_ADMINISTRATOR, :lang => I18n.default_locale)
   end
 
   def teardown
@@ -121,33 +121,33 @@ class UserTest < ActiveSupport::TestCase
 
   test "should save user with valid levels" do
     # Administrator level
-    @user.level = User::ADMINISTRATOR_USER
+    @user.level = User::LEVEL_ADMINISTRATOR
     assert @user.save
 
     # Normal level
-    @user.level = User::NORMAL_USER
+    @user.level = User::LEVEL_NORMAL
     assert @user.save
 
     # Guest level
-    @user.level = User::GUEST_USER
+    @user.level = User::LEVEL_GUEST
     assert @user.save
   end
 
   test "should should recognise it's user privilege level" do
     # Administrator level
-    @user.level = User::ADMINISTRATOR_USER
+    @user.level = User::LEVEL_ADMINISTRATOR
     assert @user.is_administrator?
     assert @user.is_normal?
     assert @user.is_guest?
 
     # Normal level
-    @user.level = User::NORMAL_USER
+    @user.level = User::LEVEL_NORMAL
     assert_not @user.is_administrator?
     assert @user.is_normal?
     assert @user.is_guest?
 
     # Guest level
-    @user.level = User::GUEST_USER
+    @user.level = User::LEVEL_GUEST
     assert_not @user.is_administrator?
     assert_not @user.is_normal?
     assert @user.is_guest?
@@ -155,13 +155,13 @@ class UserTest < ActiveSupport::TestCase
 
   test "should recognise an valid level" do
     # Administrator level
-    assert User::valid_level?(User::ADMINISTRATOR_USER)
+    assert User::valid_level?(User::LEVEL_ADMINISTRATOR)
 
     # Normal level
-    assert User::valid_level?(User::NORMAL_USER)
+    assert User::valid_level?(User::LEVEL_NORMAL)
 
     # Guest level
-    assert User::valid_level?(User::GUEST_USER)
+    assert User::valid_level?(User::LEVEL_GUEST)
   end
 
   test "should recognise an invalid level" do

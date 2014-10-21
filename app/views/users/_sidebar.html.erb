@@ -6,9 +6,9 @@
     <hr class='divider' />
     <ul class="nav nav-pills nav-stacked">
       <li class='disabled'><a>View by privilege level</a></li>
-      <li class="<% if (action_name == "index" && @level == User::ADMINISTRATOR_USER) %>active<% end %>"><%= link_to t("users.sidebar.administrator_users"), users_path(:level => User::ADMINISTRATOR_USER) %></li>
-      <li class="<% if (action_name == "index" && @level == User::NORMAL_USER) %>active<% end %>"><%= link_to t("users.sidebar.normal_users"), users_path(:level => User::NORMAL_USER) %></li>
-      <li class="<% if (action_name == "index" && @level == User::GUEST_USER) %>active<% end %>"><%= link_to t("users.sidebar.guest_users"), users_path(:level => User::GUEST_USER) %></li>
+      <li class="<% if (action_name == "index" && @level == User::LEVEL_ADMINISTRATOR) %>active<% end %>"><%= link_to t("users.sidebar.administrator_users"), users_path(:level => User::LEVEL_ADMINISTRATOR) %></li>
+      <li class="<% if (action_name == "index" && @level == User::LEVEL_NORMAL) %>active<% end %>"><%= link_to t("users.sidebar.normal_users"), users_path(:level => User::LEVEL_NORMAL) %></li>
+      <li class="<% if (action_name == "index" && @level == User::LEVEL_GUEST) %>active<% end %>"><%= link_to t("users.sidebar.guest_users"), users_path(:level => User::LEVEL_GUEST) %></li>
     </ul>
   </div>
 </div>

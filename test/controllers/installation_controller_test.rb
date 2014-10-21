@@ -21,7 +21,7 @@ class InstallationControllerTest < ActionController::TestCase
   end
 
   test "should not get start with an administrator" do
-    @user = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::ADMINISTRATOR_USER)
+    @user = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_ADMINISTRATOR)
 
     get :start
 
@@ -31,7 +31,7 @@ class InstallationControllerTest < ActionController::TestCase
 
   test "should get start with a non-administrator user" do
     # Create a normal user
-    @user = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::NORMAL_USER)
+    @user = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL)
 
     get :start
 
@@ -44,7 +44,7 @@ class InstallationControllerTest < ActionController::TestCase
     @user.destroy
 
     # Create a guest user
-    @user = User.create(:email => "guest@test.tld", :name => "Guest user", :password => "testtest", :password_confirmation => "testtest", :level => User::GUEST_USER)
+    @user = User.create(:email => "guest@test.tld", :name => "Guest user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_GUEST)
 
     get :start
 
@@ -58,7 +58,7 @@ class InstallationControllerTest < ActionController::TestCase
     user_data = {:name => 'Administrator', :email => "admin@test.tld"}
     post :apply, :user => user_data
 
-    assert User.where(:email => "admin@test.tld", :level => User::ADMINISTRATOR_USER)
+    assert User.where(:email => "admin@test.tld", :level => User::LEVEL_ADMINISTRATOR)
     assert_redirected_to new_user_session_path
     assert_equal User.count, 1
 
@@ -66,7 +66,7 @@ class InstallationControllerTest < ActionController::TestCase
 
     assert_equal @user.email, user_data[:email].downcase
     assert_equal @user.name, user_data[:name]
-    assert_equal @user.level, User::ADMINISTRATOR_USER
+    assert_equal @user.level, User::LEVEL_ADMINISTRATOR
   end
 
   test "should not finish installation without valid data" do
@@ -93,7 +93,7 @@ class InstallationControllerTest < ActionController::TestCase
 
   test "should drop every user when installation finish" do
     # Create normal user
-    @user = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::NORMAL_USER)
+    @user = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL)
 
     user_data = {:name => 'Administrator', :email => "admin@test.tld"}
     post :apply, :user => user_data
@@ -101,7 +101,7 @@ class InstallationControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
 
     assert_not User.where(:email => "normal@test.tld").first
-    assert_not User.ne(:level => User::ADMINISTRATOR_USER).first
+    assert_not User.ne(:level => User::LEVEL_ADMINISTRATOR).first
   end
 
 end

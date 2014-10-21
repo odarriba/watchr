@@ -11,11 +11,11 @@
         <small>
           <% if (@level.blank?) %>
           <%= t("users.index.subtitle.all") %>
-          <% elsif (@level == User::ADMINISTRATOR_USER) %>
+          <% elsif (@level == User::LEVEL_ADMINISTRATOR) %>
           <%= t("users.index.subtitle.administrator") %>
-          <% elsif (@level == User::NORMAL_USER) %>
+          <% elsif (@level == User::LEVEL_NORMAL) %>
           <%= t("users.index.subtitle.normal") %>
-          <% elsif (@level == User::GUEST_USER) %>
+          <% elsif (@level == User::LEVEL_GUEST) %>
           <%= t("users.index.subtitle.guest") %>
           <% end %>
         </small>

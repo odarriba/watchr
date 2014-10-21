@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
   # * If there is one or more administratos in the system, the petition continues without redirections.
   #
   def check_installation
-    if (User.where(:level => User::ADMINISTRATOR_USER).count == 0)
+    if (User.where(:level => User::LEVEL_ADMINISTRATOR).count == 0)
       # No administrator user, redirect!
       redirect_to start_installation_url()
       return
