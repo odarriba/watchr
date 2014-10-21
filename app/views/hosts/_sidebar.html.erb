@@ -1,0 +1,16 @@
+<% if (action_name == "index") %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <ul class="nav nav-pills nav-stacked">
+      <li<% if (@type.blank?) %> class="active"<% end %>><%= link_to t("hosts.sidebar.all"), hosts_path() %></li>
+      <hr class='divider' />
+      <li class='disabled'><a><%= t("hosts.sidebar.view_by_type")%></a></li>
+      <li<% if (@type == Host::TYPE_ROUTER) %> class="active"<% end %>><%= link_to t("hosts.sidebar.router"), hosts_path(:type => Host::TYPE_ROUTER) %></li>
+      <li<% if (@type == Host::TYPE_SWITCH) %> class="active"<% end %>><%= link_to t("hosts.sidebar.switch"), hosts_path(:type => Host::TYPE_SWITCH) %></li>
+      <li<% if (@type == Host::TYPE_SERVER) %> class="active"<% end %>><%= link_to t("hosts.sidebar.server"), hosts_path(:type => Host::TYPE_SERVER) %></li>
+      <li<% if (@type == Host::TYPE_COMPUTER) %> class="active"<% end %>><%= link_to t("hosts.sidebar.computer"), hosts_path(:type => Host::TYPE_COMPUTER) %></li>
+      <li<% if (@type == Host::TYPE_GENERIC) %> class="active"<% end %>><%= link_to t("hosts.sidebar.generic"), hosts_path(:type => Host::TYPE_GENERIC) %></li>
+    </ul>
+  </div>
+</div>
+<% end %>

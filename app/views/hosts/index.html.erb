@@ -1,0 +1,106 @@
+<% content_for :title, t("hosts.index.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "monitoring/sidebar" %>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <%= bootstrap_flash %>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("hosts.index.title") %>
+        <small>
+          <% if (@type.blank?) %>
+          <%= t("hosts.index.subtitle.all") %>
+          <% elsif (@type == Host::TYPE_ROUTER) %>
+          <%= t("hosts.index.subtitle.router") %>
+          <% elsif (@type == Host::TYPE_SWITCH) %>
+          <%= t("hosts.index.subtitle.switch") %>
+          <% elsif (@type == Host::TYPE_SERVER) %>
+          <%= t("hosts.index.subtitle.server") %>
+          <% elsif (@type == Host::TYPE_COMPUTER) %>
+          <%= t("hosts.index.subtitle.computer") %>
+          <% elsif (@type == Host::TYPE_GENERIC) %>
+          <%= t("hosts.index.subtitle.generic") %>
+          <% end %>
+        </small>
+        <span class='pull-right'>
+          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("hosts.index.button.new")}</b></span>".html_safe, new_host_path(:type => @type), :class => "btn btn-success", :title => t("hosts.index.button.new") %>
+        </span>
+      </h1>
+    </div>
+    <div class='table-header clearfix'>
+      <div class='pull-left'>
+        <% if (@query.blank?) %>
+        <%= raw t("ui.table.showing_all", :entry_name => @hosts.model_name.human(count: 2)) %>
+        <% else %>
+        <%= raw t("ui.table.showing_results", :entry_name => @hosts.model_name.human(count: 2), :query => @query) %>
+        <% end %>
+        <br /><%= page_entries_info @hosts%>
+      </div>
+      <div class='pull-right'>
+        <%= form_tag hosts_path(), :method => :get, :class => "form-inline", :role => "form" do -%>
+          <% if (!@type.blank?) %>
+          <%= hidden_field_tag "type", @type %>
+          <% end %>
+          <div class="form-group">
+            <%= text_field_tag "q", @query, :placeholder => t("ui.table.search_placeholder"), :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= button_tag t("ui.table.search"), {:type => "submit", :class => "btn btn-primary"} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <table class="table table-hover table-elements">
+      <thead>
+        <tr>
+          <th class='col-xs-3'><%= t("hosts.table.name") %></th>
+          <th class='col-xs-3'><%= t("hosts.table.address") %></th>
+          <th class='col-xs-5'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @hosts.each do |host| %>
+        <tr class='element'>
+          <td>
+            <%= host.name %>
+          </td>
+          <td>
+            <%= host.address %>
+          </td>
+          <td align='right'>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.show")}</span>".html_safe, host_path(host), :class => "btn btn-sm btn-success", :title => t("hosts.index.button.show") %>
+            <% if (current_user.is_normal?) %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.edit")}</span>".html_safe, edit_host_path(host), :class => "btn btn-sm btn-info", :title => t("hosts.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.destroy")}</span>".html_safe, host_path(host), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("hosts.index.button.destroy"), :data => {:confirm => t("hosts.index.button.destroy_confirmation")} %>
+            <% else %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.edit")}</span>".html_safe, nil, :class => "btn btn-sm btn-info disabled", :title => t("hosts.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.destroy")}</span>".html_safe, nil, :class => "btn btn-sm btn-danger disabled", :title => t("hosts.index.button.destroy") %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% if (@hosts.count == 0) %>
+          <% if (!@query.blank?) %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_result") %>
+              </td>
+            </tr>
+          <% else %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_element") %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <div class='pull-right clearfix'>
+      <%= paginate @hosts %>
+    </div>
+  </div>
+</div>

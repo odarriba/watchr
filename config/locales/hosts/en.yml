@@ -1,0 +1,34 @@
+en:
+  mongoid:
+    models:
+      host:
+        one: "host"
+        other: "hosts"
+  hosts:
+    index:
+      title: "Host management"
+      subtitle:
+        all: "viewing all hosts"
+        router: "viewing router hosts"
+        switch: "viewing switch hosts"
+        server: "viewing server hosts"
+        computer: "viewing computer hosts"
+        generic: "viewing generic hosts"
+      button:
+        new: "Create a host"
+        show: "View"
+        edit: "Edit"
+        destroy: "Destroy"
+        destroy_confirmation: "Do you really want to destroy this host?"
+      table:
+        name: "Name"
+        type: "Type"
+        address: "Address"
+    sidebar:
+      all: "View all"
+      view_by_type: "View by type of host"
+      router: "Router hosts"
+      switch: "Switch hosts"
+      server: "Server hosts"
+      computer: "Computer hosts"
+      generic: "Generic hosts"

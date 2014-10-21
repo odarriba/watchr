@@ -5,7 +5,7 @@
     </ul>
     <hr class='divider' />
     <ul class="nav nav-pills nav-stacked">
-      <li class='disabled'><a>View by privilege level</a></li>
+      <li class='disabled'><a><%= t("users.sidebar.view_privilege_level") %></a></li>
       <li class="<% if (action_name == "index" && @level == User::LEVEL_ADMINISTRATOR) %>active<% end %>"><%= link_to t("users.sidebar.administrator_users"), users_path(:level => User::LEVEL_ADMINISTRATOR) %></li>
       <li class="<% if (action_name == "index" && @level == User::LEVEL_NORMAL) %>active<% end %>"><%= link_to t("users.sidebar.normal_users"), users_path(:level => User::LEVEL_NORMAL) %></li>
       <li class="<% if (action_name == "index" && @level == User::LEVEL_GUEST) %>active<% end %>"><%= link_to t("users.sidebar.guest_users"), users_path(:level => User::LEVEL_GUEST) %></li>

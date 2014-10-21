@@ -18,7 +18,13 @@ Rails.application.routes.draw do
   put '/preferences' => 'users#save_preferences'
   patch '/preferences' => 'users#save_preferences'
 
+  # Monitoring operations
   get '/monitoring' => 'monitoring#index', :as => :monitoring
+
+  scope '/monitoring' do
+    # Hosts operations
+    resources :hosts
+  end
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

@@ -96,6 +96,21 @@ class Host
     return (self.type == Host::TYPE_GENERIC)
   end
 
+  # Function to check if a host type is valid.
+  #
+  # [Parameters]
+  #   * *type* - The host type to check.
+  #
+  # [Returns]
+  #   A boolean indicating if the host type received is valid or not.
+  #
+  def self.valid_type?(type)
+    return false if (type.blank?)
+
+    # Is a valid level?
+    return Host::AVAILABLE_TYPES.include?(type)
+  end
+
   protected
 
   # Validation to check if the content of the :address field is

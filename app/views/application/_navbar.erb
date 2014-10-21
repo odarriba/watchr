@@ -13,8 +13,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbar-collapse">
       <ul class="nav navbar-nav">
-        <li<% if params[:controller] == "panel" %> class="active"<% end %>><%= link_to t("ui.navbar.sections.home"), root_path() %></li>
-        <li<% if params[:controller] == "monitoring" %> class="active"<% end %>><%= link_to t("ui.navbar.sections.monitoring"), monitoring_path() %></li>
+        <li<% if (params[:controller] == "panel") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.home"), root_path() %></li>
+        <li<% if (params[:controller] == "monitoring") || (params[:controller] == "hosts") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.monitoring"), monitoring_path() %></li>
         <li><a href="#"><%= t("ui.navbar.sections.status_pages") %></a></li>
         <li><a href="#"><%= t("ui.navbar.sections.incidents") %></a></li>
         <% if (current_user.is_normal?) %>

@@ -13,15 +13,18 @@ en:
       title: "User management"
       subtitle:
         all: "viewing all users"
-        administrator: "Listing administrator users"
-        normal: "Listing normal users"
-        guest: "Listing guest users"
+        administrator: "viewing administrator users"
+        normal: "viewing normal users"
+        guest: "viewing guest users"
       button:
         new: "Create a user"
         show: "View"
         edit: "Edit"
         destroy: "Destroy"
         destroy_confirmation: "Do you really want to destroy this user?"
+      table:
+        name: "Name"
+        email: "E-mail"
     new:
       title: "Create a new user"
       subtitle: "user details"
@@ -66,6 +69,7 @@ en:
       password_confirmation_helper: "Repeat your new password to avoid typing mistakes."
     sidebar:
       all_users: "All users"
+      view_privilege_level: "View by privilege level"
       administrator_users: "Administrator users"
       normal_users: "Normal users"
       guest_users: "Guest users"
