@@ -35,6 +35,10 @@ Rails.application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
+  # Compressors for assets
+  config.assets.css_compressor = :yui
+  config.assets.js_compressor = :uglifier
+
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files.

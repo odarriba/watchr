@@ -1,12 +1,19 @@
 // This file provides CSS styling to the views with sidebar style
 
 div.sidebar
+  @extend .col-lg-2
+  @extend .col-md-3
+  @extend .col-sm-4
+
   ul.nav.nav-pills.nav-stacked
     li.disabled
       a
         cursor: default
 
 div.content
+  @extend .col-lg-10
+  @extend .col-md-9
+  @extend .col-sm-8
   div.page-header
     margin-top: 0px
 
