@@ -1,3 +1,5 @@
+# Helper functions for _HostsController_ actions.
+#
 module HostsHelper
   # Helper function to get a hash with the valid host types of _Host_ model.
   #
