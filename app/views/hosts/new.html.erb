@@ -1,0 +1,17 @@
+<% content_for :title, t("hosts.new.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("hosts.new.title") %>
+        <small>
+          <%= t("hosts.new.subtitle") %>
+        </small>
+      </h1>
+    </div>
+    <%= render "form", :resource => @host %>
+  </div>
+</div>

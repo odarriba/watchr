@@ -14,9 +14,10 @@
     <div class="collapse navbar-collapse" id="navbar-collapse">
       <ul class="nav navbar-nav">
         <li<% if (params[:controller] == "panel") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.home"), root_path() %></li>
-        <li<% if (params[:controller] == "monitoring") || (params[:controller] == "hosts") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.monitoring"), monitoring_path() %></li>
-        <li><a href="#"><%= t("ui.navbar.sections.status_pages") %></a></li>
+        <li<% if (params[:controller] == "monitoring") %> class="active"<% end %>><%= link_to t("ui.navbar.sections.monitoring"), monitoring_path() %></li>
         <li><a href="#"><%= t("ui.navbar.sections.incidents") %></a></li>
+        <li><a href="#"><%= t("ui.navbar.sections.status_pages") %></a></li>
+        <li<% if ((params[:controller] == "hosts") || (params[:controller] == "services") || (params[:controller] == "alerts")) %> class="active"<% end %>><%= link_to t("ui.navbar.sections.configuration"), hosts_path() %></li>
         <% if (current_user.is_normal?) %>
           <li<% if ((controller_name == "users")&&(action_name != "preferences")&&(action_name != "save_preferences")) %> class="active"<% end %>><%= link_to t("ui.navbar.sections.users"), users_path() %></li>
         <% end %>

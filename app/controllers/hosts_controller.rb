@@ -7,7 +7,7 @@ class HostsController < ApplicationController
   # It also allows to search in the hosts by _name_, _description_ and/or _address_
   #
   # [URL] 
-  #   GET /monitoring/hosts
+  #   GET /configuration/hosts
   #
   # [Parameters] 
   #   * *type* - _(Optional)_ The type oh hosts to show.
@@ -44,6 +44,53 @@ class HostsController < ApplicationController
     end
   end
 
+  # Action to show the host creation form.
+  #
+  # [URL] 
+  #   GET /configuration/hosts/new
+  #
+  # [Parameters] 
+  #   * *type* - _(Optional)_ The default type of the host to create.
+  #
+  def new
+    @host = Host.new
+
+    # If a valid type is received, apply to the host to create.
+    check_type_param
+    @host.type = @type if(!@type.blank?)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # Action to create a new user with the data received from the form.
+  #
+  # [URL] 
+  #   POST /configuration/hosts
+  #
+  # [Parameters]
+  #   * *host* - All the data recolected of the new host.
+  #
+  def create
+    # Apply the params received
+    @host = Host.new(host_params)
+
+    respond_to do|format|
+      format.html{
+        # Can be saved?
+        if (@host.save)
+          flash[:notice] = t("hosts.notice.created", :name => @host.name)
+          redirect_to host_path(@host)
+        else
+          # If an error raises, show the form again.
+          render :action => :new
+        end
+        return
+      }
+    end
+  end
+
   protected
 
   # Function to check the existence of the *type* parameter in the URL.
@@ -60,5 +107,16 @@ class HostsController < ApplicationController
     end
 
     return @type
+  end
+
+  private
+
+  # Strong parameters method to prevent from massive assignment in the _Host_ model.
+  #
+  # [Returns]
+  #   The filtered version of *params[:host]*.
+  #
+  def host_params
+    params.require(:host).permit(:name, :address, :type, :description)
   end
 end

@@ -50,13 +50,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # Action to show a user creation form.
+  # Action to show the user creation form.
   #
   # [URL] 
   #   GET /users/new
   #
   # [Parameters] 
-  #   * *level* - _(Optional)_ The default level of the users to create.
+  #   * *level* - _(Optional)_ The default level of the user to create.
   #
   def new
     @user = User.new
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
   #   POST /users
   #
   # [Parameters]
-  #   * *user* - All the data recolected for the new user.
+  #   * *user* - All the data recolected of the new user.
   #
   def create
     # Apply the params received

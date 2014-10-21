@@ -1,0 +1,65 @@
+<% if (!resource.errors[:name].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.name_invalid") %>
+  </div>
+<% elsif (!resource.errors[:address].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.address_invalid") %>
+  </div>
+<% elsif (!resource.errors[:type].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.type_invalid") %>
+  </div>
+<% end %>
+<%= form_for resource, :html => {:class => "form-horizontal"} do |f| %>
+  <div class="form-group<% if (!resource.errors[:name].blank?) %> has-error<% end %>">
+    <label for="host_name" class="col-sm-2 control-label"><%= t("hosts.form.name") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_field :name, :class => "form-control", :placeholder => t("hosts.form.name_placeholder"), :required => true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:address].blank?) %> has-error<% end %>">
+    <label for="host_address" class="col-sm-2 control-label"><%= t("hosts.form.address") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_field :address, :class => "form-control", :placeholder => t("hosts.form.address_placeholder"), :required => true %>
+      <span class="help-block"><%= t("hosts.form.address_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:type].blank?) %> has-error<% end %>">
+    <label for="host_type" class="col-sm-2 control-label"><%= t("hosts.form.type") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :type, options_for_select(host_types_hash(), :selected => resource.type), {}, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:description].blank?) %> has-error<% end %>">
+    <label for="host_description" class="col-sm-2 control-label"><%= t("hosts.form.description") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_area :description, :rows => 5, :class => "form-control", :placeholder => t("hosts.form.description_placeholder") %>
+      <span class="help-block"><%= t("hosts.form.description_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-7 col-xs-12">
+      <%= f.button "#{t("hosts.#{action_name}.continue")}&nbsp;&nbsp;<i class='fa fa-chevron-right'></i>".html_safe, :type => "submit", :class => "btn btn-primary pull-right" %>
+      <%= link_to t("hosts.new.back"), hosts_path(:type => @type), :class => "btn btn-default pull-left" %>
+    </div>
+  </div>
+<% end %>

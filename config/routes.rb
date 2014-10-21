@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   # Monitoring operations
   get '/monitoring' => 'monitoring#index', :as => :monitoring
 
-  scope '/monitoring' do
+  scope '/configuration' do
     # Hosts operations
     resources :hosts
   end

@@ -10,7 +10,7 @@ en:
       level_1: "Normal"
       level_2: "Guest"
     index:
-      title: "User management"
+      title: "Users management"
       subtitle:
         all: "viewing all users"
         administrator: "viewing administrator users"
@@ -92,7 +92,7 @@ en:
       email_invalid: "The e-mail is invalid. Please, check it and try again."
       gravatar_email_invalid: "The e-mail for Gravatar's avatar is invalid. Please, check it and try again."
       level_invalid: "The level selected isn't a valid privilege level. Please, check it and try again."
-      lan_invalid: "The language selected isn't available. Please, check it and try again."
+      lang_invalid: "The language selected isn't available. Please, check it and try again."
       password_invalid: "The length of the password must be between 8 and 128 characters."
       password_confirmation_invalid: "The passwords you've written aren't the same."
       current_password_invalid: "The current password is incorrect."

@@ -1,4 +1,4 @@
-# Controller with Monitoring-realted actions for administration
+# Controller with Monitoring-related actions for administration
 # use.
 #
 # Also, it's the entry point from the navbar to _HostsController_,

@@ -5,11 +5,10 @@ en:
       toogle_navigation: "Toggle navigation"
       sections:
         home: "Home"
-        services: "Services"
-        status_pages: "Status pages"
-        incidents: "Incidents"
         monitoring: "Monitoring"
-        alerts: "Alerts"
+        incidents: "Incidents"
+        status_pages: "Status pages"
+        configuration: "Configuration"
         users: "Users"
       user:
         preferences: "Preferences"

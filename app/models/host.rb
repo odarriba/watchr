@@ -26,10 +26,14 @@ class Host
   field :address,       :type => String, :default => ""
   field :type,          :type => Integer, :default => Host::TYPE_GENERIC
 
-  # Validations of type and content
+  # Name validations
   validates_length_of :name, :minimum => 2, :maximum => 30
+  
+  # Host type validations
   validates_numericality_of :type, only_integer: true
   validates_inclusion_of :type, in: AVAILABLE_TYPES
+
+  # Address validations
   validates_uniqueness_of :address
   validate :check_address
 

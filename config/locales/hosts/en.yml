@@ -5,8 +5,14 @@ en:
         one: "host"
         other: "hosts"
   hosts:
+    types:
+      type_0: "Router host"
+      type_1: "Switch host"
+      type_2: "Server host"
+      type_3: "Computer host"
+      type_4: "Generic host"
     index:
-      title: "Host management"
+      title: "Hosts management"
       subtitle:
         all: "viewing all hosts"
         router: "viewing router hosts"
@@ -24,6 +30,16 @@ en:
         name: "Name"
         type: "Type"
         address: "Address"
+    new:
+      title: "Create a new host"
+      subtitle: "host details"
+      continue: "Create the host"
+      back: "Back to the list"
+    show:
+      title: "View a host"
+    edit:
+      title: "Edit a host"
+      continue: "Save changes"
     sidebar:
       all: "View all"
       view_by_type: "View by type of host"
@@ -32,3 +48,19 @@ en:
       server: "Server hosts"
       computer: "Computer hosts"
       generic: "Generic hosts"
+    form:
+      name: "Name"
+      name_placeholder: "Name of the host"
+      address: "Address"
+      address_placeholder: "IP address or domain of the host"
+      address_helper: "Domains will be resolved to IP address automatically."
+      type: "Host type"
+      description: "Description"
+      description_placeholder: "Description of the host"
+      description_helper: "Optional field. Use it to add more details about the host."
+      created_at: "Created at"
+      updated_at: "Updated at"
+    notice:
+      created: "Host '%{name}' <b>created succesfully</b>."
+      updated: "Host '%{name}' <b>updated succesfully</b>."
+      destroyed: "Host '%{name}' <b>destroyed violently</b>."
