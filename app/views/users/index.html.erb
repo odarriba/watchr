@@ -19,9 +19,11 @@
           <%= t("users.index.subtitle.guest") %>
           <% end %>
         </small>
+        <% if (current_user.is_administrator?) %>
         <span class='pull-right'>
           <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("users.index.button.new")}</b></span>".html_safe, new_user_path(:level => @level), :class => "btn btn-success", :title => t("users.index.button.new") %>
         </span>
+        <% end %>
       </h1>
     </div>
     <div class='table-header clearfix'>

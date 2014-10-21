@@ -3,6 +3,9 @@
 # It includes host administration actions: create, edit, update and destroy hosts.
 #
 class HostsController < ApplicationController
+  # Check the privilege level required
+  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy]
+
   # Action to list the hosts registered in the application.
   # It also allows to search in the hosts by _name_, _description_ and/or _address_
   #
@@ -91,6 +94,23 @@ class HostsController < ApplicationController
     end
   end
 
+  # Action to show the information available about a host.
+  #
+  # [URL] 
+  #   GET /configuration/hosts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #
+  def show
+    load_host
+    return if (@host.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
   protected
 
   # Function to check the existence of the *type* parameter in the URL.
@@ -107,6 +127,25 @@ class HostsController < ApplicationController
     end
 
     return @type
+  end
+
+  # Function lo load a host from the database using *id* parameter in the URL.
+  #
+  # It returns the Host object and makes it available at @host.
+  #
+  # [Returns]
+  #   A valid _Host_ object or _nil_ if it doesn't exists.
+  #
+  def load_host
+    @host = Host.where(:_id => params[:id]).first
+
+    if (@host.blank?)
+      # If not found, show an error and redirect
+      flash[:error] = t("hosts.error.not_found")
+      redirect_to hosts_path()
+    end
+
+    return @host
   end
 
   private
