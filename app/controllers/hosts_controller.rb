@@ -111,6 +111,80 @@ class HostsController < ApplicationController
     end
   end
 
+  # Action to show a form to edit an existing host.
+  #
+  # [URL] 
+  #   GET /configuration/hosts/:id/edit
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #
+  def edit
+    load_host
+    return if (@host.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to update an existing host with the data received from the form.
+  #
+  # [URL] 
+  #   PUT /configuration/hosts/:id
+  #   PATCH /configuration/hosts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #   * *user* - The data recolected for the host.
+  #
+  def update
+    load_host
+
+    return if (@host.blank?)
+
+    respond_to do|format|
+      format.html{
+        # The host can be updated?
+        if (@host.update_attributes(host_params))
+          flash[:notice] = t("hosts.notice.updated", :name => @host.name)
+          redirect_to host_path(@host)
+        else
+          # If an error raises, show the form again
+          render :action => :edit
+        end
+        return
+      }
+    end
+  end
+
+  # Action to destroy an existing host from the database.
+  #
+  # [URL] 
+  #   DELETE /configuration/hosts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #
+  def destroy
+    load_host
+    return if (@host.blank?)
+
+    respond_to do|format|
+      format.html{
+        # The user can be destroyed?
+        if (@host.destroy)
+          flash[:notice] = t("hosts.notice.destroyed", :name => @host.name)
+          redirect_to hosts_path()
+        else
+          flash[:error] = t("hosts.error.not_destroyed", :name => @host.name)
+          redirect_to host_path(@host)
+        end
+        return
+      }
+    end
+  end
+
   protected
 
   # Function to check the existence of the *type* parameter in the URL.

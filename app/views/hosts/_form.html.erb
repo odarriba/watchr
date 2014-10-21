@@ -4,10 +4,17 @@
     <%= raw t("hosts.error.name_invalid") %>
   </div>
 <% elsif (!resource.errors[:address].blank?) %>
+  <% if (Host.where(:address => resource[:address]).ne(:_id => resource[:id]).count > 0) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.address_repeated") %>
+  </div>
+  <% else %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("hosts.error.address_invalid") %>
   </div>
+  <% end %>
 <% elsif (!resource.errors[:type].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>

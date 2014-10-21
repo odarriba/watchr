@@ -61,6 +61,13 @@ en:
       created_at: "Created at"
       updated_at: "Updated at"
     notice:
-      created: "Host '%{name}' <b>created succesfully</b>."
-      updated: "Host '%{name}' <b>updated succesfully</b>."
-      destroyed: "Host '%{name}' <b>destroyed violently</b>."
+      created: "Host (%{name}) <b>created succesfully</b>."
+      updated: "Host (%{name}) <b>updated succesfully</b>."
+      destroyed: "Host (%{name}) <b>destroyed violently</b>."
+    error:
+      not_found: "The host with the requested ID doesn't exist."
+      name_invalid: "The name is invalid, length must be between 2 and 30 characters."
+      address_invalid: "The address is invalid or cannot be resolved. Please, check it and try again."
+      address_repeated: "The address is being used in another host. Try another one."
+      type_invalid: "The host type selected isn't a valid one. Please, check it and try again."
+      not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."
