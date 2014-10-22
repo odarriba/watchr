@@ -15,18 +15,22 @@ class UserTest < ActiveSupport::TestCase
     # no E-mail
     @user.email = ""
     assert_not @user.save
+    assert_not @user.errors[:email].blank?
 
     # No domain
     @user.email = "hey"
     assert_not @user.save
+    assert_not @user.errors[:email].blank?
 
     # No TLD
     @user.email = "hey@test"
     assert_not @user.save
+    assert_not @user.errors[:email].blank?
 
     # No username
     @user.email = "test.org"
     assert_not @user.save
+    assert_not @user.errors[:email].blank?
   end
 
   test "should save user with an empty gravatar email" do
@@ -67,56 +71,68 @@ class UserTest < ActiveSupport::TestCase
     @user.password = ""
     @user.password_confirmation = ""
     assert_not @user.save
+    assert_not @user.errors[:password].blank?
 
     # Different password
     @user.password = "testtest"
     @user.password_confirmation = "texttext"
     assert_not @user.save
+    assert_not @user.errors[:password_confirmation].blank?
 
     # Short password
     @user.password = "test"
     @user.password_confirmation = "test"
     assert_not @user.save
+    assert_not @user.errors[:password].blank?
   end
 
   test "should not save user without a valid name" do
     # Empty name
     @user.name = ""
     assert_not @user.save
+    assert_not @user.errors[:name].blank?
 
     # Short name
     @user.name = "a"
     assert_not @user.save
+    assert_not @user.errors[:name].blank?
 
     # Long name
     @user.name = "qwertyuiopasdfghjklñzxcvbnmqwertyuiop"
     assert_not @user.save
+    assert_not @user.errors[:name].blank?
   end
 
   test "should not save user without a valid level" do
     # Empty string
     @user.level = ""
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
 
     # String with negative number
     @user.level = "-1"
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
 
     # Invalid level
     @user.level = 69
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
 
     # Invalid level
     @user.level = -1
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
 
     # Invalid level
     @user.level = :ADMINISTRATOR
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
 
     # Nil level
     @user.level = nil
     assert_not @user.save
+    assert_not @user.errors[:level].blank?
   end
 
   test "should save user with valid levels" do
@@ -188,22 +204,27 @@ class UserTest < ActiveSupport::TestCase
     # Empty string
     @user.lang = ""
     assert_not @user.save
+    assert_not @user.errors[:lang].blank?
 
     # String with unknown lang
     @user.lang = "drft"
     assert_not @user.save
+    assert_not @user.errors[:lang].blank?
 
     # Unknown lang
     @user.lang = :drft
     assert_not @user.save
+    assert_not @user.errors[:lang].blank?
 
     # Number in string
     @user.lang = "0"
     assert_not @user.save
+    assert_not @user.errors[:lang].blank?
 
     # Number
     @user.lang = 0
     assert_not @user.save
+    assert_not @user.errors[:lang].blank?
   end
 
   test "should save a valid user" do
