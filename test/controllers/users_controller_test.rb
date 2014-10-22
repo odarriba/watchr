@@ -5,16 +5,13 @@ class UsersControllerTest < ActionController::TestCase
 
   def setup
     # Create test users
-    @user_admin = User.create(:email => "admin@test.tld", :name => "Admin user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_ADMINISTRATOR)
-    @user_normal = User.create(:email => "normal@test.tld", :name => "Normal user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL)
-    @user_guest = User.create(:email => "guest@test.tld", :name => "Guest user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_GUEST)
+    create_users
 
     @create_hash = {:email => "test@test.tld", :name => "Test user", :password => "testtest", :password_confirmation => "testtest", :level => User::LEVEL_NORMAL}
   end
 
   def teardown
-    # Destroy the created users
-    User.destroy_all
+    clean_db
   end
 
   test "crud operations should not be accesible for guests" do
@@ -159,7 +156,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_out :user
   end
 
-  test "should create users with valid data" do
+  test "should create users with valid data only" do
     sign_in :user, @user_admin
 
     # Valid user
@@ -176,7 +173,7 @@ class UsersControllerTest < ActionController::TestCase
     post :create, :user => modified_hash
 
     # Shouldn't be created (not passing validations)
-    user = User.where(:email => @create_hash[:email]).first
+    user = User.where(:email => modified_hash[:email]).first
     assert_not user
     assert_response :success
     assert_template :layout => :application
@@ -185,11 +182,11 @@ class UsersControllerTest < ActionController::TestCase
     sign_out :user
   end
 
-  test "should update users with valid data" do
+  test "should update users with valid data only" do
     sign_in :user, @user_admin
 
     # Valid data
-    put :update, :id => @user_normal, :user => {:name => "Name test"}
+    put :update, :id => @user_normal.id, :user => {:name => "Name test"}
 
     # Should be updated
     @user_normal.reload
@@ -197,7 +194,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to user_path(@user_normal)
 
     # Invalid user (bad name length)
-    put :update, :id => @user_normal, :user => {:name => "a"}
+    put :update, :id => @user_normal.id, :user => {:name => "a"}
 
     # Shouldn't be updated (not passing validations)
     @user_normal.reload
@@ -213,14 +210,14 @@ class UsersControllerTest < ActionController::TestCase
     sign_in :user, @user_admin
 
     # Try to change it's own level
-    put :update, :id => @user_admin, :user => {:level => User::LEVEL_NORMAL}
+    put :update, :id => @user_admin.id, :user => {:level => User::LEVEL_NORMAL}
 
     # Reload the data and checks
     @user_admin.reload
     assert_equal @user_admin.level, User::LEVEL_ADMINISTRATOR
 
     sign_out :user
-end
+  end
 
   test "should destroy users" do
     sign_in :user, @user_admin
@@ -248,105 +245,44 @@ end
     sign_out :user
   end
 
-  test "preferences should be accesible to administrator users" do
+  test "preferences should be accesible to anyone" do
     # Administrator users
-    sign_in :user, @user_admin
+    [@user_admin, @user_normal, @user_guest].each do |user|
+        sign_in :user, user
 
-    get :preferences
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
+        get :preferences
+        assert_response :success
+        assert_template :layout => :application
+        assert_template :preferences
 
-    # Valid preference update
-    post :save_preferences, :user => {:name => @user_admin.name+" test", :current_password => @user_admin.password}
-    assert_redirected_to root_path
+        # Valid preference update
+        post :save_preferences, :user => {:name => user.name+" test", :current_password => user.password}
+        assert_redirected_to root_path
 
-    # Invalid current_password
-    post :save_preferences, :user => {:name => @user_admin.name+" test", :current_password => "invalid"}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
+        # Invalid current_password
+        post :save_preferences, :user => {:name => user.name+" test", :current_password => "invalid"}
+        assert_response :success
+        assert_template :layout => :application
+        assert_template :preferences
 
-    # Invalid data introduced
-    post :save_preferences, :user => {:name => "a", :current_password => @user_admin.password}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
+        # Invalid data introduced
+        post :save_preferences, :user => {:name => "a", :current_password => user.password}
+        assert_response :success
+        assert_template :layout => :application
+        assert_template :preferences
 
-    # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_admin.name, :current_password => @user_admin.password, :level => User::LEVEL_NORMAL}
-    assert_redirected_to root_path
-    @user_admin.reload
-    assert_equal @user_admin.level, User::LEVEL_ADMINISTRATOR
+        # Can't change privilege level
+        previous_level = user.level
+        if (previous_level != User::LEVEL_NORMAL)
+            post :save_preferences, :user => {:name => user.name, :current_password => user.password, :level => User::LEVEL_NORMAL}
+        else
+            post :save_preferences, :user => {:name => user.name, :current_password => user.password, :level => User::LEVEL_ADMINISTRATOR}
+        end
+        assert_redirected_to root_path
+        user.reload
+        assert_equal user.level, previous_level
 
-    sign_out :user
-  end
-
-  test "preferences should be accesible to normal users" do
-    # Normal users
-    sign_in :user, @user_normal
-
-    get :preferences
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Valid preference update
-    post :save_preferences, :user => {:name => @user_normal.name+" test", :current_password => @user_normal.password}
-    assert_redirected_to root_path
-
-    # Invalid current_password
-    post :save_preferences, :user => {:name => @user_normal.name+" test", :current_password => "invalid"}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Invalid data introduced
-    post :save_preferences, :user => {:name => "a", :current_password => @user_normal.password}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_normal.name, :current_password => @user_normal.password, :level => User::LEVEL_ADMINISTRATOR}
-    assert_redirected_to root_path
-    @user_normal.reload
-    assert_not_equal @user_normal.level, User::LEVEL_ADMINISTRATOR
-
-    sign_out :user
-  end
-
-  test "preferences should be accesible to guest users" do
-    # Guests users
-    sign_in :user, @user_guest
-
-    get :preferences
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Valid preference update
-    post :save_preferences, :user => {:name => @user_guest.name+" test", :current_password => @user_guest.password}
-    assert_redirected_to root_path
-
-    # Invalid current_password
-    post :save_preferences, :user => {:name => @user_guest.name+" test", :current_password => "invalid"}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Invalid data introduced
-    post :save_preferences, :user => {:name => "a", :current_password => @user_guest.password}
-    assert_response :success
-    assert_template :layout => :application
-    assert_template :preferences
-
-    # Can't change privilege level
-    post :save_preferences, :user => {:name => @user_guest.name, :current_password => @user_guest.password, :level => User::LEVEL_ADMINISTRATOR}
-    assert_redirected_to root_path
-    @user_guest.reload
-    assert_not_equal @user_guest.level, User::LEVEL_ADMINISTRATOR
-
-    sign_out :user
+        sign_out :user
+    end
   end
 end
