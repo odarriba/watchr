@@ -1,6 +1,5 @@
 module Watchr
   class Probes
-    AVAILABLE_PROBES = []
     PROBES = {}
 
     # This class function provides auto-discovery and loading
@@ -23,9 +22,56 @@ module Watchr
     # This function is used to register a probe in the variables of
     # defined probes to allow them to be used within the application.
     #
+    # [Parameters]
+    #   * *name* - The name of the probe
+    #   * *klass* - The class object of the probe.
+    #
+    # [Returns]
+    #   A boolean that indicates if the probe was added or not.
+    #
     def self.register_probe(name, klass)
+      # Invalid parameters?
+      return false if (name.blank? || klass.blank?)
+      return false if (!name.is_a?(String) || !klass.is_a?(Class))
+
+      # Save the probe.
       PROBES[name] = klass
-      AVAILABLE_PROBES << name
+      return true
+    end
+
+    # Function to get an array of the available probes registered.
+    #
+    # [Returns]
+    #   An array with the identificators of the probes.
+    #
+    def self.available_probes
+      return PROBES.keys
+    end
+
+    # Function to validate a probe identificator.
+    #
+    # [Parameters]
+    #   * *probe_name* - Name of the probe to check.
+    #
+    # [Returns]
+    #   A boolean that indicates if the probe name is valid or not.
+    #
+    def self.is_probe?(probe_name)
+      return Watchr::Probes.available_probes.include?(probe_name)
+    end
+
+    # Function to get the class object to operate with a probe.
+    #
+    # [Parameters]
+    #   * *probe_name* - The probe of the name to obtain
+    #
+    # [Returns]
+    #   A class object of the probe or nil if it doesn't exists.
+    #
+    def self.get_probe(probe_name)
+      return nil if (probe_name.blank?)
+
+      return PROBES[probe_name]
     end
   end
 end

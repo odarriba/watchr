@@ -8,6 +8,10 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  ####################
+  # NOTE: All the privilege levels must be in a specific order, with less value the most privilege level.
+  ####################
+  
   # Identificator of Administrator privilege level.
   LEVEL_ADMINISTRATOR = 0
   # Identificator of Normal privilege level.
