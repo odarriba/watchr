@@ -1,0 +1,4 @@
+en:
+  probes:
+    dummy:
+      test: "This is a test translation!"

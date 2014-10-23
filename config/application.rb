@@ -15,6 +15,8 @@ module Watchr
   # tasks at startup time.
   #
   class Application < Rails::Application
+    require "probes"
+
     # The main configuration object that loads the application configuration.
     CONFIG = YAML.load_file("#{Rails.root}/config/watchr.yml")[Rails.env]
 
@@ -41,6 +43,8 @@ module Watchr
 
     # Lozalization preferences
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    # Add the locales of the probes to the autoload of i18n
+    config.i18n.load_path += Dir[Rails.root.join('lib', 'probes', '*', 'locales', '*.{rb,yml}')]
     config.i18n.default_locale = CONFIG["app"]["default_language"]
 
     # SASS configuration
@@ -59,5 +63,8 @@ module Watchr
 
     # Rescue errors from an ERB file
     config.exceptions_app = self.routes
+
+    # Load the probes
+    Watchr::Probes.load_probes
   end
 end
