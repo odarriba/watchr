@@ -3,6 +3,9 @@
 # It includes service administration actions: create, edit, update and destroy hosts.
 #
 class ServicesController < ApplicationController
+  # Check the privilege level required
+  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy]
+
   # Action to list the services registered in the application.
   # It also allows to search in the services by _name_, _description_ and/or _probe_
   #

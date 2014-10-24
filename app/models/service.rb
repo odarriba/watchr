@@ -38,7 +38,9 @@ class Service
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
   validates_numericality_of :interval, only_integer: true
+  validates_numericality_of :interval, greater_then: 0
   validates_numericality_of :clean_interval, only_integer: true
+  validates_numericality_of :clean_interval, greater_then: 0
   validates_inclusion_of :priority, in: Service::AVAILABLE_PRIORITIES
   validates_inclusion_of :resume, in: Service::AVAILABLE_RESUMES
 

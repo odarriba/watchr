@@ -3,7 +3,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">
-      <li<% if (@priority.blank?) %> class="active"<% end %>><%= link_to t("services.sidebar.all"), hosts_path() %></li>
+      <li<% if (@priority.blank?) %> class="active"<% end %>><%= link_to t("services.sidebar.all"), services_path() %></li>
       <hr class='divider' />
       <li class='disabled'><a><%= t("services.sidebar.view_by_type")%></a></li>
       <li<% if (@priority == Service::PRIORITY_HIGH) %> class="active"<% end %>><%= link_to t("services.sidebar.priority_high"), services_path(:priority => Service::PRIORITY_HIGH) %></li>
