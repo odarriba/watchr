@@ -7,30 +7,29 @@ class Host
   include Mongoid::Timestamps
 
   # Router host type value
-  TYPE_ROUTER = 0
+  TYPE_ROUTER = :router
   # Switch host type value
-  TYPE_SWITCH = 1
+  TYPE_SWITCH = :switch
   # Server host type value
-  TYPE_SERVER = 2
+  TYPE_SERVER = :server
   # Computer host type value
-  TYPE_COMPUTER = 3
+  TYPE_COMPUTER = :computer
   # Generic host type value
-  TYPE_GENERIC = 4
+  TYPE_GENERIC = :generic
 
   # Array with the available types of a host
-  AVAILABLE_TYPES = [TYPE_ROUTER, TYPE_SWITCH, TYPE_SERVER, TYPE_COMPUTER, TYPE_GENERIC]
+  AVAILABLE_TYPES = [:router, :switch, :server, :computer, :generic]
   
   # Fields of the model
   field :name,          :type => String, :default => ""
   field :description,   :type => String, :default => ""
   field :address,       :type => String, :default => ""
-  field :type,          :type => Integer, :default => Host::TYPE_GENERIC
+  field :type,          :type => Symbol, :default => Host::TYPE_GENERIC
 
   # Name validations
   validates_length_of :name, :minimum => 2, :maximum => 30
   
   # Host type validations
-  validates_numericality_of :type, only_integer: true
   validates_inclusion_of :type, in: AVAILABLE_TYPES
 
   # Address validations

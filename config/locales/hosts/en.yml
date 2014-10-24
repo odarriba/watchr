@@ -6,11 +6,11 @@ en:
         other: "hosts"
   hosts:
     types:
-      type_0: "Router host"
-      type_1: "Switch host"
-      type_2: "Server host"
-      type_3: "Computer host"
-      type_4: "Generic host"
+      type_router: "Router host"
+      type_switch: "Switch host"
+      type_server: "Server host"
+      type_computer: "Computer host"
+      type_generic: "Generic host"
     index:
       title: "Hosts management"
       subtitle:

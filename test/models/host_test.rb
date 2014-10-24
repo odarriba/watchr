@@ -121,7 +121,7 @@ class HostTest < ActiveSupport::TestCase
     assert_not @host.errors[:type].blank?
 
     # Invalid type
-    @host.type = :ROUTER
+    @host.type = 2
     assert_not @host.save
     assert_not @host.errors[:type].blank?
 

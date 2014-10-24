@@ -12,6 +12,10 @@ class Service
   # Available resume types
   AVAILABLE_RESUMES = [:max_value, :min_value, :mean_value, :sum]
 
+  ####################################################
+  # NOTE: The highest priority, the lower the number #
+  ####################################################
+  
   # Highest priority level identificator
   PRIORITY_HIGHEST = 0
   # High priority level identificator
@@ -62,6 +66,35 @@ class Service
   def get_probe
     Watchr::Probes.get_probe(self.probe)
   end
+
+  # Function to check if a priority level is valid or not.
+  #
+  # [Parameters]
+  #   * *priority* - The priority level to check.
+  #
+  # [Returns]
+  #   A boolean that indicates if the priority is valid or not
+  #
+  def self.valid_priority?(priority)
+    return false if (priority.blank?)
+
+    # Is a valid priority level?
+    return Service::AVAILABLE_PRIORITIES.include?(priority)
+  end
+
+  # Function to check if a resume type is valid or not.
+  #
+  # [Parameters]
+  #   * *resume_type* - The resume type to check.
+  #
+  # [Returns]
+  #   A boolean that indicates if the resume type is valid or not
+  #
+  def self.valid_resume?(resume_type)
+    return false if (resume_type.blank?)
+
+    # Is a valid resume type?
+    return Service::AVAILABLE_RESUMES.include?(resume_type)
 
   protected
 

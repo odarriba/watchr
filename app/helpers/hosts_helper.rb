@@ -10,7 +10,7 @@ module HostsHelper
     result = Hash.new
 
     Host::AVAILABLE_TYPES.each do |level|
-      result[t("hosts.types.type_#{level}")] = level
+      result[t("hosts.types.type_#{level.to_s}")] = level
     end
 
     return result
