@@ -1,0 +1,50 @@
+en:
+  mongoid:
+    models:
+      service:
+        one: "service"
+        other: "services"
+  services:
+    priorities:
+      priority_high: "High priority"
+      priority_normal: "Normal priority"
+      priority_low: "Low priority"
+    index:
+      title: "Services management"
+      subtitle:
+        all: "viewing all services"
+        priority_high: "viewing high priority services"
+        priority_normal: "viewing normal priority services"
+        priority_low: "viewing low priority services"
+      button:
+        new: "Create a service"
+        show: "View"
+        edit: "Edit"
+        destroy: "Destroy"
+        destroy_confirmation: "Do you really want to destroy this service?"
+      table:
+        name: "Name"
+        probe: "Probe"
+    new:
+      title: "Create a new service"
+      subtitle: "service details"
+      continue: "Create the service"
+      back: "Back to the list"
+    show:
+      title: "View a service"
+    edit:
+      title: "Edit a service"
+      continue: "Save changes"
+    sidebar:
+      all: "View all"
+      view_by_type: "View by priority of service"
+      priority_high: "High priority"
+      priority_normal: "Normal priority"
+      priority_low: "Low priority"
+    notice:
+      created: "Service (%{name}) <b>created succesfully</b>."
+      updated: "Service (%{name}) <b>updated succesfully</b>."
+      destroyed: "Service (%{name}) <b>destroyed violently</b>."
+    error:
+      not_found: "The service with the requested ID doesn't exist."
+      not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."

@@ -298,6 +298,11 @@ class UsersController < ApplicationController
   #   A valid _User_ object or _nil_ if it doesn't exists.
   #
   def load_user
+    if (params[:id].blank?)
+      @user = nil
+      return @user
+    end
+
     @user = User.where(:_id => params[:id]).first
 
     if (@user.blank?)

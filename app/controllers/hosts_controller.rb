@@ -196,8 +196,8 @@ class HostsController < ApplicationController
   #   The value of @type (the number received or _nil_)
   #
   def check_type_param
-    if (!params[:type].blank? && params[:type].to_i.to_s == params[:type] && Host.valid_type?(params[:type].to_i))
-      @type = params[:type].to_i
+    if (!params[:type].blank? && Host.valid_type?(params[:type].to_sym))
+      @type = params[:type].to_sym
     end
 
     return @type
@@ -211,6 +211,11 @@ class HostsController < ApplicationController
   #   A valid _Host_ object or _nil_ if it doesn't exists.
   #
   def load_host
+    if (params[:id].blank?)
+      @host = nil
+      return @host
+    end
+
     @host = Host.where(:_id => params[:id]).first
 
     if (@host.blank?)

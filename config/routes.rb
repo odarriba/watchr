@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   scope '/configuration' do
     # Hosts operations
     resources :hosts
+
+    # Services operations
+    resources :services
   end
 
   # You can have the root of your site routed with "root"

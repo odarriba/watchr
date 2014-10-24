@@ -1,0 +1,104 @@
+<% content_for :title, t("services.index.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <%= bootstrap_flash %>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("services.index.title") %>
+        <small>
+          <% if (@priority.blank?) %>
+          <%= t("services.index.subtitle.all") %>
+          <% elsif (@priority == Service::PRIORITY_HIGH) %>
+          <%= t("services.index.subtitle.priority_high") %>
+          <% elsif (@priority == Service::PRIORITY_NORMAL) %>
+          <%= t("services.index.subtitle.priority_normal") %>
+          <% elsif (@priority == Service::PRIORITY_LOW) %>
+          <%= t("services.index.subtitle.priority_low") %>
+          <% end %>
+        </small>
+        <% if (current_user.is_normal?) %>
+        <span class='pull-right'>
+          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("services.index.button.new")}</b></span>".html_safe, new_service_path(:priority => @priority), :class => "btn btn-success", :title => t("services.index.button.new") %>
+        </span>
+        <% end %>
+      </h1>
+    </div>
+    <div class='table-header clearfix'>
+      <div class='pull-left'>
+        <% if (@query.blank?) %>
+        <%= raw t("ui.table.showing_all", :entry_name => @services.model_name.human(count: 2)) %>
+        <% else %>
+        <%= raw t("ui.table.showing_results", :entry_name => @services.model_name.human(count: 2), :query => @query) %>
+        <% end %>
+        <br /><%= page_entries_info @services%>
+      </div>
+      <div class='pull-right'>
+        <%= form_tag services_path(), :method => :get, :class => "form-inline", :role => "form" do -%>
+          <% if (!@priority.blank?) %>
+          <%= hidden_field_tag "priority", @priority %>
+          <% end %>
+          <div class="form-group">
+            <%= text_field_tag "q", @query, :placeholder => t("ui.table.search_placeholder"), :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= button_tag t("ui.table.search"), {:type => "submit", :class => "btn btn-primary"} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <table class="table table-hover table-elements">
+      <thead>
+        <tr>
+          <th class='col-xs-3'><%= t("services.table.name") %></th>
+          <th class='col-xs-3'><%= t("services.table.probe") %></th>
+          <th class='col-xs-6'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @services.each do |serv| %>
+        <tr class='element'>
+          <td>
+            <%= serv.name %>
+          </td>
+          <td>
+            <%= serv.probe %>
+          </td>
+          <td align='right'>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.show")}</span>".html_safe, service_path(serv), :class => "btn btn-sm btn-success", :title => t("services.index.button.show") %>
+            <% if (current_user.is_normal?) %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.edit")}</span>".html_safe, edit_service_path(serv), :class => "btn btn-sm btn-info", :title => t("services.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.destroy")}</span>".html_safe, service_path(serv), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("services.index.button.destroy"), :data => {:confirm => t("services.index.button.destroy_confirmation")} %>
+            <% else %>
+            <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.edit")}</span>".html_safe, nil, :class => "btn btn-sm btn-info disabled", :title => t("services.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.destroy")}</span>".html_safe, nil, :class => "btn btn-sm btn-danger disabled", :title => t("services.index.button.destroy") %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% if (@services.count == 0) %>
+          <% if (!@query.blank?) %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_result") %>
+              </td>
+            </tr>
+          <% else %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_element") %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <div class='pull-right clearfix'>
+      <%= paginate @services %>
+    </div>
+  </div>
+</div>
+      

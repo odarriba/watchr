@@ -15,28 +15,25 @@ class Service
   ####################################################
   # NOTE: The highest priority, the lower the number #
   ####################################################
-  
-  # Highest priority level identificator
-  PRIORITY_HIGHEST = 0
+
   # High priority level identificator
-  PRIORITY_HIGH = 1
+  PRIORITY_HIGH = 0
   # Normal priority level identificator
-  PRIORITY_NORMAL = 2
+  PRIORITY_NORMAL = 1
   # Low priority level identificator
-  PRIORITY_LOW = 3
-  # Lowest priority level identificator
-  PRIORITY_LOWEST = 4
+  PRIORITY_LOW = 2
 
   # Available priority levels
-  AVAILABLE_PRIORITIES = [PRIORITY_HIGHEST, PRIORITY_HIGH, PRIORITY_NORMAL, PRIORITY_LOW, PRIORITY_LOWEST]
+  AVAILABLE_PRIORITIES = [PRIORITY_HIGH, PRIORITY_NORMAL, PRIORITY_LOW]
 
   field :name,            :type => String, :default => ""
+  field :description,     :type => String, :default => ""
   field :probe,           :type => String, :default => ""
   field :probe_config,    :type => Hash, :default => {}
   field :interval,        :type => Integer, :default => 60
   field :clean_interval,  :type => Integer, :default => 604800
   field :priority,        :type => Integer, :default => Service::PRIORITY_NORMAL
-  feild :resume,          :type => Symbol, :default => :mean_value
+  field :resume,          :type => Symbol, :default => :mean_value
 
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
@@ -95,6 +92,7 @@ class Service
 
     # Is a valid resume type?
     return Service::AVAILABLE_RESUMES.include?(resume_type)
+  end
 
   protected
 
