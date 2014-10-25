@@ -37,6 +37,7 @@
           <p class="form-control-static"><%= t("services.priorities.priority_#{@service.priority.to_s}") %></p>
         </div>
       </div>
+      <% if (!@service.get_probe.blank?) %>
       <div class="form-group">
         <label for="service_probe" class="col-sm-3 control-label"><%= t("services.form.probe") %></label>
         <div class="col-md-7 col-sm-9">
@@ -44,6 +45,15 @@
           <span class="help-block probe_description"><%= @service.get_probe.description %></span>
         </div>
       </div>
+      <%= render "/probe_show.html.erb", :config => @service.probe_config %>
+      <% else %>
+      <div class="form-group has-error">
+        <label for="service_probe" class="col-sm-3 control-label"><%= t("services.form.probe") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static text-danger"><%= t("services.form.probe_not_found") %></p>
+        </div>
+      </div>
+      <% end %>
       <div class="form-group">
         <div class="col-sm-offset-3 col-md-7 col-sm-9">
           <hr class='divider' />

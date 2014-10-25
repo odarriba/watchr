@@ -12,7 +12,7 @@ module Watchr
     # Probe name
     PROBE_NAME = "http"
     # Probe description
-    PROBE_DESCRIPTION = "Performs an HTTP petition and measures the response time."
+    PROBE_DESCRIPTION = "This is a http probe that do nothing."
 
     # Register this probe
     self.register_this

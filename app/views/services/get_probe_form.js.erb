@@ -1,0 +1,1 @@
+$("div#probe-config-container").html("<%= escape_javascript(render("/probe_form.html.erb", :config => @service.probe_config, :errors => @service.errors[:probe_config])) %>");

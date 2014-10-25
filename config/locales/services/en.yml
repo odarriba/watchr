@@ -30,6 +30,7 @@ en:
       table:
         name: "Name"
         probe: "Probe"
+        error: "Error"
     new:
       title: "Create a new service"
       subtitle: "service details"
@@ -53,6 +54,7 @@ en:
       description_placeholder: "(Optional) Description of the service"
       priority: "Priority"
       probe: "Probe"
+      probe_not_found: "The probe selected isn't available."
       interval: "Interval"
       interval_placeholder: "Testing interval"
       interval_helper: "The time between tests of the service."
@@ -70,6 +72,7 @@ en:
       not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
       probe_invalid: "The probe selected is invalid or isn't available at the moment."
+      probe_config_invalid: "The probe configuration is invalid. Check it and try again."
       interval_invalid: "The interval is invalid, must be 1 second or grater."
       clean_interval_invalid: "The clean interval is invalid, must be 1 second or grater."
       priority_invalid: "The priority selected isn't a valid one."

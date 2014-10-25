@@ -16,5 +16,20 @@ module Watchr
 
     # Register this probe
     self.register_this
+
+    # Function to check if a probe configuration is valid.
+    #
+    # [Parameters]
+    #   * *config* - A hash of configuration for this probe.
+    #
+    # [Returns]
+    #   A boolean that indicates if a probe configuration hash is valid.
+    #
+    def self.check_config(config)
+      return false if (!config.is_a?(Hash))
+
+      # Contains the dummy value?
+      return ((!config[:value].blank?) && (config[:value].to_i >= 0))
+    end
   end
 end

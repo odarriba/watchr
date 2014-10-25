@@ -1,4 +1,7 @@
 en:
   probes:
     dummy:
-      test: "This is a test translation!"
+      form:
+        value: "Dummy value"
+        value_placeholder: "Value to return"
+        value_helper: "It's the value that the dummy probe will return."

@@ -1,0 +1,12 @@
+<div class="form-group">
+  <div class="col-sm-offset-2 col-md-7 col-sm-10">
+    <hr class='divider' />
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_value" class="col-sm-2 control-label"><%= t("probes.dummy.form.value") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= number_field_tag "probe_config[value]", config[:value], :min => 0, :step => 1, :class => "form-control", :placeholder => t("probes.dummy.form.value_placeholder"), :required => true %>
+    <span class="help-block"><%= t("probes.dummy.form.value_helper") %></span>
+  </div>
+</div>

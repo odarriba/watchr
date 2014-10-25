@@ -65,7 +65,11 @@
             <%= serv.name %>
           </td>
           <td>
+            <% if (!serv.get_probe.blank?) %>
             <%= serv.probe %>
+            <% else %>
+            <span class='text-danger'><%= t("services.table.error") %></span>
+            <% end %>
           </td>
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.show")}</span>".html_safe, service_path(serv), :class => "btn btn-sm btn-success", :title => t("services.index.button.show") %>

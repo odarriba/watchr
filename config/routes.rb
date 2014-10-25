@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
     # Services operations
     resources :services
+    get 'services/new/probe_form/:probe' => 'services#get_probe_form'
+    get 'services/:id/probe_form/:probe' => 'services#get_probe_form', :as => :service_probe_form
   end
 
   # You can have the root of your site routed with "root"

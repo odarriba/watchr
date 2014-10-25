@@ -53,5 +53,17 @@ module Watchr
     def self.object
       return self
     end
+
+    # Function to check if a probe configuration is valid.
+    #
+    # [Parameters]
+    #   * *config* - A hash of configuration for this probe.
+    #
+    # [Returns]
+    #   A boolean that indicates if a probe configuration hash is valid.
+    #
+    def self.check_config(config)
+      return config.is_a?(Hash)
+    end
   end
 end

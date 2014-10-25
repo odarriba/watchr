@@ -8,6 +8,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("services.error.probe_invalid") %>
   </div>
+<% elsif (!resource.errors[:probe_config].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("services.error.probe_config_invalid") %>
+  </div>
 <% elsif (!resource.errors[:interval].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -67,6 +72,9 @@
         end %>
     </div>
   </div>
+  <div id='probe-config-container'>
+    <%= render "/probe_form.html.erb", :config => resource.probe_config, :errors => resource.errors[:probe_config] %>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-md-7 col-sm-10">
       <hr class='divider' />
@@ -113,9 +121,20 @@
 
 <script type="text/javascript">
   function probe_change() {
-    value = $("select#service_probe").val();
+    var value = $("select#service_probe").val();
     $("span.probe_description").addClass("hidden");
     $("span.probe_description#"+value).removeClass("hidden");
+
+    <% if (resource.persisted?) %>
+    var form_url = "<%= service_path(resource) %>/probe_form/"+value;
+    <% else %>
+    var form_url = "<%= new_service_path(resource) %>/probe_form/"+value;
+    <% end %>
+
+    $.ajax({
+      url: form_url,
+      dataType: "script"
+    });
   }
 
   probe_change();

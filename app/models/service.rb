@@ -46,6 +46,8 @@ class Service
 
   # Check that the probe field is correct.
   validate :check_probe
+  # Check that the probe_config field is correct.
+  validate :check_probe_config
 
   # The fields must be present.
   validates_presence_of :name
@@ -54,6 +56,7 @@ class Service
   validates_presence_of :clean_interval
   validates_presence_of :priority
   validates_presence_of :resume
+
 
   # Function to get the object of the probe associated to this
   # service.
@@ -133,6 +136,22 @@ class Service
     else
       # If an error raises, add it to the response
       errors.add(:probe, 'invalid probe')
+      return false
+    end
+  end
+
+  # Function to check if the _probe_config_ field is valid.
+  #
+  # [Returns]
+  #   A boolean that indicates if the probe field is valid or not.
+  #
+  def check_probe_config
+    if (self.get_probe.check_config(self.probe_config))
+      # Id the probe is valid, return true.
+      return true
+    else
+      # If an error raises, add it to the response
+      errors.add(:probe_config, 'invalid probe config')
       return false
     end
   end

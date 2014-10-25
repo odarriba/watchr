@@ -62,6 +62,10 @@ class ServicesController < ApplicationController
     check_priority_param
     @service.priority = @priority if(!@priority.blank?)
 
+    # Add custom views paths
+    prepend_view_path "app/views/services"
+    prepend_view_path "lib/probes/#{@service.probe}/views"
+
     respond_to do |format|
       format.html
     end
@@ -76,8 +80,11 @@ class ServicesController < ApplicationController
   #   * *service* - All the data recolected of the new service.
   #
   def create
+    parameters = service_params
+    parameters[:probe_config] = params[:probe_config]
+
     # Apply the params received
-    @service = Service.new(service_params)
+    @service = Service.new(parameters)
 
     respond_to do|format|
       format.html{
@@ -86,7 +93,10 @@ class ServicesController < ApplicationController
           flash[:notice] = t("services.notice.created", :name => @service.name)
           redirect_to service_path(@service)
         else
-          p @service.errors.inspect
+          # Add custom views paths
+          prepend_view_path "app/views/services"
+          prepend_view_path "lib/probes/#{@service.probe}/views"
+
           # If an error raises, show the form again.
           render :action => :new
         end
@@ -107,6 +117,10 @@ class ServicesController < ApplicationController
     load_service
     return if (@service.blank?)
 
+    # Add custom views paths
+    prepend_view_path "app/views/services"
+    prepend_view_path "lib/probes/#{@service.probe}/views"
+
     respond_to do|format|
       format.html
     end
@@ -123,6 +137,10 @@ class ServicesController < ApplicationController
   def edit
     load_service
     return if (@service.blank?)
+
+    # Add custom views paths
+    prepend_view_path "app/views/services"
+    prepend_view_path "lib/probes/#{@service.probe}/views"
 
     respond_to do|format|
       format.html
@@ -141,16 +159,22 @@ class ServicesController < ApplicationController
   #
   def update
     load_service
-
     return if (@service.blank?)
+
+    parameters = service_params
+    parameters[:probe_config] = params[:probe_config]
 
     respond_to do|format|
       format.html{
         # The host can be updated?
-        if (@service.update_attributes(service_params))
-          flash[:notice] = t("service.notice.updated", :name => @service.name)
+        if (@service.update_attributes(parameters))
+          flash[:notice] = t("services.notice.updated", :name => @service.name)
           redirect_to service_path(@service)
         else
+          # Add custom views paths
+          prepend_view_path "app/views/services"
+          prepend_view_path "lib/probes/#{@service.probe}/views"
+
           # If an error raises, show the form again
           render :action => :edit
         end
@@ -183,6 +207,33 @@ class ServicesController < ApplicationController
         end
         return
       }
+    end
+  end
+
+  # Action to get a probe configuration form using AJAX.
+  #
+  # [URL] 
+  #   * GET /configuration/services/:id/probe_form/:probe
+  #   * GET /configuration/services/new/probe_form/:probe
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *probe* - The name of the probe.
+  #
+  def get_probe_form
+    if (!params[:id].blank?)
+      load_service
+      return if (@service.blank?)
+    else
+      @service = Service.new()
+    end
+
+    # Add custom views paths
+    prepend_view_path "app/views/services"
+    prepend_view_path "lib/probes/#{params[:probe]}/views"
+
+    respond_to do |format|
+      format.js
     end
   end
 
