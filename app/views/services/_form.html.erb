@@ -1,0 +1,114 @@
+<% if (!resource.errors[:name].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.name_invalid") %>
+  </div>
+<% elsif (!resource.errors[:address].blank?) %>
+  <% if (Host.where(:address => resource[:address]).ne(:_id => resource[:id]).count > 0) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.address_repeated") %>
+  </div>
+  <% else %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.address_invalid") %>
+  </div>
+  <% end %>
+<% elsif (!resource.errors[:type].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.type_invalid") %>
+  </div>
+<% end %>
+<%= form_for resource, :html => {:class => "form-horizontal"} do |f| %>
+  <div class="form-group<% if (!resource.errors[:name].blank?) %> has-error<% end %>">
+    <label for="service_name" class="col-sm-2 control-label"><%= t("services.form.name") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_field :name, :class => "form-control", :placeholder => t("services.form.name_placeholder"), :required => true %>
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:description].blank?) %> has-error<% end %>">
+    <label for="service_description" class="col-sm-2 control-label"><%= t("services.form.description") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_area :description, :rows => 5, :class => "form-control", :placeholder => t("services.form.description_placeholder") %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:priority].blank?) %> has-error<% end %>">
+    <label for="service_priority" class="col-sm-2 control-label"><%= t("services.form.priority") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :priority, options_for_select(service_priorities_hash(), :selected => resource.priority), {}, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:probe].blank?) %> has-error<% end %>">
+    <label for="service_probe" class="col-sm-2 control-label"><%= t("services.form.probe") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :probe, options_for_select(service_probes_hash(), :selected => resource.probe), {}, :class => "form-control", :onchange => "javascript:probe_change()" %>
+      <% Service.available_probes.each do |probe| 
+        pr = Watchr::Probes.get_probe(probe)
+
+        if (!pr.blank?) %>
+        <span id='<%= probe %>'class="help-block probe_description hidden"><%= pr.get_description %></span>
+        <%
+        end
+        end %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:interval].blank?) %> has-error<% end %>">
+    <label for="service_interval" class="col-sm-2 control-label"><%= t("services.form.interval") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.number_field :interval, :min => 1, :step => 1, :class => "form-control", :placeholder => t("services.form.interval_placeholder"), :required => true %>
+      <span class="help-block"><%= t("services.form.interval_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:clean_interval].blank?) %> has-error<% end %>">
+    <label for="service_interval" class="col-sm-2 control-label"><%= t("services.form.interval") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.number_field :clean_interval, :min => 1, :step => 1, :class => "form-control", :placeholder => t("services.form.clean_interval_placeholder"), :required => true %>
+      <span class="help-block"><%= t("services.form.clean_interval_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:resume].blank?) %> has-error<% end %>">
+    <label for="service_resume" class="col-sm-2 control-label"><%= t("services.form.resume") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :resume, options_for_select(service_resumes_hash(), :selected => resource.resume), {}, :class => "form-control" %>
+      <span class="help-block"><%= t("services.form.resume_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-7 col-xs-12">
+      <%= f.button "#{t("services.#{action_name}.continue")}&nbsp;&nbsp;<i class='fa fa-chevron-right'></i>".html_safe, :type => "submit", :class => "btn btn-primary pull-right" %>
+      <%= link_to t("services.new.back"), hosts_path(:type => @type), :class => "btn btn-default pull-left" %>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  function probe_change() {
+    value = $("select#service_probe").val();
+    $("span.probe_description").addClass("hidden");
+    $("span.probe_description#"+value).removeClass("hidden");
+  }
+
+  probe_change();
+</script>

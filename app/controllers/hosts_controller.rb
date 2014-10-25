@@ -67,7 +67,7 @@ class HostsController < ApplicationController
     end
   end
 
-  # Action to create a new user with the data received from the form.
+  # Action to create a new host with the data received from the form.
   #
   # [URL] 
   #   POST /configuration/hosts

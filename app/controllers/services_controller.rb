@@ -47,6 +47,54 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to show the service creation form.
+  #
+  # [URL] 
+  #   GET /configuration/services/new
+  #
+  # [Parameters] 
+  #   * *priority* - _(Optional)_ The default priority of the host to create.
+  #
+  def new
+    @service = Service.new
+
+    # If a valid type is received, apply to the host to create.
+    check_priority_param
+    @service.priority = @priority if(!@priority.blank?)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # Action to create a new service with the data received from the form.
+  #
+  # [URL] 
+  #   POST /configuration/services
+  #
+  # [Parameters]
+  #   * *service* - All the data recolected of the new service.
+  #
+  def create
+    # Apply the params received
+    @service = Service.new(service_params)
+
+    respond_to do|format|
+      format.html{
+        # Can be saved?
+        if (@service.save)
+          flash[:notice] = t("services.notice.created", :name => @service.name)
+          redirect_to service_path(@service)
+        else
+          p @service.errors.inspect
+          # If an error raises, show the form again.
+          render :action => :new
+        end
+        return
+      }
+    end
+  end
+
   protected
 
   # Function to check the existence of the *priority* parameter in the URL.
@@ -97,6 +145,6 @@ class ServicesController < ApplicationController
   #   The filtered version of *params[:service]*.
   #
   def service_params
-    params.require(:service).permit(:name, :description, :probe, :interval, :clean_interval, :priority, :resume)
+    params.require(:service).permit(:name, :description, :priority, :probe, :interval, :clean_interval, :resume)
   end
 end

@@ -6,9 +6,14 @@ en:
         other: "services"
   services:
     priorities:
-      priority_high: "High priority"
-      priority_normal: "Normal priority"
-      priority_low: "Low priority"
+      priority_0: "High priority"
+      priority_1: "Normal priority"
+      priority_2: "Low priority"
+    resumes:
+      resume_max_value: "Get the maximum value"
+      resume_min_value: "Get the minimum value"
+      resume_mean_value: "Get the mean of all the values"
+      resume_sum: "Get the sum of all values"
     index:
       title: "Services management"
       subtitle:
@@ -41,6 +46,21 @@ en:
       priority_high: "High priority"
       priority_normal: "Normal priority"
       priority_low: "Low priority"
+    form:
+      name: "Name"
+      name_placeholder: "Name of the service"
+      description: "Description"
+      description_placeholder: "(Optional) Description of the service"
+      priority: "Priority"
+      probe: "Probe"
+      interval: "Interval"
+      interval_placeholder: "Testing interval"
+      interval_helper: "The time between tests of the service."
+      clean_interval: "Clean interval"
+      clean_interval_placeholder: "Clean interval"
+      clean_interval_helper: "The time that the results of the testing are stored."
+      resume: "Resume"
+      resume_helper: "The function used to resume the data to show the results of multiple hosts."
     notice:
       created: "Service (%{name}) <b>created succesfully</b>."
       updated: "Service (%{name}) <b>updated succesfully</b>."

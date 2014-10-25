@@ -8,11 +8,11 @@ module Watchr
   #
   # _Note_: It can be used as a model to make your own probes!
   #
-  class DummyProbe < Watchr::Probe
+  class HttpProbe < Watchr::Probe
     # Probe name
-    PROBE_NAME = "dummy"
+    PROBE_NAME = "http"
     # Probe description
-    PROBE_DESCRIPTION = "This is a dummy probe that do nothing."
+    PROBE_DESCRIPTION = "Performs an HTTP petition and measures the response time."
 
     # Register this probe
     self.register_this

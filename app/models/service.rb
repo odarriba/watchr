@@ -50,7 +50,6 @@ class Service
   # The fields must be present.
   validates_presence_of :name
   validates_presence_of :probe
-  validates_presence_of :probe_config
   validates_presence_of :interval
   validates_presence_of :clean_interval
   validates_presence_of :priority
@@ -63,7 +62,16 @@ class Service
   #   A class object of the probe or nil if it fails.
   #
   def get_probe
-    Watchr::Probes.get_probe(self.probe)
+    return Watchr::Probes.get_probe(self.probe)
+  end
+
+  # Function to get an array with the valid probe identificators.
+  #
+  # [Returns]
+  #   An array with the valid probes.
+  #
+  def self.available_probes
+    return Watchr::Probes.available_probes
   end
 
   # Function to check if a priority level is valid or not.
@@ -94,6 +102,21 @@ class Service
 
     # Is a valid resume type?
     return Service::AVAILABLE_RESUMES.include?(resume_type)
+  end
+
+  # Function to check if a probe is valid or not.
+  #
+  # [Parameters]
+  #   * *probe* - The probe to check.
+  #
+  # [Returns]
+  #   A boolean that indicates if the probe is valid or not
+  #
+  def self.valid_probe?(probe)
+    return false if (probe.blank?)
+
+    # Is a valid resume type?
+    return Watchr::Probes.is_probe?(probe)
   end
 
   protected

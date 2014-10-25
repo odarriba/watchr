@@ -1,5 +1,6 @@
 module Watchr
   class Probes
+    # Probe information hash
     PROBES = {}
 
     # This class function provides auto-discovery and loading
@@ -29,13 +30,13 @@ module Watchr
     # [Returns]
     #   A boolean that indicates if the probe was added or not.
     #
-    def self.register_probe(name, klass)
+    def self.register_probe(klass)
       # Invalid parameters?
-      return false if (name.blank? || klass.blank?)
-      return false if (!name.is_a?(String) || !klass.is_a?(Class))
+      return false if (klass.blank? || !klass.is_a?(Class))
+      return false if (klass.get_name.blank?)
 
       # Save the probe.
-      PROBES[name] = klass
+      PROBES[klass.get_name] = klass
       return true
     end
 
@@ -46,6 +47,22 @@ module Watchr
     #
     def self.available_probes
       return PROBES.keys
+    end
+
+    # Function to get a hash with the information of all the registered probes.
+    #
+    # [Returns]
+    #   A hash with the information of all the registered probes.
+    #
+    def self.probes_information
+      result = Hash.new
+
+      PROBES.each do |name, klass|
+        probe = {:name => name, :description => klass.get_description, :probe => klass}
+        result[name] = probe
+      end
+
+      return result
     end
 
     # Function to validate a probe identificator.
