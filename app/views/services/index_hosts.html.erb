@@ -1,0 +1,79 @@
+<% content_for :title, t("services.index_hosts.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <%= bootstrap_flash %>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("services.index_hosts.title") %>
+        <small>
+          <%= @service.name %>
+        </small>
+        <% if (current_user.is_normal?) %>
+        <span class='pull-right'>
+          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("hosts.index.button.new")}</b></span>".html_safe, new_host_path(:type => @type), :class => "btn btn-success", :title => t("hosts.index.button.new") %>
+        </span>
+        <% end %>
+      </h1>
+    </div>
+    <div class='table-header clearfix'>
+      <div class='pull-right'>
+        <%= form_tag new_service_host_path(@service), :method => :post, :class => "form-inline", :role => "form" do -%>
+          <div class="form-group">
+            <%= select_tag "host_id", options_for_select(Host.all.collect{ |u| [u.name, u.id] }), :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= button_tag "<span class='hidden-sm hidden-xs'>#{t("services.index_hosts.button.add")}&nbsp;&nbsp;</span><i class='fa fa-chevron-right'></i>".html_safe, {:type => "submit", :class => "btn btn-primary"} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <table class="table table-hover table-elements">
+      <thead>
+        <tr>
+          <th class='col-xs-3'><%= t("services.index_hosts.table.name") %></th>
+          <th class='col-xs-3'><%= t("services.index_hosts.table.address") %></th>
+          <th class='col-xs-6'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @hosts.each do |host| %>
+        <tr class='element'>
+          <td>
+            <%= host.name %>
+          </td>
+          <td>
+            <%= host.address %>
+          </td>
+          <td align='right'>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index_hosts.button.show")}</span>".html_safe, host_path(host), :class => "btn btn-sm btn-success", :title => t("services.index_hosts.button.show") %>
+            <% if (current_user.is_normal?) %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index_hosts.button.destroy")}</span>".html_safe, delete_service_host_path(:id => @service.id, :host_id => host.id), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("services.index_hosts.button.destroy"), :data => {:confirm => t("services.index_hosts.button.destroy_confirmation")} %>
+            <% else %>
+            <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index_hosts.button.destroy")}</span>".html_safe, nil, :class => "btn btn-sm btn-danger disabled", :title => t("services.index_hosts.button.destroy") %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% if (@hosts.count == 0) %>
+          <% if (!@query.blank?) %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_result") %>
+              </td>
+            </tr>
+          <% else %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_element") %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

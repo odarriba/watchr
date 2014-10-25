@@ -237,6 +237,105 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to associate a hosts to a service.
+  #
+  # [URL] 
+  #   * POST /configuration/services/:id/hosts/new
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *host_id* - The identificator of the host.
+  #
+  def new_host
+    load_service
+    return if (@service.blank?)
+
+    @host = Host.where(:_id => params[:host_id]).first
+
+    if (@host.blank?)
+      flash[:error] = t("services.error.host_not_found")
+      redirect_to service_hosts_path()
+      return
+    end
+
+    if (@service.host_ids.include?(@host.id))
+      flash[:notice] = t("services.notice.host_already_added", :name => @host.name, :service => @service.name)
+      redirect_to service_hosts_path()
+      return
+    end
+
+    @service.hosts << @host
+
+    respond_to do |format|
+      format.html{
+        if (@service.save)
+          flash[:notice] = t("services.notice.host_added", :name => @host.name, :service => @service.name)
+        else
+          flash[:error] = t("services.error.host_not_added", :name => @host.name, :service => @service.name)
+        end
+        redirect_to service_hosts_path()
+        return
+      }
+    end
+  end
+
+  # Action to disassociate a hosts to a service.
+  #
+  # [URL] 
+  #   * DELETE /configuration/services/:id/hosts/:host_id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *host_id* - The identificator of the host.
+  #
+  def delete_host
+    load_service
+    return if (@service.blank?)
+
+    @host = Host.where(:_id => params[:host_id]).first
+
+    # Does the host exist?
+    if (@host.blank?)
+      flash[:error] = t("services.error.host_not_found")
+      redirect_to service_hosts_path()
+      return
+    end
+
+    # Disassociate the host from the service
+    @service.hosts.delete(@host)
+
+    respond_to do |format|
+      format.html{
+        if (@service.save)
+          flash[:notice] = t("services.notice.host_deleted", :name => @host.name, :service => @service.name)
+        else
+          flash[:error] = t("services.error.host_not_deleted", :name => @host.name, :service => @service.name)
+        end
+        redirect_to service_hosts_path()
+        return
+      }
+    end
+  end
+
+  # Action to index the hosts associated to a service.
+  #
+  # [URL] 
+  #   * GET /configuration/services/:id/hosts
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def index_hosts
+    load_service
+    return if (@service.blank?)
+
+    @hosts = Host.where(:_id.in => @service.host_ids)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   protected
 
   # Function to check the existence of the *priority* parameter in the URL.

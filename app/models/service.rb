@@ -35,6 +35,8 @@ class Service
   field :priority,        :type => Integer, :default => Service::PRIORITY_NORMAL
   field :resume,          :type => Symbol, :default => :mean_value
 
+  has_and_belongs_to_many :hosts
+
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
   validates_numericality_of :interval, only_integer: true

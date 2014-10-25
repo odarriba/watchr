@@ -26,6 +26,8 @@ class Host
   field :address,       :type => String, :default => ""
   field :type,          :type => Symbol, :default => Host::TYPE_GENERIC
 
+  has_and_belongs_to_many :services
+
   # Name validations
   validates_length_of :name, :minimum => 2, :maximum => 30
   

@@ -25,6 +25,7 @@ en:
         new: "Create a service"
         show: "View"
         edit: "Edit"
+        hosts: "Hosts"
         destroy: "Destroy"
         destroy_confirmation: "Do you really want to destroy this service?"
       table:
@@ -41,6 +42,16 @@ en:
     edit:
       title: "Edit a service"
       continue: "Save changes"
+    index_hosts:
+      title: "Hosts to monitor"
+      table:
+        name: "Host name"
+        address: "Host address"
+      button:
+        add: "Add host"
+        show: "Show host"
+        destroy: "Delete"
+        destroy_confirmation: "Do you really want to stop monitoring this host?"
     sidebar:
       all: "View all"
       view_by_type: "View by priority of service"
@@ -67,8 +78,14 @@ en:
       created: "Service (%{name}) <b>created succesfully</b>."
       updated: "Service (%{name}) <b>updated succesfully</b>."
       destroyed: "Service (%{name}) <b>destroyed violently</b>."
+      host_added: "Host (%{name}) <b>added succesfully</b> to service (%{service})."
+      host_already_added: "Host (%{name}) <b>was added before</b> to service (%{service})."
+      host_deleted: "Host (%{name}) <b>deleted succesfully</b> from service (%{service})."
     error:
       not_found: "The service with the requested ID doesn't exist."
+      host_not_found: "The host with the requested ID doesn't exist."
+      host_not_added: "Host (%{name}) <b>couldn't be added</b> to service (%{service})."
+      host_not_deleted: "Host (%{name}) <b>couldn't be deleted</b> from service (%{service})."
       not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
       probe_invalid: "The probe selected is invalid or isn't available at the moment."
