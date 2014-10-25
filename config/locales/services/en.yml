@@ -68,3 +68,9 @@ en:
     error:
       not_found: "The service with the requested ID doesn't exist."
       not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."
+      name_invalid: "The name is invalid, length must be between 2 and 30 characters."
+      probe_invalid: "The probe selected is invalid or isn't available at the moment."
+      interval_invalid: "The interval is invalid, must be 1 second or grater."
+      clean_interval_invalid: "The clean interval is invalid, must be 1 second or grater."
+      priority_invalid: "The priority selected isn't a valid one."
+      resume_invalid: "The resume function selected isn't a valid one."
