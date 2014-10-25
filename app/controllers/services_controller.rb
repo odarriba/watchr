@@ -95,6 +95,97 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to show a the information about an existing service.
+  #
+  # [URL] 
+  #   GET /configuration/services/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def show
+    load_service
+    return if (@service.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to show a form to edit an existing service.
+  #
+  # [URL] 
+  #   GET /configuration/services/:id/edit
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def edit
+    load_service
+    return if (@service.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to update an existing service with the data received from the form.
+  #
+  # [URL] 
+  #   PUT /configuration/services/:id
+  #   PATCH /configuration/services/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #   * *service* - The data recolected for the host.
+  #
+  def update
+    load_service
+
+    return if (@service.blank?)
+
+    respond_to do|format|
+      format.html{
+        # The host can be updated?
+        if (@service.update_attributes(service_params))
+          flash[:notice] = t("service.notice.updated", :name => @service.name)
+          redirect_to service_path(@service)
+        else
+          # If an error raises, show the form again
+          render :action => :edit
+        end
+        return
+      }
+    end
+  end
+
+  # Action to destroy an existing service in the database.
+  #
+  # [URL] 
+  #   DELETE /configuration/services/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def destroy
+    load_service
+    return if (@service.blank?)
+
+    respond_to do|format|
+      format.html{
+        # The user can be destroyed?
+        if (@service.destroy)
+          flash[:notice] = t("services.notice.destroyed", :name => @service.name)
+          redirect_to services_path()
+        else
+          flash[:error] = t("services.error.not_destroyed", :name => @service.name)
+          redirect_to service_path(@service)
+        end
+        return
+      }
+    end
+  end
+
   protected
 
   # Function to check the existence of the *priority* parameter in the URL.
@@ -120,7 +211,7 @@ class ServicesController < ApplicationController
   # [Returns]
   #   A valid _Service_ object or _nil_ if it doesn't exists.
   #
-  def load_host
+  def load_service
     if (params[:id].blank?)
       @service = nil
       return @service

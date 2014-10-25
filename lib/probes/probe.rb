@@ -30,7 +30,7 @@ module Watchr
     # [Returns]
     #   A string with the name of the probe
     #
-    def self.get_name
+    def self.name
       return nil if (!self::PROBE_NAME.is_a?(String))
       return self::PROBE_NAME
     end
@@ -40,7 +40,7 @@ module Watchr
     # [Returns]
     #   A string with the description of the probe
     #
-    def self.get_description
+    def self.description
       return nil if (!self::PROBE_DESCRIPTION.is_a?(String))
       return self::PROBE_DESCRIPTION
     end
@@ -50,7 +50,7 @@ module Watchr
     # [Returns]
     #   The class object of the probe
     #
-    def self.get_object
+    def self.object
       return self
     end
   end

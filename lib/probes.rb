@@ -33,10 +33,10 @@ module Watchr
     def self.register_probe(klass)
       # Invalid parameters?
       return false if (klass.blank? || !klass.is_a?(Class))
-      return false if (klass.get_name.blank?)
+      return false if (klass.name.blank?)
 
       # Save the probe.
-      PROBES[klass.get_name] = klass
+      PROBES[klass.name] = klass
       return true
     end
 

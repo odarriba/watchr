@@ -1,0 +1,115 @@
+<% content_for :title, t("services.show.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("services.show.title") %>
+        <small>
+          <%= @service.name %>
+        </small>
+      </h1>
+    </div>
+    <%= bootstrap_flash %>
+    <div class='form-horizontal'>
+      <div class="form-group">
+        <label for="service_name" class="col-sm-3 control-label"><%= t("services.form.name") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.name %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_description" class="col-sm-3 control-label"><%= t("services.form.description") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.description %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_priority" class="col-sm-3 control-label"><%= t("services.form.priority") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= t("services.priorities.priority_#{@service.priority.to_s}") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_probe" class="col-sm-3 control-label"><%= t("services.form.probe") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.probe %></p>
+          <span class="help-block probe_description"><%= @service.get_probe.description %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_interval" class="col-sm-3 control-label"><%= t("services.form.interval") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.interval %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_clean_interval" class="col-sm-3 control-label"><%= t("services.form.clean_interval") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.clean_interval %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_resume" class="col-sm-3 control-label"><%= t("services.form.resume") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= t("services.resumes.resume_#{@service.resume.to_s}") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="service_created_at" class="col-sm-3 control-label"><%= t("services.form.created_at") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.created_at.strftime("%m/%d/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="services_updated_at" class="col-sm-3 control-label"><%= t("service.form.updated_at") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.updated_at.strftime("%m/%d/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-1 col-md-9 col-sm-12">
+          <% if (current_user.is_normal?) %>
+          <div class='pull-right'>
+            <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("services.index.button.edit")}".html_safe, edit_service_path(@service), :class => "btn btn-info", :title => t("services.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("services.index.button.destroy")}".html_safe, service_path(@service), :method => :delete, :class => "btn btn-danger", :title => t("services.index.button.destroy"), :data => {:confirm => t("services.index.button.destroy_confirmation")} %>
+          </div>
+          <% else %>
+          <div class='pull-right'>
+            <%= link_to "<i class='fa fa-pencil'></i>&nbsp;&nbsp;#{t("services.index.button.edit")}".html_safe, nil, :class => "btn btn-info disabled", :title => t("services.index.button.edit") %>
+            <%= link_to "<i class='fa fa-trash-o'></i>&nbsp;&nbsp;#{t("services.index.button.destroy")}".html_safe, nil, :class => "btn btn-danger disabled", :title => t("services.index.button.destroy")%>
+          </div>
+          <% end %>
+          <%= link_to t("services.new.back"), services_path(:priority => @priority), :class => "btn btn-default pull-left" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

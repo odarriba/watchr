@@ -28,7 +28,7 @@
       <div class="form-group">
         <label for="host_type" class="col-sm-3 control-label"><%= t("hosts.form.type") %></label>
         <div class="col-md-7 col-sm-9">
-          <p class="form-control-static"><%= t("hosts.types.type_#{@host.type}") %></p>
+          <p class="form-control-static"><%= t("hosts.types.type_#{@host.type.to_s}") %></p>
         </div>
       </div>
       <div class="form-group">

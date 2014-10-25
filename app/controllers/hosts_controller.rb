@@ -136,7 +136,7 @@ class HostsController < ApplicationController
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
-  #   * *user* - The data recolected for the host.
+  #   * *host* - The data recolected for the host.
   #
   def update
     load_host
