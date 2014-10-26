@@ -3,6 +3,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("hosts.error.name_invalid") %>
   </div>
+<% elsif (!resource.errors[:active].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("hosts.error.active_invalid") %>
+  </div>
 <% elsif (!resource.errors[:address].blank?) %>
   <% if (Host.where(:address => resource[:address]).ne(:_id => resource[:id]).count > 0) %>
   <div class="alert alert-danger">
@@ -28,6 +33,13 @@
       <%= f.text_field :name, :class => "form-control", :placeholder => t("hosts.form.name_placeholder"), :required => true %>
     </div>
   </div>
+  <div class="form-group<% if (!resource.errors[:description].blank?) %> has-error<% end %>">
+    <label for="host_description" class="col-sm-2 control-label"><%= t("hosts.form.description") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.text_area :description, :rows => 5, :class => "form-control", :placeholder => t("hosts.form.description_placeholder") %>
+      <span class="help-block"><%= t("hosts.form.description_helper") %></span>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-md-7 col-sm-10">
       <hr class='divider' />
@@ -51,11 +63,10 @@
       <hr class='divider' />
     </div>
   </div>
-  <div class="form-group<% if (!resource.errors[:description].blank?) %> has-error<% end %>">
-    <label for="host_description" class="col-sm-2 control-label"><%= t("hosts.form.description") %></label>
+  <div class="form-group<% if (!resource.errors[:active].blank?) %> has-error<% end %>">
+    <label for="host_active" class="col-sm-2 control-label"><%= t("hosts.form.activation") %></label>
     <div class="col-md-7 col-sm-10">
-      <%= f.text_area :description, :rows => 5, :class => "form-control", :placeholder => t("hosts.form.description_placeholder") %>
-      <span class="help-block"><%= t("hosts.form.description_helper") %></span>
+      <%= f.select :active, options_for_select({t("hosts.form.active") => true, t("hosts.form.inactive") => false}, :selected => resource.active), {}, :class => "form-control" %>
     </div>
   </div>
   <div class="form-group">

@@ -28,6 +28,7 @@ class Service
 
   field :name,            :type => String, :default => ""
   field :description,     :type => String, :default => ""
+  field :active,          :type => Boolean, :default => true
   field :probe,           :type => String, :default => ""
   field :probe_config,    :type => Hash, :default => {}
   field :interval,        :type => Integer, :default => 60
@@ -53,6 +54,7 @@ class Service
 
   # The fields must be present.
   validates_presence_of :name
+  validates_presence_of :active
   validates_presence_of :probe
   validates_presence_of :interval
   validates_presence_of :clean_interval
@@ -122,6 +124,15 @@ class Service
 
     # Is a valid resume type?
     return Watchr::Probes.is_probe?(probe)
+  end
+
+  # Function to check if the service is active.
+  #
+  # [Returns]
+  #   A boolean that indicates if the service is active.
+  #
+  def is_active?
+    return self.active
   end
 
   protected

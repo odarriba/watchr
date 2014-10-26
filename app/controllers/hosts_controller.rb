@@ -235,6 +235,6 @@ class HostsController < ApplicationController
   #   The filtered version of *params[:host]*.
   #
   def host_params
-    params.require(:host).permit(:name, :address, :type, :description)
+    params.require(:host).permit(:name, :description, :address, :type, :active)
   end
 end

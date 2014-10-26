@@ -400,6 +400,6 @@ class ServicesController < ApplicationController
   #   The filtered version of *params[:service]*.
   #
   def service_params
-    params.require(:service).permit(:name, :description, :priority, :probe, :interval, :clean_interval, :resume)
+    params.require(:service).permit(:name, :description, :active, :priority, :probe, :interval, :clean_interval, :resume)
   end
 end

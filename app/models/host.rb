@@ -23,6 +23,7 @@ class Host
   # Fields of the model
   field :name,          :type => String, :default => ""
   field :description,   :type => String, :default => ""
+  field :active,        :type => Boolean, :default => true
   field :address,       :type => String, :default => ""
   field :type,          :type => Symbol, :default => Host::TYPE_GENERIC
 
@@ -40,6 +41,7 @@ class Host
 
   # Validations to check the presence of required fields
   validates_presence_of :name
+  validates_presence_of :active
   validates_presence_of :address
   validates_presence_of :type
 
@@ -54,6 +56,15 @@ class Host
     rescue Resolv::ResolvError
       return nil
     end
+  end
+
+  # Function to check if the host is active.
+  #
+  # [Returns]
+  #   A boolean that indicates if the host is active.
+  #
+  def is_active?
+    return self.active
   end
 
   # Function to check if the host is a router.

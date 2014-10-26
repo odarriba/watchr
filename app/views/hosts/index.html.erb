@@ -67,6 +67,7 @@
         <tr class='element'>
           <td>
             <%= host.name %>
+            <% if (!host.is_active?) %><span class='text-primary'>(<%= t("hosts.form.inactive") %>)</span><% end %>
           </td>
           <td>
             <%= host.address %>

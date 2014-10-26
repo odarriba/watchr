@@ -63,6 +63,7 @@
         <tr class='element'>
           <td>
             <%= serv.name %>
+            <% if (!serv.is_active?) %><span class='text-primary'>(<%= t("services.form.inactive") %>)</span><% end %>
           </td>
           <td>
             <% if (!serv.get_probe.blank?) %>

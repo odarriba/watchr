@@ -3,6 +3,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("services.error.name_invalid") %>
   </div>
+<% elsif (!resource.errors[:active].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("services.error.active_invalid") %>
+  </div>
 <% elsif (!resource.errors[:probe].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -50,6 +55,12 @@
   <div class="form-group">
     <div class="col-sm-offset-2 col-md-7 col-sm-10">
       <hr class='divider' />
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:active].blank?) %> has-error<% end %>">
+    <label for="service_active" class="col-sm-2 control-label"><%= t("services.form.activation") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :active, options_for_select({t("services.form.active") => true, t("services.form.inactive") => false}, :selected => resource.active), {}, :class => "form-control" %>
     </div>
   </div>
   <div class="form-group<% if (!resource.errors[:priority].blank?) %> has-error<% end %>">
