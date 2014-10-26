@@ -41,9 +41,9 @@ class Service
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
   validates_numericality_of :interval, only_integer: true
-  validates_numericality_of :interval, greater_then: 0
+  validates_numericality_of :interval, greater_than: 0
   validates_numericality_of :clean_interval, only_integer: true
-  validates_numericality_of :clean_interval, greater_then: 0
+  validates_numericality_of :clean_interval, greater_than: 0
   validates_inclusion_of :priority, in: Service::AVAILABLE_PRIORITIES
   validates_inclusion_of :resume, in: Service::AVAILABLE_RESUMES
 
@@ -159,6 +159,8 @@ class Service
   #   A boolean that indicates if the probe field is valid or not.
   #
   def check_probe_config
+    return false if (!Service.valid_probe?(self.probe))
+
     if (self.get_probe.check_config(self.probe_config))
       # Id the probe is valid, return true.
       return true
