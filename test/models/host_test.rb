@@ -8,6 +8,7 @@ class HostTest < ActiveSupport::TestCase
 
   def teardown
     Host.destroy_all
+    Service.destroy_all
   end
 
   test "should not save host without a valid name" do
@@ -144,6 +145,25 @@ class HostTest < ActiveSupport::TestCase
     @host.type = nil
     assert_not @host.save
     assert_not @host.errors[:type].blank?
+  end
+
+  test "should be assignable to services" do
+    create_service
+
+    # Make the host persistent
+    assert @host.save
+    
+    # Could add it
+    @host.services << @service
+    assert @host.save
+
+    # Reload anc check the relation
+    @service.reload
+    @host.reload
+    assert @service.hosts.include?(@host)
+    assert @host.services.include?(@service)
+
+    clean_db
   end
 
   test "should resolve ip addresses" do

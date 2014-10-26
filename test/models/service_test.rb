@@ -220,6 +220,25 @@ class ServiceTest < ActiveSupport::TestCase
     assert_not @service.errors[:resume].blank?
   end
 
+  test "should be assignable to hosts" do
+    create_host
+
+    # Make the service persistent
+    assert @service.save
+    
+    # Could add it
+    @service.hosts << @host
+    assert @service.save
+
+    # Reload anc check the relation
+    @service.reload
+    @host.reload
+    assert @service.hosts.include?(@host)
+    assert @host.services.include?(@service)
+
+    clean_db
+  end
+
   test "should get probe" do
     # Returns a valid probe
     @service.probe = "dummy"
