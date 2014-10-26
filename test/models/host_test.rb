@@ -3,7 +3,7 @@ require 'test_helper'
 class HostTest < ActiveSupport::TestCase
   def setup
     # MongoID hasn't got fixtures support :(
-    @host = Host.new(:name => "Test Host", :type => Host::TYPE_SERVER, :address => "google.com", :description => "Test host description.")
+    @host = Host.new(:name => "Test Host", :type => Host::TYPE_SERVER, :address => "google.com", :description => "Test host description.", :active => true)
   end
 
   def teardown
@@ -44,6 +44,21 @@ class HostTest < ActiveSupport::TestCase
     # Without description
     @host.description = ""
     assert @host.save
+  end
+
+  test "should not save host without a valid active status" do
+    # Valid boolean
+    @host.active = true
+    assert @host.save
+
+    # Valid boolean
+    @host.active = false
+    assert @host.save
+
+    # Nil object
+    @host.active = nil
+    assert_not @host.save
+    assert_not @host.errors[:active].blank?
   end
 
   test "should not save host without a valid address" do

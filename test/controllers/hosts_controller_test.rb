@@ -7,7 +7,7 @@ class HostsControllerTest < ActionController::TestCase
     # Create test users
     create_users
 
-    @create_hash = {:name => "Test Host", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "none."}
+    @create_hash = {:name => "Test Host", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true}
   end
 
   def teardown
