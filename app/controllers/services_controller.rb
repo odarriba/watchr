@@ -164,7 +164,7 @@ class ServicesController < ApplicationController
     return if (@service.blank?)
 
     parameters = service_params
-    parameters[:probe_config] = params[:probe_config]
+    parameters[:probe_config] = params[:probe_config] if (!params[:probe_config].blank?)
 
     respond_to do|format|
       format.html{

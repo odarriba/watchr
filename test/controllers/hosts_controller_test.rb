@@ -189,7 +189,7 @@ class HostsControllerTest < ActionController::TestCase
     assert_redirected_to hosts_path
 
     # Update actions
-    put :update, :id => "non-existing-id", :user => {:name => "name change"}
+    put :update, :id => "non-existing-id", :host => {:name => "Name change"}
     assert_redirected_to hosts_path
 
     # Destroy action
