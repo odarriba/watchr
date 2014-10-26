@@ -11,22 +11,30 @@
         <small>
           <%= @service.name %>
         </small>
-        <% if (current_user.is_normal?) %>
-        <span class='pull-right'>
-          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("hosts.index.button.new")}</b></span>".html_safe, new_host_path(:type => @type), :class => "btn btn-success", :title => t("hosts.index.button.new") %>
-        </span>
-        <% end %>
       </h1>
     </div>
     <div class='table-header clearfix'>
       <div class='pull-right'>
-        <%= form_tag new_service_host_path(@service), :method => :post, :class => "form-inline", :role => "form" do -%>
-          <div class="form-group">
-            <%= select_tag "host_id", options_for_select(Host.all.collect{ |u| [u.name, u.id] }), :class => "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= button_tag "<span class='hidden-sm hidden-xs'>#{t("services.index_hosts.button.add")}&nbsp;&nbsp;</span><i class='fa fa-chevron-right'></i>".html_safe, {:type => "submit", :class => "btn btn-primary"} %>
-          </div>
+        <% if (current_user.is_normal?) %>
+          <% if (Host.where(:_id.nin => @service.host_ids).count > 0) %>
+            <%= form_tag new_service_host_path(@service), :method => :post, :class => "form-inline", :role => "form" do -%>
+              <div class="form-group">
+                <%= select_tag "host_id", options_for_select(Host.where(:_id.nin => @service.host_ids).collect{ |u| [u.name, u.id] }), :class => "form-control" %>
+              </div>
+              <div class="form-group">
+                <%= button_tag "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index_hosts.button.add")}</span>".html_safe, {:type => "submit", :class => "btn btn-success"} %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class='form-inline'>
+              <div class="form-group">
+                <%= select_tag "host_id", {}, :class => "form-control disabled" %>
+              </div>
+              <div class="form-group">
+                <%= button_tag "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index_hosts.button.add")}</span>".html_safe, {:class => "btn btn-success disabled"} %>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -75,5 +83,6 @@
         <% end %>
       </tbody>
     </table>
+    <%= link_to t("services.new.back"), services_path(), :class => "btn btn-default pull-left" %>
   </div>
 </div>

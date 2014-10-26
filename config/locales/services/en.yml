@@ -74,6 +74,7 @@ en:
       clean_interval_helper: "The time that the results of the testing are stored."
       resume: "Resume"
       resume_helper: "The function used to resume the data to show the results of multiple hosts."
+      hosts: "Hosts"
     notice:
       created: "Service (%{name}) <b>created succesfully</b>."
       updated: "Service (%{name}) <b>updated succesfully</b>."
@@ -83,6 +84,7 @@ en:
       host_deleted: "Host (%{name}) <b>deleted succesfully</b> from service (%{service})."
     error:
       not_found: "The service with the requested ID doesn't exist."
+      hosts_not_exist: "To assign hosts to a service, <b>you have to create them first</b>."
       host_not_found: "The host with the requested ID doesn't exist."
       host_not_added: "Host (%{name}) <b>couldn't be added</b> to service (%{service})."
       host_not_deleted: "Host (%{name}) <b>couldn't be deleted</b> from service (%{service})."

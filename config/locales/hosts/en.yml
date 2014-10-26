@@ -58,6 +58,7 @@ en:
       description: "Description"
       description_placeholder: "Description of the host"
       description_helper: "Optional field. Use it to add more details about the host."
+      services: "Services assigned"
       created_at: "Created at"
       updated_at: "Updated at"
     notice:

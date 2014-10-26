@@ -4,7 +4,9 @@
 #
 class ServicesController < ApplicationController
   # Check the privilege level required
-  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy, :get_probe_form, :new_host, :delete_host]
+  # Check the existence of hosts first
+  before_action :check_host_existence, :only => [:index_hosts, :new_host, :delete_host]
 
   # Action to list the services registered in the application.
   # It also allows to search in the services by _name_, _description_ and/or _probe_
@@ -237,6 +239,25 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to index the hosts associated to a service.
+  #
+  # [URL] 
+  #   * GET /configuration/services/:id/hosts
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def index_hosts
+    load_service
+    return if (@service.blank?)
+
+    @hosts = Host.where(:_id.in => @service.host_ids)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   # Action to associate a hosts to a service.
   #
   # [URL] 
@@ -317,25 +338,6 @@ class ServicesController < ApplicationController
     end
   end
 
-  # Action to index the hosts associated to a service.
-  #
-  # [URL] 
-  #   * GET /configuration/services/:id/hosts
-  #
-  # [Parameters]
-  #   * *id* - The identificator of the service.
-  #
-  def index_hosts
-    load_service
-    return if (@service.blank?)
-
-    @hosts = Host.where(:_id.in => @service.host_ids)
-
-    respond_to do |format|
-      format.html
-    end
-  end
-
   protected
 
   # Function to check the existence of the *priority* parameter in the URL.
@@ -352,6 +354,18 @@ class ServicesController < ApplicationController
     end
 
     return @priority
+  end
+
+  # Function to check if there is any existing host before executing the actions
+  # that are related to service <-> host relation management.
+  #
+  def check_host_existence
+    if (Host.all.count == 0)
+      flash[:error] = t("services.error.hosts_not_exist")
+      redirect_to :back
+    end
+    
+    return
   end
 
   # Function lo load a service from the database using *id* parameter in the URL.
