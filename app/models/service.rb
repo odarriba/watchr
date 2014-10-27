@@ -73,6 +73,15 @@ class Service
     return Watchr::Probes.get_probe(self.probe)
   end
 
+  # Function to check if the service is active.
+  #
+  # [Returns]
+  #   A boolean that indicates if the service is active.
+  #
+  def is_active?
+    return self.active
+  end
+
   # Function to get an array with the valid probe identificators.
   #
   # [Returns]
@@ -125,15 +134,6 @@ class Service
 
     # Is a valid resume type?
     return Watchr::Probes.is_probe?(probe)
-  end
-
-  # Function to check if the service is active.
-  #
-  # [Returns]
-  #   A boolean that indicates if the service is active.
-  #
-  def is_active?
-    return self.active
   end
 
   protected

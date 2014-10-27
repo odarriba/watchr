@@ -8,15 +8,16 @@ class Alert
   include Mongoid::Timestamps
 
   # Array with the available conditions.
-  AVAILABLE_CONDITIONS = [:greater_then, :greater_than_or_equal_to, :equal_to, :less_than_or_equal_to, :less_than]
+  AVAILABLE_CONDITIONS = [:greater_than, :greater_than_or_equal_to, :equal_to, :less_than_or_equal_to, :less_than]
   # Array with the valid targets.
   AVAILABLE_TARGETS = [:service, :host]
 
-  field :name,      :type => String, :default => ""
-  field :active,    :type => Boolean, :default => true
-  field :value,     :type => Float, :default => 0.0
-  field :condition, :type => Symbol, :default => :greater_than
-  field :target,    :type => Symbol, :default => :service
+  field :name,        :type => String, :default => ""
+  field :description, :type => String, :default => ""
+  field :active,      :type => Boolean, :default => true
+  field :limit,       :type => Float, :default => 0.0
+  field :condition,   :type => Symbol, :default => :greater_than
+  field :target,      :type => Symbol, :default => :service
 
   # Service to monitor
   belongs_to :service
@@ -28,10 +29,19 @@ class Alert
 
   # The fields must be present.
   validates_presence_of :name
-  validates_presence_of :value
+  validates_presence_of :limit
   validates_presence_of :condition
   validates_presence_of :target
   validates_presence_of :service
+
+  # Function to check if the alert is active.
+  #
+  # [Returns]
+  #   A boolean that indicates if the alert is active.
+  #
+  def is_active?
+    return self.active
+  end
 
   # Function to check if a condition is valid.
   #

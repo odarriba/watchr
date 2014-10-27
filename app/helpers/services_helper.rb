@@ -1,8 +1,10 @@
+# Helper functions for _ServicesController_ actions.
+#
 module ServicesHelper
   # Helper function to get a hash with the valid priorities of _Service_ model.
   #
   # [Returns]
-  #   Hash with the type identificators associated to the translations of the priority names.
+  #   Hash with the priority identificators associated to the translations of the priority names.
   #
   def service_priorities_hash
     result = Hash.new
@@ -17,7 +19,7 @@ module ServicesHelper
   # Helper function to get a hash with the valid probes loaded for _Service_ model.
   #
   # [Returns]
-  #   Hash with the type identificators of the probes.
+  #   Hash with the probe identificators of the probes.
   #
   def service_probes_hash
     result = Hash.new
@@ -32,7 +34,7 @@ module ServicesHelper
   # Helper function to get a hash with the valid resumes of _Service_ model.
   #
   # [Returns]
-  #   Hash with the type identificators associated to the translations of the resume names.
+  #   Hash with the resume identificators associated to the translations of the resume names.
   #
   def service_resumes_hash
     result = Hash.new

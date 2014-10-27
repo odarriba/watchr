@@ -78,6 +78,8 @@ en:
       resume: "Resume"
       resume_helper: "The function used to resume the data to show the results of multiple hosts."
       hosts: "Hosts"
+      created_at: "Created at"
+      updated_at: "Updated at"
     notice:
       created: "Service (%{name}) <b>created succesfully</b>."
       updated: "Service (%{name}) <b>updated succesfully</b>."
@@ -91,7 +93,7 @@ en:
       host_not_found: "The host with the requested ID doesn't exist."
       host_not_added: "Host (%{name}) <b>couldn't be added</b> to service (%{service})."
       host_not_deleted: "Host (%{name}) <b>couldn't be deleted</b> from service (%{service})."
-      not_destroyed: "Host (%{name}) couldn't be destroyed. Please, try again."
+      not_destroyed: "Service (%{name}) couldn't be destroyed. Please, try again."
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
       active_invalid: "The activation status is invalid. Check it and try again."
       probe_invalid: "The probe selected is invalid or isn't available at the moment."

@@ -1,0 +1,70 @@
+en:
+  mongoid:
+    models:
+      alert:
+        one: "alert"
+        other: "alerts"
+  alerts:
+    conditions:
+      condition_greater_than: "Value greater than limit"
+      condition_greater_than_or_equal_to: "Value greater or equal to limit"
+      condition_equal_to: "Value equal to limit"
+      condition_less_than_or_equal_to: "Value less or equal to limit"
+      condition_less_than: "Value less than limit"
+    targets:
+      target_service: "The resume value of the service"
+      target_host: "Individual values of the hosts"
+    index:
+      title: "Alerts management"
+      subtitle: "viewing all alerts"
+      button:
+        new: "Create an alert"
+        show: "View"
+        edit: "Edit"
+        destroy: "Destroy"
+        destroy_confirmation: "Do you really want to destroy this alert?"
+      table:
+        name: "Name"
+        service: "Service"
+        error: "Error"
+    new:
+      title: "Create a new alert"
+      subtitle: "alert details"
+      continue: "Create the alert"
+      back: "Back to the list"
+    show:
+      title: "View an alert"
+    edit:
+      title: "Edit as alert"
+      continue: "Save changes"
+    form:
+      name: "Name"
+      name_placeholder: "Name of the service"
+      description: "Description"
+      description_placeholder: "(Optional) Description of the service"
+      activation: "Status"
+      active: "Active"
+      inactive: "Inactive"
+      service: "Service"
+      service_helper: "The service to which results are watched."
+      condition: "Condition"
+      condition_helper: "The condition to match in order to open an incident."
+      limit: "Limit"
+      limit_placeholder: "The limit value of the condition."
+      target: "Target"
+      target_helper: "Selects if the condition have to match with the global result of a service, or only with at least one of the host assigned to the service."
+      created_at: "Created at"
+      updated_at: "Updated at"
+    notice:
+      created: "Alert (%{name}) <b>created succesfully</b>."
+      updated: "Alert (%{name}) <b>updated succesfully</b>."
+      destroyed: "Alert (%{name}) <b>destroyed violently</b>."
+    error:
+      not_found: "The alert with the requested ID doesn't exist."
+      not_destroyed: "Alert (%{name}) couldn't be destroyed. Please, try again."
+      name_invalid: "The name is invalid, length must be between 2 and 30 characters."
+      active_invalid: "The activation status is invalid. Check it and try again."
+      service_invalid: "The service selected is invalid or isn't available at the moment."
+      condition_invalid: "The condition selected is invalid. Check it and try again."
+      limit_invalid: "The limit is invalid. Check that it is a number a try again."
+      target_invalid: "The target selected is invalid. Check it and try again."
