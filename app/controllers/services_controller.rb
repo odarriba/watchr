@@ -157,7 +157,7 @@ class ServicesController < ApplicationController
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
-  #   * *service* - The data recolected for the host.
+  #   * *service* - The data recolected for the service.
   #
   def update
     load_service
@@ -168,7 +168,7 @@ class ServicesController < ApplicationController
 
     respond_to do|format|
       format.html{
-        # The host can be updated?
+        # The service can be updated?
         if (@service.update_attributes(parameters))
           flash[:notice] = t("services.notice.updated", :name => @service.name)
           redirect_to service_path(@service)
@@ -199,7 +199,7 @@ class ServicesController < ApplicationController
 
     respond_to do|format|
       format.html{
-        # The user can be destroyed?
+        # The service can be destroyed?
         if (@service.destroy)
           flash[:notice] = t("services.notice.destroyed", :name => @service.name)
           redirect_to services_path()

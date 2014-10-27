@@ -85,6 +85,125 @@ class AlertsController < ApplicationController
     end
   end
 
+  # Action to show a the information about an existing alert.
+  #
+  # [URL] 
+  #   GET /configuration/alerts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #
+  def show
+    load_alert
+    return if (@alert.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to show a form to edit an existing alert.
+  #
+  # [URL] 
+  #   GET /configuration/alerts/:id/edit
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #
+  def edit
+    load_alert
+    return if (@alert.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to update an existing alert with the data received from the form.
+  #
+  # [URL] 
+  #   PUT /configuration/alerts/:id
+  #   PATCH /configuration/alerts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #   * *alert* - The data recolected for the alert.
+  #
+  def update
+    load_alert
+    return if (@alert.blank?)
+
+    parameters = alert_params
+    parameters[:service] = Service.where(:_id => parameters[:service]).first if (!parameters[:service].blank?)
+
+    respond_to do|format|
+      format.html{
+        # The alert can be updated?
+        if (@alert.update_attributes(parameters))
+          flash[:notice] = t("alerts.notice.updated", :name => @alert.name)
+          redirect_to alert_path(@alert)
+        else
+          # If an error raises, show the form again
+          render :action => :edit
+        end
+        return
+      }
+    end
+  end
+
+  # Action to destroy an existing alert in the database.
+  #
+  # [URL] 
+  #   DELETE /configuration/alerts/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #
+  def destroy
+    load_alert
+    return if (@alert.blank?)
+
+    respond_to do|format|
+      format.html{
+        # The alert can be destroyed?
+        if (@alert.destroy)
+          flash[:notice] = t("alerts.notice.destroyed", :name => @alert.name)
+          redirect_to alerts_path()
+        else
+          flash[:error] = t("alerts.error.not_destroyed", :name => @alert.name)
+          redirect_to alert_path(@alert)
+        end
+        return
+      }
+    end
+  end
+
+  protected
+
+  # Function lo load an alert from the database using *id* parameter in the URL.
+  #
+  # It returns the Alert object and makes it available at @alert.
+  #
+  # [Returns]
+  #   A valid _Alert_ object or _nil_ if it doesn't exists.
+  #
+  def load_alert
+    if (params[:id].blank?)
+      @alert = nil
+      return @alert
+    end
+
+    @alert = Alert.where(:_id => params[:id]).first
+
+    if (@alert.blank?)
+      # If not found, show an error and redirect
+      flash[:error] = t("alerts.error.not_found")
+      redirect_to alerts_path()
+    end
+
+    return @alert
+  end
+
   private
 
   # Strong parameters method to prevent from massive assignment in the _Alert_ model.
