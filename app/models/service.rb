@@ -37,6 +37,7 @@ class Service
   field :resume,          :type => Symbol, :default => :mean_value
 
   has_and_belongs_to_many :hosts
+  has_many :alerts
 
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
