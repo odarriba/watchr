@@ -1,32 +1,32 @@
 <% if (!resource.errors[:name].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.name_invalid") %>
+    <%= raw t("alerts.error.name_invalid") %>
   </div>
 <% elsif (!resource.errors[:active].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.active_invalid") %>
+    <%= raw t("alerts.error.active_invalid") %>
   </div>
 <% elsif (!resource.errors[:service].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.service_invalid") %>
+    <%= raw t("alerts.error.service_invalid") %>
   </div>
 <% elsif (!resource.errors[:condition].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.condition_invalid") %>
+    <%= raw t("alerts.error.condition_invalid") %>
   </div>
 <% elsif (!resource.errors[:limit].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.limit_invalid") %>
+    <%= raw t("alerts.error.limit_invalid") %>
   </div>
 <% elsif (!resource.errors[:target].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("services.error.target_invalid") %>
+    <%= raw t("alerts.error.target_invalid") %>
   </div>
 <% end %>
 <%= form_for resource, :html => {:class => "form-horizontal"} do |f| %>

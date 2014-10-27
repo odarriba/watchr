@@ -78,6 +78,7 @@ en:
       resume: "Resume"
       resume_helper: "The function used to resume the data to show the results of multiple hosts."
       hosts: "Hosts"
+      alerts: "Alerts"
       created_at: "Created at"
       updated_at: "Updated at"
     notice:

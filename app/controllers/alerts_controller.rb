@@ -5,6 +5,8 @@
 class AlertsController < ApplicationController
   # Check the privilege level required
   before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy]
+  # Check the existence of services first
+  before_action :check_service_existence, :only => [:new, :create, :edit, :update]
 
   # Action to list the alerts registered in the application.
   # It also allows to search in the alerts by _name_ and/or _description_.
@@ -202,6 +204,18 @@ class AlertsController < ApplicationController
     end
 
     return @alert
+  end
+
+  # Function to check if there is any existing service before executing 
+  # the create/update actions that require at least a service.
+  #
+  def check_service_existence
+    if (Service.all.count == 0)
+      flash[:error] = t("alerts.error.services_not_exist")
+      redirect_to :back
+    end
+    
+    return
   end
 
   private

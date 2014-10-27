@@ -83,7 +83,7 @@ class ServicesController < ApplicationController
   #
   def create
     parameters = service_params
-    parameters[:probe_config] = params[:probe_config]
+    parameters[:probe_config] = params[:probe_config] if (!params[:probe_config].blank?)
 
     # Apply the params received
     @service = Service.new(parameters)

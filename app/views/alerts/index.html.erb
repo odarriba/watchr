@@ -49,7 +49,7 @@
       </thead>
       <tbody>
         <% @alerts.each do |alert| %>
-        <tr class='element'>
+        <tr class='element '>
           <td>
             <%= alert.name %>
             <% if (!alert.is_active?) %><span class='text-primary'>(<%= t("alerts.form.inactive") %>)</span><% end %>

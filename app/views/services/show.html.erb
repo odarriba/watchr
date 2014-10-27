@@ -104,6 +104,12 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="service_hosts" class="col-sm-3 control-label"><%= t("services.form.alerts") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @service.alerts.to_a.map{|h| h = h.name}.join(", ") %></p>
+        </div>
+      </div>
+      <div class="form-group">
         <div class="col-sm-offset-3 col-md-7 col-sm-9">
           <hr class='divider' />
         </div>

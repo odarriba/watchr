@@ -20,7 +20,7 @@ class Alert
   field :target,      :type => Symbol, :default => :service
 
   # Service to monitor
-  belongs_to :service
+  belongs_to :service, :dependent => :nullify
 
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
