@@ -16,6 +16,7 @@ gem 'devise-async', '~> 0.9.0'
 
 # Sidekiq to perform background operations
 gem 'sidekiq', '~> 3.2.6'
+gem 'sinatra', '>= 1.3.0', :require => nil
 
 # Javascript Runtime - See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby

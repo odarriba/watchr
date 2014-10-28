@@ -4,7 +4,7 @@ staging:
 production:
   :concurrency: 20
 :queues:
-  - [high_priority, 3]
-  - [normal_priority, 2]
-  - [default, 2]
-  - [low_priority, 1]
+  - high_priority
+  - normal_priority
+  - default
+  - low_priority

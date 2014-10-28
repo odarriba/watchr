@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
 
@@ -38,6 +40,10 @@ Rails.application.routes.draw do
     get 'alerts/:id/users' => 'alerts#index_users', :as => :alert_users
     post 'alerts/:id/users/new' => 'alerts#new_user', :as => :new_alert_user
     delete 'alerts/:id/users/:user_id' => 'alerts#delete_user', :as => :delete_alert_user
+  end
+
+  authenticate :user, lambda { |u| u.is_administrator? } do
+    mount Sidekiq::Web => '/sidekiq'
   end
 
   # You can have the root of your site routed with "root"
