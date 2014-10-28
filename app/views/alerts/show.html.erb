@@ -85,6 +85,17 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="alert_users" class="col-sm-3 control-label"><%= t("alerts.form.users") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert.users.to_a.map{|u| u = u.name}.join(", ") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
         <label for="service_created_at" class="col-sm-3 control-label"><%= t("alerts.form.created_at") %></label>
         <div class="col-md-7 col-sm-9">
           <p class="form-control-static"><%= @alert.created_at.strftime("%m/%d/%Y - %H:%M") %></p>
@@ -104,6 +115,7 @@
       <div class="form-group">
         <div class="col-md-offset-1 col-md-9 col-sm-12">
           <div class='pull-right'>
+            <%= link_to "<i class='fa fa-user'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.users")}</span>".html_safe, alert_users_path(@alert), :class => "btn btn-warning", :title => t("alerts.index.button.users") %>
             <% if (current_user.is_normal?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.edit")}</span>".html_safe, edit_alert_path(@alert), :class => "btn btn-info", :title => t("alerts.index.button.edit") %>
             <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.destroy")}</span>".html_safe, alert_path(@alert), :method => :delete, :class => "btn btn-danger", :title => t("alerts.index.button.destroy"), :data => {:confirm => t("alerts.index.button.destroy_confirmation")} %>

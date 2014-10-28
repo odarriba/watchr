@@ -61,6 +61,17 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="user_alerts" class="col-sm-3 control-label"><%= t("users.form.alerts") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @user.alerts.to_a.map{|a| a = a.name}.join(", ") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
         <label for="user_current_login" class="col-sm-3 control-label"><%= t("users.form.current_login") %></label>
         <div class="col-md-7 col-sm-9">
           <p class="form-control-static"><% if(!@user.current_sign_in_at.blank?) %><%= @user.current_sign_in_at.strftime("%d/%m/%Y - %H:%M") %> (IP: <%= @user.current_sign_in_ip %>)<% end %></p>

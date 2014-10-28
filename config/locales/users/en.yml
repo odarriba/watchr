@@ -58,6 +58,7 @@ en:
       gravatar_email_placeholder: "Gravatar e-mail"
       gravatar_email_helper: "Leave blank if you want to use the login e-mail."
       language: "Language"
+      alerts: "Subscribed alerts"
       created_at: "Created at"
       updated_at: "Updated at"
       current_login: "Current login"

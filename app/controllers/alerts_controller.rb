@@ -4,7 +4,7 @@
 #
 class AlertsController < ApplicationController
   # Check the privilege level required
-  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy, :new_user, :delete_user]
   # Check the existence of services first
   before_action :check_service_existence, :only => [:new, :create, :edit, :update]
 

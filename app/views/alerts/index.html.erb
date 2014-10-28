@@ -63,6 +63,7 @@
           </td>
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.show")}</span>".html_safe, alert_path(alert), :class => "btn btn-sm btn-success", :title => t("alerts.index.button.show") %>
+            <%= link_to "<i class='fa fa-user'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.users")}</span>".html_safe, alert_users_path(alert), :class => "btn btn-sm btn-warning", :title => t("alerts.index.button.users") %>
             <% if (current_user.is_normal?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.edit")}</span>".html_safe, edit_alert_path(alert), :class => "btn btn-sm btn-info", :title => t("alerts.index.button.edit") %>
             <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index.button.destroy")}</span>".html_safe, alert_path(alert), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("alerts.index.button.destroy"), :data => {:confirm => t("alerts.index.button.destroy_confirmation")} %>
