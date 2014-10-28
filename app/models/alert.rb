@@ -31,6 +31,7 @@ class Alert
 
   # The fields must be present.
   validates_presence_of :name
+  validates_presence_of :active
   validates_presence_of :limit
   validates_presence_of :condition
   validates_presence_of :target
@@ -54,7 +55,7 @@ class Alert
   #   A boolean indicating if the condition is valid or not.
   #
   def self.valid_condition?(condition)
-    return Alert::AVAILABLE_CONDITIONS.inlcude?(condition)
+    return Alert::AVAILABLE_CONDITIONS.include?(condition)
   end
 
   # Function to check if a target is valid.
@@ -66,6 +67,6 @@ class Alert
   #   A boolean indicating if the target is valid or not.
   #
   def self.valid_target?(target)
-    return Alert::AVAILABLE_TARGETS.inlcude?(target)
+    return Alert::AVAILABLE_TARGETS.include?(target)
   end
 end

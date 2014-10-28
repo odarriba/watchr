@@ -230,7 +230,7 @@ class ServiceTest < ActiveSupport::TestCase
     @service.hosts << @host
     assert @service.save
 
-    # Reload anc check the relation
+    # Reload and check the relation
     @service.reload
     @host.reload
     assert @service.hosts.include?(@host)
