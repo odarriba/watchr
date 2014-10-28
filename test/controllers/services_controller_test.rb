@@ -15,8 +15,8 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "index, show and index_hosts should be accessible for anyone" do
-    create_service(@create_hash)
     create_host
+    create_service(@create_hash)
 
     # Check for every privilege level
     [@user_admin, @user_normal, @user_guest].each do |user|
@@ -57,26 +57,26 @@ class ServicesControllerTest < ActionController::TestCase
     # Can't create services
     post :create, :service => @create_hash
     assert_redirected_to root_path
-    # Check that the user hasn't been created
+    # Check that the service hasn't been created
     assert_not Service.where(:name => @create_hash[:name]).first
 
     create_service(@create_hash)
 
-    # Can't view users edit form
+    # Can't view service edit form
     get :edit, :id => @service.id
     assert_redirected_to root_path
 
-    # Can't update users
+    # Can't update services
     put :update, :id => @service.id, :service => {:name => "Name test"}
     assert_redirected_to root_path
     # Check that there isn't any change
     @service.reload
     assert_not_equal @service.name, "Name test"
 
-    # Can't destroy users
+    # Can't destroy services
     delete :destroy, :id => @service.id
     assert_redirected_to root_path
-    # Check that theuser already exists
+    # Check that the service already exists
     assert Service.where(:_id => @service.id).first
 
     # Can't assing a host to service
@@ -89,7 +89,7 @@ class ServicesControllerTest < ActionController::TestCase
     @service.hosts << @host
     @service.save
 
-    post :delete_host, {:id => @service.id, :host_id => @host.id}
+    delete :delete_host, {:id => @service.id, :host_id => @host.id}
     assert_redirected_to root_path
     @service.reload
     assert_equal @service.hosts.count, 1
@@ -104,13 +104,13 @@ class ServicesControllerTest < ActionController::TestCase
     [@user_admin, @user_normal].each do |user|
       sign_in :user, user
 
-      # Can index users
+      # Can index services
       get :index
       assert_response :success
       assert_template :layout => :application
       assert_template :index
 
-      # Can view users
+      # Can view services
       get :show, :id => @service.id
       assert_response :success
       assert_template :layout => :application
@@ -201,19 +201,22 @@ class ServicesControllerTest < ActionController::TestCase
     sign_out :user
   end
 
-  test "should not show, assign or delete host if no host exists" do
+  test "should not show, assign or delete services if no host exists" do
     create_service(@create_hash)
 
     sign_in :user, @user_admin
 
+    # Index hosts action
     request.env["HTTP_REFERER"] = services_path()
     get :index_hosts, {:id => @service.id}
     assert_redirected_to services_path()
 
+    # Assign new host action
     request.env["HTTP_REFERER"] = services_path()
     post :new_host, {:id => @service.id, :host_id => "nonexistinghost"}
     assert_redirected_to services_path()
 
+    # Delte a host assignation action
     request.env["HTTP_REFERER"] = services_path()
     delete :delete_host, {:id => @service.id, :host_id => "nonexistinghost"}
     assert_redirected_to services_path()
@@ -224,6 +227,13 @@ class ServicesControllerTest < ActionController::TestCase
     create_service(@create_hash)
 
     sign_in :user, @user_admin
+
+    # Can't assing an inexistent host to service
+    post :new_host, {:id => @service.id, :host_id => "invalidhost"}
+    assert_redirected_to service_hosts_path(@service)
+
+    @service.reload
+    assert_equal @service.hosts.count, 0
 
     # Can assing a host to service
     post :new_host, {:id => @service.id, :host_id => @host.id}
@@ -243,6 +253,13 @@ class ServicesControllerTest < ActionController::TestCase
     @service.save
 
     sign_in :user, @user_admin
+
+    # Can't remove an inexistent host to service
+    delete :delete_host, {:id => @service.id, :host_id => "invalidhost"}
+    assert_redirected_to service_hosts_path(@service)
+
+    @service.reload
+    assert_equal @service.hosts.count, 1
 
     # Can remove a host from the service
     delete :delete_host, {:id => @service.id, :host_id => @host.id}
@@ -276,7 +293,7 @@ class ServicesControllerTest < ActionController::TestCase
     assert_redirected_to services_path
 
     # Remove a host from service
-    post :delete_host, {:id => "non-existing-id", :host_id => @host.id}
+    delete :delete_host, {:id => "non-existing-id", :host_id => @host.id}
     assert_redirected_to services_path
 
     # Destroy action

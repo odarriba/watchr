@@ -45,30 +45,30 @@ class HostsControllerTest < ActionController::TestCase
     get :new
     assert_redirected_to root_path
 
-    # Can't create ohsts
+    # Can't create hosts
     post :create, :host => @create_hash
     assert_redirected_to root_path
-    # Check that the user hasn't been created
+    # Check that the host hasn't been created
     assert_not Host.where(:name => @create_hash[:name]).first
 
     # Create the host
     create_host(@create_hash)
 
-    # Can't view users edit form
+    # Can't view host edit form
     get :edit, :id => @host.id
     assert_redirected_to root_path
 
-    # Can't update users
+    # Can't update hosts
     put :update, :id => @host.id, :host => {:name => "Name test"}
     assert_redirected_to root_path
     # Check that there isn't any change
     @host.reload
     assert_not_equal @host.name, "Name test"
 
-    # Can't destroy users
+    # Can't destroy hosts
     delete :destroy, :id => @host.id
     assert_redirected_to root_path
-    # Check that theuser already exists
+    # Check that the host already exists
     assert Host.where(:_id => @host.id).first
 
     sign_out :user
@@ -81,13 +81,13 @@ class HostsControllerTest < ActionController::TestCase
     [@user_admin, @user_normal].each do |user|
       sign_in :user, user
 
-      # Can index users
+      # Can index hosts
       get :index
       assert_response :success
       assert_template :layout => :application
       assert_template :index
 
-      # Can view users
+      # Can view hosts
       get :show, :id => @host.id
       assert_response :success
       assert_template :layout => :application

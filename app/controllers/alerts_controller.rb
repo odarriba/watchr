@@ -67,7 +67,7 @@ class AlertsController < ApplicationController
   #
   def create
     parameters = alert_params
-    parameters[:service] = Service.where(:_id => parameters[:service]).first
+    parameters[:service] = Service.where(:_id => parameters[:service_id]).first
 
     # Apply the params received
     @alert = Alert.new(parameters)
@@ -329,6 +329,6 @@ class AlertsController < ApplicationController
   #   The filtered version of *params[:alert]*.
   #
   def alert_params
-    params.require(:alert).permit(:name, :description, :active, :service, :condition, :limit, :target)
+    params.require(:alert).permit(:name, :description, :active, :service_id, :condition, :limit, :target)
   end
 end

@@ -24,7 +24,7 @@ class ActiveSupport::TestCase
     if (!data.blank? && data.is_a?(Hash))
       @host = Host.create(data)
     else
-      @host = Host.create(:name => "Test Host", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true)
+      @host = Host.create(:name => "Test Host #{rand(1..1000)}", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true)
     end
   end
 
@@ -37,7 +37,21 @@ class ActiveSupport::TestCase
     if (!data.blank? && data.is_a?(Hash))
       @service = Service.create(data)
     else
-      @service = Service.create(:name => "Test Service", :description => "Test service description.", :active => true, :probe => "dummy", :probe_config => {:value => 1}, :interval => 60, :clean_interval => 86400, :priority => Service::PRIORITY_NORMAL, :resume => :mean_value)
+      @service = Service.create(:name => "Test Service #{rand(1..1000)}", :description => "Test service description.", :active => true, :probe => "dummy", :probe_config => {:value => 1}, :interval => 60, :clean_interval => 86400, :priority => Service::PRIORITY_NORMAL, :resume => :mean_value)
+    end
+  end
+
+  # Helper function to create an alert in the DB
+  #
+  # [Parameters]
+  #   * *data* - The data to create a service
+  #
+  def create_alert(data=nil)
+    if (!data.blank? && data.is_a?(Hash))
+      @alert = Alert.create(data)
+    else
+      create_service
+      @alert = Alert.create(:name => "Test Alert #{rand(1..1000)}", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :target => :service, :service_id => @service.id)
     end
   end
 
