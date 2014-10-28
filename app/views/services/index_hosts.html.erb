@@ -67,19 +67,11 @@
         </tr>
         <% end %>
         <% if (@hosts.count == 0) %>
-          <% if (!@query.blank?) %>
-            <tr class="no-elements">
-              <td colspan="3">
-                <%= raw t("ui.table.no_result") %>
-              </td>
-            </tr>
-          <% else %>
-            <tr class="no-elements">
-              <td colspan="3">
-                <%= raw t("ui.table.no_element") %>
-              </td>
-            </tr>
-          <% end %>
+          <tr class="no-elements">
+            <td colspan="3">
+              <%= raw t("ui.table.no_element") %>
+            </td>
+          </tr>
         <% end %>
       </tbody>
     </table>

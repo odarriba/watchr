@@ -85,9 +85,9 @@ en:
       created: "Service (%{name}) <b>created succesfully</b>."
       updated: "Service (%{name}) <b>updated succesfully</b>."
       destroyed: "Service (%{name}) <b>destroyed violently</b>."
-      host_added: "Host (%{name}) <b>added succesfully</b> to service (%{service})."
-      host_already_added: "Host (%{name}) <b>was added before</b> to service (%{service})."
-      host_deleted: "Host (%{name}) <b>deleted succesfully</b> from service (%{service})."
+      host_added: "Host (%{name}) <b>added succesfully</b> to the service (%{service})."
+      host_already_added: "Host (%{name}) <b>was already added</b> to the service (%{service})."
+      host_deleted: "Host (%{name}) <b>deleted succesfully</b> from the service (%{service})."
     error:
       not_found: "The service with the requested ID doesn't exist."
       hosts_not_exist: "To assign hosts to a service, <b>you have to create them first</b>."

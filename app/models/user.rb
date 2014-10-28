@@ -61,6 +61,9 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
+  # Subscription to alerts
+  has_and_belongs_to_many :alerts, :dependent => :nullify
+
   # Validations of the fields added (the devise's default fields have validation with Devise)
   validates_length_of :name, minimum: 2, maximum: 30
   validates_length_of :gravatar_email, minimum: 6, maximum: 255

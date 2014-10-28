@@ -21,6 +21,8 @@ class Alert
 
   # Service to monitor
   belongs_to :service, :dependent => :nullify
+  # Users subscribed
+  has_and_belongs_to_many :users, :dependent => :nullify
 
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30

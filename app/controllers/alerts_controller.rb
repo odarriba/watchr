@@ -180,6 +180,109 @@ class AlertsController < ApplicationController
     end
   end
 
+  # Action to index the users subscribed to an alert.
+  #
+  # [URL] 
+  #   * GET /configuration/alerts/:id/users
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #
+  def index_users
+    load_alert
+    return if (@alert.blank?)
+
+    # Preload the users
+    @users = User.where(:_id.in => @alert.user_ids)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # Action to subscribe a user to an alert.
+  #
+  # [URL] 
+  #   * POST /configuration/alerts/:id/users/new
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #   * *user_id* - The identificator of the user.
+  #
+  def new_user
+    load_alert
+    return if (@alert.blank?)
+
+    @user = User.where(:_id => params[:user_id]).first
+
+    # Do the user exists?
+    if (@user.blank?)
+      flash[:error] = t("alerts.error.user_not_found")
+      redirect_to alert_users_path()
+      return
+    end
+
+    # is already subscribed?
+    if (@alert.user_ids.include?(@user.id))
+      flash[:notice] = t("alerts.notice.user_already_added", :name => @user.name, :alert => @alert.name)
+      redirect_to alert_users_path()
+      return
+    end
+
+    # Subscribe it
+    @alert.users << @user
+
+    respond_to do |format|
+      format.html{
+        if (@alert.save)
+          flash[:notice] = t("alerts.notice.user_added", :name => @user.name, :alert => @alert.name)
+        else
+          flash[:error] = t("alerts.error.user_not_added", :name => @user.name, :alert => @alert.name)
+        end
+        redirect_to alert_users_path()
+        return
+      }
+    end
+  end
+
+  # Action to desubscribe a user to an alert.
+  #
+  # [URL] 
+  #   * DELETE /configuration/alerts/:id/users/:user_id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #   * *user_id* - The identificator of the user.
+  #
+  def delete_user
+    load_alert
+    return if (@alert.blank?)
+
+    @user = User.where(:_id => params[:user_id]).first
+
+    # Does the user exist?
+    if (@user.blank?)
+      flash[:error] = t("alerts.error.user_not_found")
+      redirect_to alert_users_path()
+      return
+    end
+
+    # Disassociate the user from the alert
+    @alert.users.delete(@user)
+
+    respond_to do |format|
+      format.html{
+        if (@alert.save)
+          flash[:notice] = t("alerts.notice.user_deleted", :name => @user.name, :alert => @alert.name)
+        else
+          flash[:error] = t("alerts.error.user_not_deleted", :name => @user.name, :alert => @alert.name)
+        end
+        redirect_to alert_users_path()
+        return
+      }
+    end
+  end
+
   protected
 
   # Function lo load an alert from the database using *id* parameter in the URL.

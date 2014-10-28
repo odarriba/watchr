@@ -37,6 +37,16 @@ en:
     edit:
       title: "Edit as alert"
       continue: "Save changes"
+    index_users:
+      title: "Users subscribed"
+      table:
+        name: "Name"
+        email: "E-mail"
+      button:
+        add: "Add user"
+        show: "Show user"
+        destroy: "Unsubscribe"
+        destroy_confirmation: "Do you really want to unsubscribe this user?"
     form:
       name: "Name"
       name_placeholder: "Name of the service"
@@ -60,9 +70,15 @@ en:
       created: "Alert (%{name}) <b>created succesfully</b>."
       updated: "Alert (%{name}) <b>updated succesfully</b>."
       destroyed: "Alert (%{name}) <b>destroyed violently</b>."
+      user_added: "User (%{name}) <b>subscribed succesfully</b> to the alert (%{alert})."
+      user_already_added: "User (%{name}) <b>was already subscribed</b> to the alert (%{alert})."
+      user_deleted: "User (%{name}) <b>unsubscribed succesfully</b> from the alert (%{alert})."
     error:
       not_found: "The alert with the requested ID doesn't exist."
       not_destroyed: "Alert (%{name}) couldn't be destroyed. Please, try again."
+      user_not_found: "The user with the requested ID doesn't exist."
+      user_not_added: "User (%{name}) <b>couldn't be subscribed</b> to the alert (%{alert})."
+      user_not_deleted: "User (%{name}) <b>couldn't be unsubscribed</b> from the alert (%{alert})."
       services_not_exist: "To create/update an alert, <b>you have to create a service first</b>."
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
       active_invalid: "The activation status is invalid. Check it and try again."

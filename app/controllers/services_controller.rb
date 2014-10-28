@@ -251,6 +251,7 @@ class ServicesController < ApplicationController
     load_service
     return if (@service.blank?)
 
+    # Preload hosts
     @hosts = Host.where(:_id.in => @service.host_ids)
 
     respond_to do |format|
@@ -273,18 +274,21 @@ class ServicesController < ApplicationController
 
     @host = Host.where(:_id => params[:host_id]).first
 
+    # Does the host exists?
     if (@host.blank?)
       flash[:error] = t("services.error.host_not_found")
       redirect_to service_hosts_path()
       return
     end
 
+    # is the host already assigned?
     if (@service.host_ids.include?(@host.id))
       flash[:notice] = t("services.notice.host_already_added", :name => @host.name, :service => @service.name)
       redirect_to service_hosts_path()
       return
     end
 
+    # Assign it
     @service.hosts << @host
 
     respond_to do |format|
