@@ -6,7 +6,7 @@ module UsersHelper
   # [Returns]
   #   Hash with the level identificators associated to the translations of the privilege levels names.
   #
-  def levels_hash
+  def user_levels_hash
     result = Hash.new
 
     User::AVAILABLE_LEVELS.each do |level|
@@ -21,7 +21,7 @@ module UsersHelper
   # [Returns]
   #   Hash with the locale identificators associated to the translation of the locales name.
   #
-  def languages_hash
+  def user_languages_hash
     result = Hash.new
 
     I18n.available_locales.each do |locale|
