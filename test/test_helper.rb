@@ -17,14 +17,28 @@ class ActiveSupport::TestCase
 
   # Helper function to create a host in the DB
   #
-  def create_host
-    @host = Host.create(:name => "Test Host", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true)
+  # [Parameters]
+  #   * *data* - The data to create a host
+  #
+  def create_host(data=nil)
+    if (!data.blank? && data.is_a?(Hash))
+      @host = Host.create(data)
+    else
+      @host = Host.create(:name => "Test Host", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true)
+    end
   end
 
   # Helper function to create a service in the DB
   #
-  def create_service
-    @service = Service.create(:name => "Test Service", :description => "Test service description.", :active => true, :probe => "dummy", :probe_config => {:value => 1}, :interval => 60, :clean_interval => 86400, :priority => Service::PRIORITY_NORMAL, :resume => :mean_value)
+  # [Parameters]
+  #   * *data* - The data to create a service
+  #
+  def create_service(data=nil)
+    if (!data.blank? && data.is_a?(Hash))
+      @service = Service.create(data)
+    else
+      @service = Service.create(:name => "Test Service", :description => "Test service description.", :active => true, :probe => "dummy", :probe_config => {:value => 1}, :interval => 60, :clean_interval => 86400, :priority => Service::PRIORITY_NORMAL, :resume => :mean_value)
+    end
   end
 
   # Helper function to destroy all the items in the database

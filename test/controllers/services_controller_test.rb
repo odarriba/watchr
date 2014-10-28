@@ -15,8 +15,7 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "index, show and index_hosts should be accessible for anyone" do
-    @service = Service.create(@create_hash)
-
+    create_service(@create_hash)
     create_host
 
     # Check for every privilege level
@@ -61,7 +60,7 @@ class ServicesControllerTest < ActionController::TestCase
     # Check that the user hasn't been created
     assert_not Service.where(:name => @create_hash[:name]).first
 
-    @service = Service.create(@create_hash)
+    create_service(@create_hash)
 
     # Can't view users edit form
     get :edit, :id => @service.id
@@ -99,7 +98,7 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "read and write access should be available to non-guest users" do
-    @service = Service.create(@create_hash)
+    create_service(@create_hash)
 
     # Try with Normal and Administrator privilege users
     [@user_admin, @user_normal].each do |user|
@@ -162,9 +161,9 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "should update services with valid data only" do
-    sign_in :user, @user_admin
+    create_service(@create_hash)
 
-    @service = Service.create(@create_hash)
+    sign_in :user, @user_admin
 
     # Valid data
     put :update, :id => @service.id, :service => {:name => "Name test"}
@@ -188,9 +187,9 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "should destroy services" do
-    sign_in :user, @user_admin
+    create_service(@create_hash)
 
-    @service = Service.create(@create_hash)
+    sign_in :user, @user_admin
 
     # Destroy service
     delete :destroy, :id => @service.id
@@ -202,9 +201,27 @@ class ServicesControllerTest < ActionController::TestCase
     sign_out :user
   end
 
+  test "should not show, assign or delete host if no host exists" do
+    create_service(@create_hash)
+
+    sign_in :user, @user_admin
+
+    request.env["HTTP_REFERER"] = services_path()
+    get :index_hosts, {:id => @service.id}
+    assert_redirected_to services_path()
+
+    request.env["HTTP_REFERER"] = services_path()
+    post :new_host, {:id => @service.id, :host_id => "nonexistinghost"}
+    assert_redirected_to services_path()
+
+    request.env["HTTP_REFERER"] = services_path()
+    delete :delete_host, {:id => @service.id, :host_id => "nonexistinghost"}
+    assert_redirected_to services_path()
+  end
+
   test "should assign hosts to service" do
     create_host
-    @service = Service.create(@create_hash)
+    create_service(@create_hash)
 
     sign_in :user, @user_admin
 
@@ -220,14 +237,15 @@ class ServicesControllerTest < ActionController::TestCase
 
   test "should remove hosts to service" do
     create_host
-    @service = Service.create(@create_hash)
+    create_service(@create_hash)
+
     @service.hosts << @host
     @service.save
 
     sign_in :user, @user_admin
 
     # Can remove a host from the service
-    post :delete_host, {:id => @service.id, :host_id => @host.id}
+    delete :delete_host, {:id => @service.id, :host_id => @host.id}
     assert_redirected_to service_hosts_path(@service)
 
     @service.reload

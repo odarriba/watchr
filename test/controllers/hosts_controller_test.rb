@@ -15,7 +15,7 @@ class HostsControllerTest < ActionController::TestCase
   end
 
   test "index and show should be accessible for anyone" do
-    @host = Host.create(@create_hash)
+    create_host(@create_hash)
 
     # Check for every privilege level
     [@user_admin, @user_normal, @user_guest].each do |user|
@@ -51,7 +51,8 @@ class HostsControllerTest < ActionController::TestCase
     # Check that the user hasn't been created
     assert_not Host.where(:name => @create_hash[:name]).first
 
-    @host = Host.create(@create_hash)
+    # Create the host
+    create_host(@create_hash)
 
     # Can't view users edit form
     get :edit, :id => @host.id
@@ -74,7 +75,7 @@ class HostsControllerTest < ActionController::TestCase
   end
 
   test "read and write access should be available to non-guest users" do
-    @host = Host.create(@create_hash)
+    create_host(@create_hash)
 
     # Try with Normal and Administrator privilege users
     [@user_admin, @user_normal].each do |user|
@@ -137,9 +138,9 @@ class HostsControllerTest < ActionController::TestCase
   end
 
   test "should update hosts with valid data only" do
-    sign_in :user, @user_admin
+    create_host(@create_hash)
 
-    @host = Host.create(@create_hash)
+    sign_in :user, @user_admin
 
     # Valid data
     put :update, :id => @host.id, :host => {:name => "Name test"}
@@ -163,9 +164,9 @@ class HostsControllerTest < ActionController::TestCase
   end
 
   test "should destroy hosts" do
+    create_host(@create_hash)
+    
     sign_in :user, @user_admin
-
-    @host = Host.create(@create_hash)
 
     # Destroy host
     delete :destroy, :id => @host.id
