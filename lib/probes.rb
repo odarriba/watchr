@@ -1,4 +1,10 @@
 module Watchr
+  # This class provides probe subsystem, with all the actions needed to
+  # know which probes are loaded, as long as registering new probes or
+  # get their objects.
+  #
+  # It also autoloads the probes availables during boot time.
+  #
   class Probes
     # Probe information hash
     PROBES = {}
