@@ -165,7 +165,7 @@ class UsersController < ApplicationController
         # The user can be updated?
         if (@user.update_attributes(user_values))
           # Send an e-mail of password changed if needed
-          UserMailer.change_password_email(@user).deliver if (new_password)
+          UserMailerWorker.perform_async(:change_password_email, @user.id.to_s, @user.password) if (new_password)
 
           flash[:notice] = t("users.notice.updated", :email => @user.email)
           redirect_to user_path(@user)

@@ -6,7 +6,7 @@ class UserMailer < ActionMailer::Base
 
   layout "email"
 
-  # Mailer to send the welcome email to an user with it's login details.
+  # Mailer to send the welcome e-mail to an user with it's login details.
   #
   # [Parameters] 
   #   * *user* - The user object to which one send the e-mail.
@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: t("users.email.welcome.subject"))
   end
 
-  # Mailer to send the ans email to an user warning about an password change.
+  # Mailer to send an e-mail to an user warning about an password change.
   #
   # [Parameters] 
   #   * *user* - The user object to which one send the e-mail.

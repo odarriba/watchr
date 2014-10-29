@@ -1,8 +1,12 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 
 class ActiveSupport::TestCase
+  setup :clean_sidekiq
+
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
 
@@ -59,5 +63,11 @@ class ActiveSupport::TestCase
   #
   def clean_db
     Mongoid::Sessions.default.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
+  end
+
+  # Helper function to clean Sidekiq queues
+  #
+  def clean_sidekiq
+    Sidekiq::Worker.clear_all
   end
 end

@@ -186,6 +186,6 @@ class User
   # After creation method to send to the user it's login details vie e-mail.
   #
   def send_welcome_email
-    UserMailer.welcome_email(self).deliver
+    UserMailerWorker.perform_async(:welcome_email, self.id.to_s, self.password)
   end
 end

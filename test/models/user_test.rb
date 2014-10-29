@@ -57,11 +57,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "a welcome email should be sended" do
-    count_pre = ActionMailer::Base.deliveries.count
+    count_pre = UserMailerWorker.jobs.count
 
     @user.save
 
-    count_post = ActionMailer::Base.deliveries.count
+    count_post = UserMailerWorker.jobs.count
 
     assert_equal count_pre+1, count_post
   end 

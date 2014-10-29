@@ -206,6 +206,23 @@ class UsersControllerTest < ActionController::TestCase
     sign_out :user
   end
 
+  test "should update user password and send e-mail" do
+    sign_in :user, @user_admin
+
+    count_pre = UserMailerWorker.jobs.count
+
+    # Change password
+    put :update, :id => @user_normal.id, :user => {:change_password => "true"}
+    count_post = UserMailerWorker.jobs.count
+    # Should be one more job
+    assert_equal count_pre+1, count_post
+
+    # Should be redirected
+    assert_redirected_to user_path(@user_normal)
+
+    sign_out :user
+  end
+
   test "should not change the privilege level of the current user" do
     sign_in :user, @user_admin
 
