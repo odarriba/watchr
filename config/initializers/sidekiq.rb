@@ -11,3 +11,10 @@ Sidekiq.configure_client do |config|
     namespace: Watchr::Application::CONFIG["redis"]["namespace"] 
   }
 end
+
+# :nodoc: all
+# This hack is needed to avoid an undocummented use
+# of Sidekiq::Web in routes.rb file
+#
+module Sidekiq
+end

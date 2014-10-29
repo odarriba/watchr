@@ -17,7 +17,7 @@ module Devise
   #
   class Mailer < ActionMailer::Base
     # Function to send the reset password instructions.
-    3
+    #
     def reset_password_instructions(record, token, opts={})
       # Get the original locale and set the user's one.
       @previous_local = I18n.locale
