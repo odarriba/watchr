@@ -36,7 +36,13 @@ class Service
   field :priority,        :type => Integer, :default => Service::PRIORITY_NORMAL
   field :resume,          :type => Symbol, :default => :mean_value
 
+  # Has assigned hosts to test the service
   has_and_belongs_to_many :hosts, :dependent => :nullify
+
+  # Has results of testing the service over the hosts
+  has_many :results, :dependent => :destroy
+
+  # Has alerts that monitor the results of the service
   has_many :alerts, :dependent => :nullify
 
   # Validate fields.
@@ -80,6 +86,28 @@ class Service
   #
   def is_active?
     return self.active
+  end
+
+  # Function do the resume function over an array of results.
+  #
+  # [Parameters]
+  #   * *values* - An array with float values.
+  #
+  # [Returns]
+  #   The resume value.
+  #
+  def resume_values(values)
+    if (self.resume == :max_value)
+      return values.max
+    elsif (self.resume == :min_value)
+      return values.min
+    elsif (self.resume == :mean_value)
+      return values.reduce(:+).to_f / values.size
+    elsif (self.resume == :sum)
+      return values.inject(:+)
+    else
+      return nil
+    end
   end
 
   # Function to get an array with the valid probe identificators.
