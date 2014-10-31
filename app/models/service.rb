@@ -26,6 +26,7 @@ class Service
 
   # Available priority levels
   AVAILABLE_PRIORITIES = [PRIORITY_HIGH, PRIORITY_NORMAL, PRIORITY_LOW]
+  PRIORITY_QUEUE = {PRIORITY_HIGH => :high_priority, PRIORITY_NORMAL => :normal_priority, PRIORITY_LOW => :low_priority}
 
   field :name,            :type => String, :default => ""
   field :description,     :type => String, :default => ""
@@ -69,6 +70,7 @@ class Service
   validates_presence_of :priority
   validates_presence_of :resume
 
+  before_save :check_interval_change
   after_save :manage_job
   after_create :manage_job
   before_destroy :job_stop
@@ -136,7 +138,7 @@ class Service
   #
   def job_stop
     scheduled_jobs = Sidekiq::ScheduledSet.new
-    queue_jobs = Sidekiq::Queue.new
+    queue_jobs = Sidekiq::Queue.new(Service::PRIORITY_QUEUE[self.priority])
     retry_jobs = Sidekiq::RetrySet.new
 
     # Delete from the scheduled jobs
@@ -162,9 +164,10 @@ class Service
   #   A boolean that indicates if the scheduling was done right or not.
   #
   def job_schedule_next
+    p "Hola #{self.jobs_waiting}"
     # Check there isn't another job of this probe scheduled or waiting.
     if (self.jobs_waiting == 0)
-      return true if (ServiceProbeWorker.perform_in(self.interval, self.id.to_s))
+      return true if (Sidekiq::Client.enqueue_to_in(Service::PRIORITY_QUEUE[self.priority], self.interval, ServiceProbeWorker, self.id.to_s))
       return false # It fails
     else
       return false # It's already scheduled one.
@@ -179,7 +182,7 @@ class Service
   #
   def jobs_waiting
     scheduled_jobs = Sidekiq::ScheduledSet.new
-    queue_jobs = Sidekiq::Queue.new
+    queue_jobs = Sidekiq::Queue.new(Service::PRIORITY_QUEUE[self.priority])
     retry_jobs = Sidekiq::RetrySet.new
 
     # It's an scheduled job?
@@ -320,5 +323,15 @@ class Service
       errors.add(:probe_config, 'invalid probe config')
       return false
     end
+  end
+
+  # Function to check if a execution interval has changed and, if so, remove
+  # the current job to add it again later.
+  #
+  # [Returns]
+  #   A boolean indicating if there was a successful end or not.
+  #
+  def check_interval_change
+    return self.job_stop if (self.interval_changed?)
   end
 end
