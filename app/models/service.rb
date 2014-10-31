@@ -1,4 +1,5 @@
 require 'probes'
+require 'sidekiq/api'
 
 # Service model to store information about the services that are
 # monitored in the hosts by the application.
@@ -68,6 +69,10 @@ class Service
   validates_presence_of :priority
   validates_presence_of :resume
 
+  after_save :manage_job
+  after_create :manage_job
+  before_destroy :job_stop
+
 
   # Function to get the object of the probe associated to this
   # service.
@@ -108,6 +113,115 @@ class Service
     else
       return nil
     end
+  end
+
+  # Function to start a job that wasn't running or waiting
+  #
+  # [Returns]
+  #   A boolean that indicates if the job has been started or not.
+  #
+  def job_start
+    # Only start if it isn't running
+    if (self.jobs_running == 0)
+      # Try to add ir to the schedule
+      return self.job_schedule_next
+    else
+      return false # If it's already running
+    end
+  end
+
+  # Function to stop a probe job from being executed.
+  #
+  # It allows to remove all the waiting jobs (scheduled and queued).
+  #
+  def job_stop
+    scheduled_jobs = Sidekiq::ScheduledSet.new
+    queue_jobs = Sidekiq::Queue.new
+    retry_jobs = Sidekiq::RetrySet.new
+
+    # Delete from the scheduled jobs
+    scheduled_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.each do |job|
+      job.delete
+    end
+    
+    # Delete from the queue
+    queue_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.each do |job|
+      job.delete
+    end
+
+    # Delete from the retry list
+    retry_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.each do |job|
+      job.delete
+    end
+  end
+
+  # Function to schedule a new background job to perform the probe test
+  # assigned to this service to the hosts.
+  #
+  # [Returns]
+  #   A boolean that indicates if the scheduling was done right or not.
+  #
+  def job_schedule_next
+    # Check there isn't another job of this probe scheduled or waiting.
+    if (self.jobs_waiting == 0)
+      return true if (ServiceProbeWorker.perform_in(self.interval, self.id.to_s))
+      return false # It fails
+    else
+      return false # It's already scheduled one.
+    end
+  end
+
+  # Function to get the number of jobs scheduled or waitingto be executed
+  # to test this service.
+  #
+  # [Returns]
+  #   The number of jobs of this service waiting to be scheduled or executed.
+  #
+  def jobs_waiting
+    scheduled_jobs = Sidekiq::ScheduledSet.new
+    queue_jobs = Sidekiq::Queue.new
+    retry_jobs = Sidekiq::RetrySet.new
+
+    # It's an scheduled job?
+    njobs = scheduled_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.count
+    
+    # It's an queued job?
+    njobs += queue_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.count
+    return njobs if (njobs > 0)
+
+    # It's an retried job?
+    njobs += retry_jobs.select{|job| (job.klass=="ServiceProbeWorker" && job.args.include?(self.id.to_s))}.count
+    return njobs if (njobs > 0)
+
+    # Return the result
+    return njobs
+  end
+
+  # Function to get the number of service jobs being executed for 
+  # this particular service.
+  #
+  # [Returns]
+  #   The number of service jobs being executed.
+  #
+  def jobs_running
+    workers = Sidekiq::Workers.new
+
+    # It's running?
+    njobs = workers.select{|process_id, thread_id, work| (work["payload"]["class"] == "ServiceProbeWorker" && work["payload"]["args"].include?(self.id.to_s))}.count
+
+    # Return the result
+    return njobs
+  end
+
+  # Function to manage the start/stop of the job depending of the
+  # activation status
+  #
+  # [Returns]
+  #   The return value of _job_start_ or _job_stop_ functions.
+  #
+  def manage_job
+    return self.job_start if (self.active == true)
+    return self.job_stop if (self.active == false)
   end
 
   # Function to get an array with the valid probe identificators.

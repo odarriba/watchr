@@ -9,6 +9,7 @@ class Result
   embeds_many :host_results, :as => true, :cascade_callbacks => true
 
   validates_presence_of :service
+  validate :has_host_results
 
   # Function to get the _HostResult_ object of a determined host
   #
@@ -88,5 +89,22 @@ class Result
   #
   def timestamp
     return self.created_at
+  end
+
+  protected
+
+  # Function to check if there is at least one host result embedded in
+  # this result before saving (in validation time).
+  #
+  # [Returns]
+  #   A boolean that indicates if the validation was passed or not.
+  #
+  def has_host_results
+    if (self.host_results.empty?)
+      errors.add(:host_results, 'cannot be empty')
+      return false
+    end
+
+    return true
   end
 end

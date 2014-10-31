@@ -3,6 +3,7 @@ Sidekiq.configure_server do |config|
     url: "redis://#{Watchr::Application::CONFIG["redis"]["host"]}:#{Watchr::Application::CONFIG["redis"]["port"]}/#{Watchr::Application::CONFIG["redis"]["db"]}", 
     namespace: Watchr::Application::CONFIG["redis"]["namespace"] 
   }
+  config.poll_interval = 1
 end
 
 Sidekiq.configure_client do |config|
@@ -10,6 +11,7 @@ Sidekiq.configure_client do |config|
     url: "redis://#{Watchr::Application::CONFIG["redis"]["host"]}:#{Watchr::Application::CONFIG["redis"]["port"]}/#{Watchr::Application::CONFIG["redis"]["db"]}", 
     namespace: Watchr::Application::CONFIG["redis"]["namespace"] 
   }
+  config.poll_interval = 1
 end
 
 # :nodoc: all

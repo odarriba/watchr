@@ -31,5 +31,35 @@ module Watchr
       # Contains the dummy value?
       return ((!config[:value].blank?) && (config[:value].to_i >= 0))
     end
+
+    # Function to execute the probe over a host with a configuration.
+    #
+    # [Parameters]
+    #   * *host* - A _Host_ object to test it.
+    #   * *probe_config* - A hash with the configuration for the probe defined in the service.
+    #
+    # [Returns]
+    #   A _HostResult_ object with the result of the probe, or nil if no host is received.
+    #
+    def self.execute(host, probe_config)
+      return nil if (!host.is_a?(Host))
+
+      # Create the result object
+      result = HostResult.new(:host => host)
+
+      # Is the configuration valid?
+      if (!self.check_config(probe_config))
+        result.status = HostResult::STATUS_ERROR
+        result.error = "Probe configuration invalid"
+
+        return result
+      end
+
+      # Assign the dummy value
+      result.status = HostResult::STATUS_OK
+      result.value = probe_config[:value]
+
+      return result
+    end
   end
 end
