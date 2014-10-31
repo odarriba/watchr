@@ -1,3 +1,8 @@
+# Result model to store information about global results fetched
+# from the realization of a probe assigned to a service.
+#
+# Includes relations, fields, auxiliar functions and verifications.
+#
 class Result
   include Mongoid::Document
   include Mongoid::Timestamps

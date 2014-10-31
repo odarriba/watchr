@@ -1,9 +1,17 @@
+# HostResult model to store information about individual results fetched
+# from the realization of a probe over a concrete host.
+#
+# Includes relations, fields, auxiliar functions and verifications.
+#
 class HostResult
   include Mongoid::Document
 
+  # Symbol that indicates a valid result
   STATUS_OK = :ok
+  # Symbol that indicates an invalid result
   STATUS_ERROR = :error
 
+  # Array with the available statuses
   AVAILABLE_STATUSES = [STATUS_OK, STATUS_ERROR]
 
   # Fields of the result

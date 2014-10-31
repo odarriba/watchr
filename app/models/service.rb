@@ -26,6 +26,7 @@ class Service
 
   # Available priority levels
   AVAILABLE_PRIORITIES = [PRIORITY_HIGH, PRIORITY_NORMAL, PRIORITY_LOW]
+  # Priority to Queue assignation
   PRIORITY_QUEUE = {PRIORITY_HIGH => :high_priority, PRIORITY_NORMAL => :normal_priority, PRIORITY_LOW => :low_priority}
 
   field :name,            :type => String, :default => ""
@@ -164,7 +165,6 @@ class Service
   #   A boolean that indicates if the scheduling was done right or not.
   #
   def job_schedule_next
-    p "Hola #{self.jobs_waiting}"
     # Check there isn't another job of this probe scheduled or waiting.
     if (self.jobs_waiting == 0)
       return true if (Sidekiq::Client.enqueue_to_in(Service::PRIORITY_QUEUE[self.priority], self.interval, ServiceProbeWorker, self.id.to_s))
@@ -227,6 +227,12 @@ class Service
     return self.job_stop if (self.active == false)
   end
 
+  # Function to clean the results of the probe taking care of the
+  # clean interval setting of the service.
+  #
+  # [Returns]
+  #   A boolean that indicates if the operation end was success or not.
+  #
   def clean_results
     if (Result.where(:service_id => self.id, :created_at.lt => Time.now-(self.clean_interval).seconds).destroy)
       return true
