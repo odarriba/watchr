@@ -19,6 +19,9 @@ class ServiceProbeWorker
 
     p "Executing probe of #{service.name}."
 
+    # Clean previous results
+    service.clean_results
+
     # Only one probe per time
     return if (service.jobs_running > 1)
 

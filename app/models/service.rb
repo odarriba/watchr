@@ -224,6 +224,14 @@ class Service
     return self.job_stop if (self.active == false)
   end
 
+  def clean_results
+    if (Result.where(:service_id => self.id, :created_at.lt => Time.now-(self.clean_interval).seconds).destroy)
+      return true
+    else
+      return false
+    end
+  end
+
   # Function to get an array with the valid probe identificators.
   #
   # [Returns]
