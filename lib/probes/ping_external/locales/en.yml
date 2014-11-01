@@ -1,0 +1,14 @@
+en:
+  probes:
+    ping_external:
+      description: "It uses the ping utility provided by the operating system to test the connectivity to a remote host."
+      description_html: "It uses the ping utility provided by the operating system to test the connectivity to a remote host."
+      form:
+        count: "Number of pings"
+        count_placeholder: "Number of pings"
+        count_helper: "It's the number of pings to send to the host. The more pings to send, the more value will be returned by the probe."
+        interval: "Ping interval"
+        interval_placeholder: "Ping interval"
+        interval_helper: "The number of seconds between pings."
+      error:
+        config_invalid: "Probe configuration invalid"

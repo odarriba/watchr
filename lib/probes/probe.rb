@@ -6,6 +6,8 @@ module Watchr
   # data to the application.
   #  
   class Probe
+    extend ActionView::Helpers::TranslationHelper
+
     # Probe name
     PROBE_NAME = nil
     # Probe description
@@ -43,6 +45,16 @@ module Watchr
     def self.description
       return nil if (!self::PROBE_DESCRIPTION.is_a?(String))
       return self::PROBE_DESCRIPTION
+    end
+
+    # Function to get the HTML description of the probe
+    #
+    # [Returns]
+    #   A string with the HTML description of the probe
+    #
+    def self.description_html
+      return nil if (!self::PROBE_DESCRIPTION.is_a?(String))
+      return self::PROBE_DESCRIPTION.html_safe
     end
 
     # Function to get the class object of the probe

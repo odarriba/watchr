@@ -1,18 +1,16 @@
 require 'probes/probe'
+require 'net/ping/icmp'
 
 module Watchr
-  # This is a dummy probe for testing pourposes.
+  # This is an ICMP ping probe to test connectivity using ICMP protocol.
   #
-  # Use it to test the functionality of the application without
-  # load the network.
+  # Use it to test the connectivity between the app server and the target
   #
-  # _Note_: It can be used as a model to make your own probes!
-  #
-  class DummyProbe < Watchr::Probe
+  class PingIcmpProbe < Watchr::Probe
     # Probe name
-    PROBE_NAME = "dummy"
+    PROBE_NAME = "ping_icmp"
     # Probe description
-    PROBE_DESCRIPTION = "This is a dummy probe that do nothing."
+    PROBE_DESCRIPTION = "It sends ICMP ping messages to a remote host. Requires Root privileges."
 
     # Register this probe
     self.register_this
@@ -23,7 +21,7 @@ module Watchr
     #   A string with the description of the probe
     #
     def self.description
-      return t("probes.dummy.description") if (t("probes.dummy.description"))
+      return t("probes.ping_icmp.description") if (t("probes.ping_icmp.description"))
       super
     end
 
@@ -33,7 +31,7 @@ module Watchr
     #   A string with the HTML description of the probe
     #
     def self.description_html
-      return t("probes.dummy.description_html") if (t("probes.dummy.description_html"))
+      return t("probes.ping_icmp.description_html") if (t("probes.ping_icmp.description_html"))
       super
     end
 
@@ -47,9 +45,7 @@ module Watchr
     #
     def self.check_config(config)
       return false if (!config.is_a?(Hash))
-
-      # Contains the dummy value?
-      return ((!config[:value].blank?) && (config[:value].to_i >= 0))
+      return true
     end
 
     # Function to execute the probe over a host with a configuration.
@@ -70,14 +66,24 @@ module Watchr
       # Is the configuration valid?
       if (!self.check_config(probe_config))
         result.status = HostResult::STATUS_ERROR
-        result.error = t("probes.dummy.error.config_invalid")
+        result.error = t("probes.ping_icmp.error.config_invalid")
 
         return result
       end
 
-      # Assign the dummy value
-      result.status = HostResult::STATUS_OK
-      result.value = probe_config[:value]
+      # Create the ping object
+      ping = Net::Ping::ICMP.new(host.address)
+
+      if (ping.ping)
+        # Save the duration
+        result.status = HostResult::STATUS_OK
+        result.value = ping.duration
+      else
+        # If the ping ends in error, save the error
+        result.status = HostResult::STATUS_ERROR
+        result.error = ping.exception
+        result.error = "Unknown error" if (result.error.blank?)
+      end
 
       return result
     end

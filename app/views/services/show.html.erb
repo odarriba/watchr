@@ -52,7 +52,7 @@
         <label for="service_probe" class="col-sm-3 control-label"><%= t("services.form.probe") %></label>
         <div class="col-md-7 col-sm-9">
           <p class="form-control-static"><%= @service.probe %></p>
-          <span class="help-block probe_description"><%= @service.get_probe.description %></span>
+          <span class="help-block probe_description"><%= @service.get_probe.description_html %></span>
         </div>
       </div>
       <%= render "/probe_show.html.erb", :config => @service.probe_config %>

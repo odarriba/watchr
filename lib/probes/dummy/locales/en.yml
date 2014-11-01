@@ -1,7 +1,11 @@
 en:
   probes:
     dummy:
+      description: "This is a dummy probe that do nothing."
+      description_html: "This is a <i>dummy</i> probe that do nothing."
       form:
         value: "Dummy value"
         value_placeholder: "Value to return"
         value_helper: "It's the value that the dummy probe will return."
+      error:
+        config_invalid: "Probe configuration invalid"

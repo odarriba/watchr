@@ -78,15 +78,7 @@ class HostResult
         self.error = ""
       end
     elsif (self.status == HostResult::STATUS_ERROR)
-      # An error result must have an error msg
-      if (self.error.blank?)
-        # Return an error if no error msg is present
-        errors.add(:error, "error result must have an error message")
-        return false
-      else
-        # If the error msg is present, clean the value
-        self.value = nil
-      end
+      self.value = nil
     else
       # Result type undefined???
       errors.add(:result, "the result is undefined")

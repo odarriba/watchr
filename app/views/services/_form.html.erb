@@ -77,7 +77,7 @@
         pr = Watchr::Probes.get_probe(probe)
 
         if (!pr.blank?) %>
-        <span id='<%= probe %>'class="help-block probe_description hidden"><%= pr.description %></span>
+        <span id='<%= probe %>'class="help-block probe_description hidden"><%= pr.description_html %></span>
         <%
         end
         end %>

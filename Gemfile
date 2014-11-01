@@ -21,6 +21,16 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 # Javascript Runtime - See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 
+##############
+# Probe gems #
+##############
+
+# Ping suite
+# gem 'net-ping', '~> 1.7.4'
+
+# Using github version until new release.
+gem 'net-ping', :github => 'djberg96/net-ping'
+
 ##########
 # Assets #
 ##########
@@ -32,7 +42,7 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 
 # Use Bootstrap themes
-gem 'twbs_sass_rails', '~> 0.9.2'
+gem 'twbs_sass_rails', '~> 1.0.0'
 gem 'yui-compressor', '~> 0.12.0'
 
 # Use CoffeeScript for .js.coffee assets and views

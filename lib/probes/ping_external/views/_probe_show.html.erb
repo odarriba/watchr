@@ -1,0 +1,17 @@
+<div class="form-group">
+  <div class="col-sm-offset-3 col-md-7 col-sm-9">
+    <hr class='divider' />
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_count" class="col-sm-3 control-label"><%= t("probes.ping_external.form.count") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= config[:count] %></p>
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_interval" class="col-sm-3 control-label"><%= t("probes.ping_external.form.interval") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= config[:interval] %></p>
+  </div>
+</div>
