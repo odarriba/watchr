@@ -32,12 +32,21 @@ class ServiceProbeWorker
     probe = service.get_probe
     probe_config = service.probe_config
 
-    if (service.hosts.count > 0)
+    # If there is a problem with the probe (couldn't retrieve it)
+    # deactivate the service and returns.
+    #
+    if (probe.blank?)
+      service.update_attribute(:active, false)
+      return
+    end
+
+    # Check if there is any active host assigned
+    if (service.hosts.select{|h| h.is_active?}.count > 0)
       # Create a new result object
       result = Result.new(:service => service)
 
       # Execute over every host and save in the results.
-      service.hosts.each do |host|
+      service.hosts.select{|h| h.is_active?}.each do |host|
         hresult = probe.execute(host, probe_config)
         result.host_results << hresult if (hresult.is_a?(HostResult))
       end
