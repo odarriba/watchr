@@ -26,10 +26,7 @@ gem 'therubyracer', platforms: :ruby
 ##############
 
 # Ping suite
-# gem 'net-ping', '~> 1.7.4'
-
-# Using github version until new release.
-gem 'net-ping', :github => 'djberg96/net-ping'
+gem 'net-ping', '~> 1.7.5'
 
 ##########
 # Assets #
