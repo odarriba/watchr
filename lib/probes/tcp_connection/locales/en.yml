@@ -1,0 +1,14 @@
+en:
+  probes:
+    tcp_connection:
+      description: "It checks the ability to perform a TCP connection to a port of the remote host"
+      description_html: "It checks the ability to perform a <b>TCP connection</b> to a port of the remote host"
+      form:
+        port: "Remote port"
+        port_placeholder: "Remote port (1-65535)"
+        port_helper: "The port number (1-65535) of the remote host to which perform a TCP connection."
+      error:
+        config_invalid: "Probe configuration invalid."
+        connection_refused: "Connection refused."
+        connection_reset: "Connection reset."
+        general_error: "[Exception] %{err}"

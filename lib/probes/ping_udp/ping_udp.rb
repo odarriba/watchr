@@ -1,16 +1,17 @@
 require 'probes/probe'
-require 'net/ping/icmp'
+require 'net/ping/udp'
 
 module Watchr
-  # This is an ICMP ping probe to test connectivity using ICMP protocol.
+  # This is a UDP ping connectivity test using the port defined by the service.
   #
-  # Use it to test the connectivity between the app server and the target
+  # Use it to test the connectivity to a remote host using UDP. It sends a message
+  # to an UDP port and wait for a response with the same message.
   #
-  class PingIcmpProbe < Watchr::Probe
+  class PingUdpProbe < Watchr::Probe
     # Probe name
-    PROBE_NAME = "ping_icmp"
+    PROBE_NAME = "ping_udp"
     # Probe description
-    PROBE_DESCRIPTION = "It sends ICMP ping messages to a remote host. Requires Root privileges."
+    PROBE_DESCRIPTION = "It pings a remote host sending a message to an UDP port and waiting for the same message in response."
 
     # Register this probe
     self.register_this
@@ -21,7 +22,7 @@ module Watchr
     #   A string with the description of the probe
     #
     def self.description
-      return t("probes.ping_icmp.description") if (t("probes.ping_icmp.description"))
+      return t("probes.ping_udp.description") if (t("probes.ping_udp.description"))
       super
     end
 
@@ -31,7 +32,7 @@ module Watchr
     #   A string with the HTML description of the probe
     #
     def self.description_html
-      return t("probes.ping_icmp.description_html") if (t("probes.ping_icmp.description_html"))
+      return t("probes.ping_udp.description_html") if (t("probes.ping_udp.description_html"))
       super
     end
 
@@ -45,7 +46,8 @@ module Watchr
     #
     def self.check_config(config)
       return false if (!config.is_a?(Hash))
-      return true
+      # Contains valid count and interval value?
+      return ((!config[:port].blank?) && (config[:port].to_i >= 1) && (config[:port].to_i <= 65535))
     end
 
     # Function to execute the probe over a host with a configuration.
@@ -66,24 +68,24 @@ module Watchr
       # Is the configuration valid?
       if (!self.check_config(probe_config))
         result.status = HostResult::STATUS_ERROR
-        result.error = t("probes.ping_icmp.error.config_invalid")
+        result.error = t("probes.ping_udp.error.config_invalid")
 
         return result
       end
 
       # Create the ping object
-      ping = Net::Ping::ICMP.new(host.address)
+      ping = Net::Ping::UDP.new(host.address, probe_config[:port])
 
-      if (ping.ping)
+      if (ping.ping(host.address))
         # Save the duration
         result.status = HostResult::STATUS_OK
         result.value = ping.duration
       else
         # If the ping ends in error, save the error
         result.status = HostResult::STATUS_ERROR
-        result.error = t("probes.ping_icmp.error.general_error", :err => conn.exception.to_s)
-        result.error = t("probes.ping_icmp.error.connection_refused") if (conn.exception == Errno::ECONNREFUSED)
-        result.error = t("probes.ping_icmp.error.connection_reset") if (conn.exception == Errno::ECONNRESET)
+        result.error = t("probes.ping_udp.error.general_error", :err => ping.exception.to_s)
+        result.error = t("probes.ping_udp.error.connection_refused") if (ping.exception == Errno::ECONNREFUSED)
+        result.error = t("probes.ping_udp.error.connection_reset") if (ping.exception == Errno::ECONNRESET)
       end
 
       return result

@@ -1,16 +1,16 @@
 require 'probes/probe'
-require 'net/ping/icmp'
+require 'net/ping/tcp'
 
 module Watchr
-  # This is an ICMP ping probe to test connectivity using ICMP protocol.
+  # This is a TCP connectivity test using the port defined by the service.
   #
-  # Use it to test the connectivity between the app server and the target
+  # Use it to test the status of a TCP port in the remote host
   #
-  class PingIcmpProbe < Watchr::Probe
+  class TcpConnectionProbe < Watchr::Probe
     # Probe name
-    PROBE_NAME = "ping_icmp"
+    PROBE_NAME = "tcp_connection"
     # Probe description
-    PROBE_DESCRIPTION = "It sends ICMP ping messages to a remote host. Requires Root privileges."
+    PROBE_DESCRIPTION = "It checks the ability to perform a TCP connection to a port of the remote host."
 
     # Register this probe
     self.register_this
@@ -21,7 +21,7 @@ module Watchr
     #   A string with the description of the probe
     #
     def self.description
-      return t("probes.ping_icmp.description") if (t("probes.ping_icmp.description"))
+      return t("probes.tcp_connection.description") if (t("probes.tcp_connection.description"))
       super
     end
 
@@ -31,7 +31,7 @@ module Watchr
     #   A string with the HTML description of the probe
     #
     def self.description_html
-      return t("probes.ping_icmp.description_html") if (t("probes.ping_icmp.description_html"))
+      return t("probes.tcp_connection.description_html") if (t("probes.tcp_connection.description_html"))
       super
     end
 
@@ -45,7 +45,8 @@ module Watchr
     #
     def self.check_config(config)
       return false if (!config.is_a?(Hash))
-      return true
+      # Contains valid count and interval value?
+      return ((!config[:port].blank?) && (config[:port].to_i >= 1) && (config[:port].to_i <= 65535))
     end
 
     # Function to execute the probe over a host with a configuration.
@@ -66,24 +67,24 @@ module Watchr
       # Is the configuration valid?
       if (!self.check_config(probe_config))
         result.status = HostResult::STATUS_ERROR
-        result.error = t("probes.ping_icmp.error.config_invalid")
+        result.error = t("probes.tcp_connection.error.config_invalid")
 
         return result
       end
 
-      # Create the ping object
-      ping = Net::Ping::ICMP.new(host.address)
+      # Create the connection object
+      conn = Net::Ping::TCP.new(host.address, probe_config[:port])
 
-      if (ping.ping)
+      if (conn.ping(host.address))
         # Save the duration
         result.status = HostResult::STATUS_OK
         result.value = ping.duration
       else
-        # If the ping ends in error, save the error
+        # If the connection ends in error, save the error
         result.status = HostResult::STATUS_ERROR
-        result.error = t("probes.ping_icmp.error.general_error", :err => conn.exception.to_s)
-        result.error = t("probes.ping_icmp.error.connection_refused") if (conn.exception == Errno::ECONNREFUSED)
-        result.error = t("probes.ping_icmp.error.connection_reset") if (conn.exception == Errno::ECONNRESET)
+        result.error = t("probes.tcp_connection.error.general_error", :err => conn.exception.to_s)
+        result.error = t("probes.tcp_connection.error.connection_refused") if (conn.exception == Errno::ECONNREFUSED)
+        result.error = t("probes.tcp_connection.error.connection_reset") if (conn.exception == Errno::ECONNRESET)
       end
 
       return result

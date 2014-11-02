@@ -4,4 +4,7 @@ en:
       description: "It sends ICMP ping messages to a remote host. Requires root privileges."
       description_html: "It sends ICMP ping messages to a remote host.<br /><b>Requires root privileges</b>."
       error:
-        config_invalid: "Probe configuration invalid"
+        config_invalid: "Probe configuration invalid."
+        connection_refused: "Connection refused."
+        connection_reset: "Connection reset."
+        general_error: "[Exception] %{err}"
