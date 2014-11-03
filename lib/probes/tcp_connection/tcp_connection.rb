@@ -78,7 +78,7 @@ module Watchr
       if (conn.ping(host.address))
         # Save the duration
         result.status = HostResult::STATUS_OK
-        result.value = ping.duration
+        result.value = conn.duration
       else
         # If the connection ends in error, save the error
         result.status = HostResult::STATUS_ERROR

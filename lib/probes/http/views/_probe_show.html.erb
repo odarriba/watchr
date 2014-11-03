@@ -1,0 +1,29 @@
+<div class="form-group">
+  <div class="col-sm-offset-3 col-md-7 col-sm-9">
+    <hr class='divider' />
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_port" class="col-sm-3 control-label"><%= t("probes.http.form.port") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= config[:port] %></p>
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_path" class="col-sm-3 control-label"><%= t("probes.http.form.path") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= config[:path] %></p>
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_follow_redirect" class="col-sm-3 control-label"><%= t("probes.http.form.follow_redirect") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= t("probes.http.form.follow_redirect_#{config[:follow_redirect]}") %></p>
+  </div>
+</div>
+<div class="form-group">
+  <label for="service_probe_config_head_only" class="col-sm-3 control-label"><%= t("probes.http.form.head_only") %></label>
+  <div class="col-md-7 col-sm-9">
+    <p class="form-control-static"><%= t("probes.http.form.head_only_#{config[:head_only]}") %></p>
+  </div>
+</div>

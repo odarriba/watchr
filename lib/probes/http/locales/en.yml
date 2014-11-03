@@ -1,0 +1,24 @@
+en:
+  probes:
+    http:
+      description: "It checks the status and delay of an HTTP service."
+      description_html: "It checks the status and delay of an HTTP service."
+      form:
+        port: "Remote port"
+        port_placeholder: "Remote port (1-65535)"
+        port_helper: "The port number (80 by default) of the remote host to which perform an HTTP petition."
+        path: "URL Path"
+        path_placeholder: "The path of the URL to get."
+        path_helper: "It's the path part of the URL to obtain. It <b>must</b> start with an slash.<br />For example: <i>/dir/file.html</i>"
+        head_only: "Type of petition"
+        head_only_0: "Get all the response content"
+        head_only_1: "Get only the response header"
+        follow_redirect: "Redirections"
+        follow_redirect_0: "Don't follow redirections"
+        follow_redirect_1: "Follow redirections"
+      error:
+        config_invalid: "Probe configuration invalid."
+        connection_refused: "Connection refused."
+        connection_reset: "Connection reset."
+        redirection_not_followed: "Redirection, but the setting is not to follow them."
+        general_error: "[Exception] %{err}"
