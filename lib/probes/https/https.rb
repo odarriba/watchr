@@ -100,7 +100,7 @@ module Watchr
       petition.user_agent = "Watchr"
       petition.follow_redirect = (probe_config[:follow_redirect].to_i == 1)
       petition.get_request = (probe_config[:head_only].to_i == 1)
-      petition.ssl_verify_mode = OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+      petition.ssl_verify_mode = OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT if(probe_config[:check_certificate].to_i == 1)
 
       # Do the petition
       if (petition.ping)
