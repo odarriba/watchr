@@ -1,0 +1,38 @@
+<div class="form-group">
+  <div class="col-sm-offset-2 col-md-7 col-sm-10">
+    <hr class='divider' />
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_port" class="col-sm-2 control-label"><%= t("probes.https.form.port") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= number_field_tag "probe_config[port]", (config[:port] || 443), :min => 1, :max => 65535, :step => 1, :class => "form-control", :placeholder => t("probes.https.form.port_placeholder"), :required => true %>
+    <span class="help-block"><%= t("probes.https.form.port_helper") %></span>
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_path" class="col-sm-2 control-label"><%= t("probes.https.form.path") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= text_field_tag "probe_config[path]", (config[:path] || "/"), :class => "form-control", :placeholder => t("probes.https.form.path_placeholder"), :required => true %>
+    <span class="help-block"><%= t("probes.https.form.path_helper").html_safe %></span>
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_follow_redirect" class="col-sm-2 control-label"><%= t("probes.https.form.follow_redirect") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= select_tag "probe_config[follow_redirect]", options_for_select({t("probes.https.form.follow_redirect_0") => 0, t("probes.https.form.follow_redirect_1") => 1}, (config[:follow_redirect] || 1)), :class => "form-control", :required => true %>
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_head_only" class="col-sm-2 control-label"><%= t("probes.https.form.head_only") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= select_tag "probe_config[head_only]", options_for_select({t("probes.https.form.head_only_0") => 0, t("probes.https.form.head_only_1") => 1}, config[:head_only]), :class => "form-control", :required => true %>
+  </div>
+</div>
+<div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
+  <label for="service_probe_config_check_certificate" class="col-sm-2 control-label"><%= t("probes.https.form.check_certificate") %></label>
+  <div class="col-md-7 col-sm-10">
+    <%= select_tag "probe_config[check_certificate]", options_for_select({t("probes.https.form.check_certificate_0") => 0, t("probes.https.form.check_certificate_1") => 1}, (config[:check_certificate] || 1)), :class => "form-control", :required => true %>
+    <span class="help-block"><%= t("probes.https.form.check_certificate_helper").html_safe %></span>
+  </div>
+</div>

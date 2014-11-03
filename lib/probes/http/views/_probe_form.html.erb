@@ -20,7 +20,7 @@
 <div class="form-group<% if (!errors.blank?) %> has-error<% end %>">
   <label for="service_probe_config_follow_redirect" class="col-sm-2 control-label"><%= t("probes.http.form.follow_redirect") %></label>
   <div class="col-md-7 col-sm-10">
-    <%= select_tag "probe_config[follow_redirect]", options_for_select({t("probes.http.form.follow_redirect_0") => 0, t("probes.http.form.follow_redirect_1") => 1}, config[:follow_redirect]), :class => "form-control", :required => true %>
+    <%= select_tag "probe_config[follow_redirect]", options_for_select({t("probes.http.form.follow_redirect_0") => 0, t("probes.http.form.follow_redirect_1") => 1}, (config[:follow_redirect] || 1)), :class => "form-control", :required => true %>
   </div>
 </div>
 <div class="form-group<% if (!errors.blank?) %> has-error<% end %>">

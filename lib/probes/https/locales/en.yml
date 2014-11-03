@@ -1,0 +1,28 @@
+en:
+  probes:
+    https:
+      description: "It checks the status and delay of an HTTPS service."
+      description_html: "It checks the status and delay of an HTTPS service."
+      form:
+        port: "Remote port"
+        port_placeholder: "Remote port (1-65535)"
+        port_helper: "The port number (443 by default) of the remote host to which perform an HTTPS petition."
+        path: "URL Path"
+        path_placeholder: "The path of the URL to get."
+        path_helper: "It's the path part of the URL to obtain. It <b>must</b> start with an slash.<br />For example: <i>/dir/file.html</i>"
+        head_only: "Type of petition"
+        head_only_0: "Get all the response content"
+        head_only_1: "Get only the response header"
+        follow_redirect: "Redirections"
+        follow_redirect_0: "Don't follow redirections"
+        follow_redirect_1: "Follow redirections"
+        check_certificate: "SSL Certificate"
+        check_certificate_0: "Don't check the certificate"
+        check_certificate_1: "Check if the certificate is valid"
+        check_certificate_helper: "Use the local OpenSSL installation to verify if the SSL certificate used is valid or not."
+      error:
+        config_invalid: "Probe configuration invalid."
+        connection_refused: "Connection refused."
+        connection_reset: "Connection reset."
+        redirection_not_followed: "Redirection, but the setting is not to follow them."
+        general_error: "[Exception] %{err}"
