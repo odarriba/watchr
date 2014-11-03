@@ -95,6 +95,7 @@ module Watchr
       # Create the connection object
       petition = Net::Ping::HTTP.new(uri, probe_config[:port])
       # Configure it
+      petition.user_agent = "Watchr"
       petition.follow_redirect = (probe_config[:follow_redirect].to_i == 1)
       petition.get_request = (probe_config[:head_only].to_i == 1)
 
