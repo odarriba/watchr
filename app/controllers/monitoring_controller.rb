@@ -14,6 +14,8 @@ class MonitoringController < ApplicationController
   #   GET /monitoring
   #
   def index
+    @services = Service.where(:active => true)
+
     respond_to do |format|
       format.html
     end

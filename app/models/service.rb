@@ -24,10 +24,19 @@ class Service
   # Low priority level identificator
   PRIORITY_LOW = 2
 
+  # Identificator for the OK status.
+  STATUS_OK = :ok
+  # Identificator for the WARNING status
+  STATUS_WARNING = :warning
+  # Identificator for the ERROR status
+  STATUS_ERROR = :error
+
   # Available priority levels
   AVAILABLE_PRIORITIES = [PRIORITY_HIGH, PRIORITY_NORMAL, PRIORITY_LOW]
   # Priority to Queue assignation
   PRIORITY_QUEUE = {PRIORITY_HIGH => :high_priority, PRIORITY_NORMAL => :normal_priority, PRIORITY_LOW => :low_priority}
+  # Available statuses
+  AVAILABLE_STATUSES = [STATUS_OK, STATUS_WARNING, STATUS_ERROR]
 
   field :name,            :type => String, :default => ""
   field :description,     :type => String, :default => ""
@@ -94,6 +103,26 @@ class Service
   #
   def is_active?
     return self.active
+  end
+
+  # Function to know the status of a service.
+  #
+  # [Returns]
+  #   A symbol that could be _Service::STATUS_OK_, _Service::STATUS_WARNING_ or _Service::STATUS_ERROR_.
+  #
+  def status
+    result = self.results.last
+
+    # If no result is saved yet, return OK
+    return Service::STATUS_OK if (result.blank?)
+
+    # OK if all are ok (or no one is present)
+    return Service::STATUS_OK if (result.host_results.select{|hr| hr.is_ok?}.count == result.host_results.count)
+    # ERROR if all are errors
+    return Service::STATUS_ERROR if (result.host_results.select{|hr| hr.is_error?}.count == result.host_results.count)
+
+    # WARNING if the function end (there are some error and some ok)
+    return Service::STATUS_WARNING
   end
 
   # Function do the resume function over an array of results.

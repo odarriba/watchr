@@ -1,7 +1,17 @@
 en:
   monitoring:
     index:
-      title: "Monitoring"
+      title: "Overall results"
+      subtitle: "monitored services"
+      status:
+        ok: "OK"
+        warning: "WARNING"
+        error: "ERROR"
+        unknown: "UNKNOWN"
+      table:
+        host: "Host"
+        status: "Status"
+        result: "Result"
     sidebar:
       overall_results: "Overall results"
       service_results: "Service results"

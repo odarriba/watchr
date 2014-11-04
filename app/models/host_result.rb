@@ -45,7 +45,7 @@ class HostResult
   # [Returns]
   #   A boolean that indicates if the result for this host is valid or not.
   #
-  def is_valid?
+  def is_ok?
     return (self.status == HostResult::STATUS_OK)
   end
 

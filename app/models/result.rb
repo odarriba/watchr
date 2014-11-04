@@ -41,7 +41,7 @@ class Result
 
     # Get the result values
     self.host_results.each do |result|
-      results << result.value if (result.is_valid?)
+      results << result.value if (result.is_ok?)
     end
 
     # Return the value

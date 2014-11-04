@@ -9,7 +9,7 @@
 
 .navbar {
 
-  &:inverse {
+  .navbar-inverse {
 
     .badge {
       background-color: #fff;
@@ -174,13 +174,13 @@ table,
 // Containers =================================================================
 
 .panel {
-  &:heading,
-  &:footer {
+  .panel-heading,
+  .panel-footer {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
   }
 
-  &:default {
+  .panel-default {
     .close {
       color: $text-color;
     }

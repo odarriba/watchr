@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">
-      <li class=""><%= link_to t("monitoring.sidebar.overall_results"), root_path() %></li>
+      <li class="<% if (action_name == "index") %>active<% end %>"><%= link_to t("monitoring.sidebar.overall_results"), root_path() %></li>
       <hr class='divider' />
       <li class=""><%= link_to t("monitoring.sidebar.service_results"), root_path() %></li>
       <li class=""><%= link_to t("monitoring.sidebar.host_results"), root_path() %></li>
