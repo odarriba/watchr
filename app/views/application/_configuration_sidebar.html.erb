@@ -1,9 +1,9 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">
-      <li class="<% if (controller_name == "services") %>active<% end %>"><%= link_to t("monitoring.sidebar.services"), services_path() %></li>
-      <li class="<% if (controller_name == "hosts") %>active<% end %>"><%= link_to t("monitoring.sidebar.hosts"), hosts_path() %></li>
-      <li class="<% if (controller_name == "alerts") %>active<% end %>"><%= link_to t("monitoring.sidebar.alerts"), alerts_path() %></li>
+      <li class="<% if (controller_name == "services") %>active<% end %>"><%= link_to t("configuration.sidebar.services"), services_path() %></li>
+      <li class="<% if (controller_name == "hosts") %>active<% end %>"><%= link_to t("configuration.sidebar.hosts"), hosts_path() %></li>
+      <li class="<% if (controller_name == "alerts") %>active<% end %>"><%= link_to t("configuration.sidebar.alerts"), alerts_path() %></li>
     </ul>
   </div>
 </div>

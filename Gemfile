@@ -42,6 +42,9 @@ gem 'uglifier', '>= 1.3.0'
 gem 'twbs_sass_rails', '~> 1.0.0'
 gem 'yui-compressor', '~> 0.12.0'
 
+# Hishcharts for chart generation
+gem 'highcharts-rails', '~> 4.0.4'
+
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 

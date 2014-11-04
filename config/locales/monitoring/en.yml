@@ -3,7 +3,8 @@ en:
     index:
       title: "Monitoring"
     sidebar:
-      monitoring: "Monitoring"
-      hosts: "Hosts management"
-      services: "Services management"
-      alerts: "Alerts management"
+      overall_results: "Overall results"
+      service_results: "Service results"
+      host_results: "Host results"
+      alert_history: "Alert history"
+      sidekiq: "Sidekiq panel"

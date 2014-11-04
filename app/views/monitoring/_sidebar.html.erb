@@ -1,6 +1,16 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">
+      <li class=""><%= link_to t("monitoring.sidebar.overall_results"), root_path() %></li>
+      <hr class='divider' />
+      <li class=""><%= link_to t("monitoring.sidebar.service_results"), root_path() %></li>
+      <li class=""><%= link_to t("monitoring.sidebar.host_results"), root_path() %></li>
+      <hr class='divider' />
+      <li class=""><%= link_to t("monitoring.sidebar.alert_history"), root_path() %></li>
+      <% if(current_user.is_administrator?) %>
+      <hr class='divider' />
+      <li class=""><%= link_to t("monitoring.sidebar.sidekiq"), sidekiq_monitoring_path() %></li>
+      <% end %>
     </ul>
   </div>
 </div>

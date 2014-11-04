@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   # Monitoring operations
   get '/monitoring' => 'monitoring#index', :as => :monitoring
+  get '/monitoring/sidekiq' => 'monitoring#sidekiq', :as => :sidekiq_monitoring
 
   scope '/configuration' do
     # Hosts operations
