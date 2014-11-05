@@ -14,7 +14,7 @@ class MonitoringController < ApplicationController
   #   GET /monitoring
   #
   def index
-    @services = Service.where(:active => true)
+    @services = Service.where(:active => true).select{|serv| (serv.host_ids.count > 0)}
 
     respond_to do |format|
       format.html

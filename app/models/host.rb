@@ -29,6 +29,8 @@ class Host
 
   has_and_belongs_to_many :services, :dependent => :nullify
 
+  before_destroy :remove_services
+
   # Name validations
   validates_length_of :name, :minimum => 2, :maximum => 30
   
@@ -144,6 +146,15 @@ class Host
       # If an error raises, add it to the response
       errors.add(:address, 'invalid address')
       return false
+    end
+  end
+
+  # Function to remove the services assigned to this host before
+  # destroying it.
+  #
+  def remove_services
+    self.services.each do |serv|
+      serv.hosts.delete(self)
     end
   end
 end

@@ -25,7 +25,7 @@ en:
         show: "View"
         edit: "Edit"
         destroy: "Destroy"
-        destroy_confirmation: "Do you really want to destroy this host?"
+        destroy_confirmation: "Do you really want to destroy this host? The monitoring results for this host will also be destroyed."
       table:
         name: "Name"
         type: "Type"

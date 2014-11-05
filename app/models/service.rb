@@ -49,7 +49,7 @@ class Service
   field :resume,          :type => Symbol, :default => :mean_value
 
   # Has assigned hosts to test the service
-  has_and_belongs_to_many :hosts, :dependent => :nullify
+  has_and_belongs_to_many :hosts, :dependent => :nullify, :after_remove => :clean_host_results
 
   # Has results of testing the service over the hosts
   has_many :results, :dependent => :destroy
@@ -368,5 +368,24 @@ class Service
   #
   def check_interval_change
     return self.job_stop if (self.interval_changed?)
+  end
+
+  # Function to remove the existing result data from a host that
+  # is no longer assigned to thsi service.
+  #
+  # [Parameters]
+  #   * *host* - A _Host_ objecto of the host deleted from this service.
+  #
+  def clean_host_results(host)
+    # Get the results of this service with the deleted host
+    Result.where("host_results.host_id" => host.id, :service_id => self.id).each do |result|
+      # If it hasn't got more host results, destroy the result (violently).
+      if (result.host_results.select{|hresult| hresult.host_id != host.id}.count == 0)
+        result.destroy 
+      else
+        # If there is other host results, delete only this one.
+        result.host_results.select{|hresult| hresult.host_id == host.id}.each{|hr| hr.destroy}
+      end
+    end
   end
 end

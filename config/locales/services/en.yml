@@ -51,7 +51,7 @@ en:
         add: "Add host"
         show: "Show host"
         destroy: "Delete"
-        destroy_confirmation: "Do you really want to stop monitoring this host?"
+        destroy_confirmation: "Do you really want to stop monitoring this host? The monitoring results for this host will be deleted."
     sidebar:
       all: "View all"
       view_by_type: "View by priority of service"
