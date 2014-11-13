@@ -12,6 +12,8 @@ en:
         host: "Host"
         status: "Status"
         result: "Result"
+    service:
+      title: "Service results"
     sidebar:
       overall_results: "Overall results"
       service_results: "Service results"

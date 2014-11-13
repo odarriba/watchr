@@ -1,0 +1,22 @@
+<% content_for :title, t("monitoring.service.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("monitoring.service.title") %>
+        <% if (!@service.blank?) %>
+        <small>
+          <%= @service.title %>
+        </small>
+        <% end %>
+      </h1>
+    </div>
+    <%= bootstrap_flash %>
+    <div class='monitoring'>
+      
+    </div>
+  </div>
+</div>

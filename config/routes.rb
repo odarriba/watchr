@@ -21,8 +21,11 @@ Rails.application.routes.draw do
   patch '/preferences' => 'users#save_preferences'
 
   # Monitoring operations
-  get '/monitoring' => 'monitoring#index', :as => :monitoring
-  get '/monitoring/sidekiq' => 'monitoring#sidekiq', :as => :sidekiq_monitoring
+  scope '/configuration' do
+    get '/' => 'monitoring#index', :as => :monitoring
+    get '/sidekiq' => 'monitoring#sidekiq', :as => :sidekiq_monitoring
+    get '/service(/:id)' => 'monitoring#service', :as => :service_monitoring
+  end
 
   scope '/configuration' do
     # Hosts operations

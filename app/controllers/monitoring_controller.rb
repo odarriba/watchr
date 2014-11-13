@@ -8,7 +8,8 @@ class MonitoringController < ApplicationController
   # Check that the user is an administrator before executing sidekiq action.
   before_action :check_administrator_user, :only => [:sidekiq]
 
-  # This is a dummy view at this stage of development
+  # Tis action shows an overall results page with a small piece of information per
+  # service.
   #
   # [URL]
   #   GET /monitoring
@@ -21,12 +22,38 @@ class MonitoringController < ApplicationController
     end
   end
 
+  # Action to view the results from the probes over a service.
+  #
+  # [URL] 
+  #   GET /monitoring/service/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def service
+    if (!params[:id].blank?)
+      # Load the service from the database
+      @service = Service.where(:_id => params[:id]).first
+
+      if (@service.blank?)
+        # If no service item found, show an error
+        flash[:error] = t("services.error.not_found")
+      end
+    end
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+
   # This action shows the sidekiq panel in a frame.
   #
   # It requires administration privileges (as the panel itself).
   #
   # [URL]
   #   GET /monitoring/sidekiq
+  #
   def sidekiq
     respond_to do |format|
       format.html
