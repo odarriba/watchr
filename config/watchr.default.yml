@@ -25,6 +25,20 @@ development:
     db: 12
     # Namespace to use
     namespace: "watchr_development"
+
+  unicorn:
+    # Number of working processes
+    working_processes: 4
+    # Timeout per worker
+    timeout: 30
+    # User to execute the server
+    user: 'ruby_user'
+    # Group to execute the server
+    group: 'ruby_group'
+    # Uses preloading to improve the start
+    preload_app: true
+    # The folder in which the app is located
+    app_directory: "/folder/of/app"
   email:
     # Default sender for e-mails
     default_sender: "no-reply@your-company.tld"
@@ -65,6 +79,13 @@ production:
     port: 6379
     db: 12
     namespace: "watchr_production"
+  unicorn:
+    working_processes: 4
+    timeout: 30
+    user: 'ruby_user'
+    group: 'ruby_group'
+    preload_app: true
+    app_directory: "/folder/of/app"
   email:
     default_sender: "no-reply@your-company.tld"
     smtp:
@@ -94,6 +115,13 @@ test:
     port: 6379
     db: 12
     namespace: "watchr_test"
+  unicorn:
+    working_processes: 4
+    timeout: 30
+    user: 'ruby_user'
+    group: 'ruby_group'
+    preload_app: true
+    app_directory: "/folder/of/app"
   email:
     default_sender: "no-reply@your-company.tld"
     smtp:
