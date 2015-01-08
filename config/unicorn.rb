@@ -26,7 +26,7 @@ shared_path = "#{CONFIG["unicorn"]["app_directory"]}/shared"
 listen "#{shared_path}/unicorn.socket", :backlog => 128
 
 # PID of the server
-pid "#{shared_path}/pids/unicorn.pid"
+pid "#{shared_path}/shared/pids/unicorn.pid"
 
 # Save error and info logs
 stderr_path "#{shared_path}/log/unicorn.stderr.log"
@@ -41,7 +41,7 @@ before_fork do |server, worker|
 
   # If there is an old PID (used for hot swap between deployed versions),
   # send a QUIT signal
-  old_pid = "#{shared_path}/pids/unicorn.pid.oldbin"
+  old_pid = "#{shared_path}/shared/pids/unicorn.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
