@@ -53,7 +53,7 @@ SSHKit.config.command_map[:rails] = "bundle exec rails"
 set :keep_releases, 5
 
 namespace :deploy do
-  before "check:linked_files", "upload_config"
+  before "check:linked_files", "watchr:upload_config"
   after :finishing, "deploy:cleanup"
 
   desc "Zero-downtime restart of service"
