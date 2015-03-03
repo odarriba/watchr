@@ -62,6 +62,11 @@
         </div>
         <% end %>
       </div>
+      <% if @services.length == 0 %>
+        <div class="no-results">
+          <%= raw t("ui.table.no_element") %>
+        </div>
+      <% end %>
       <hr class='divider' />
     </div>
   </div>

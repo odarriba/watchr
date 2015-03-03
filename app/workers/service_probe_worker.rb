@@ -17,8 +17,6 @@ class ServiceProbeWorker
     # Service no longer exists? No job then.
     return if (service.blank?)
 
-    p "Executing probe of #{service.name}."
-
     # Clean previous results
     service.clean_results
 

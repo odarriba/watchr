@@ -55,6 +55,7 @@ set :keep_releases, 5
 namespace :deploy do
   before "check:linked_files", "watchr:upload_config"
   after :finishing, "deploy:cleanup"
+  after :finishing, "deploy:restart"
 
   desc "Zero-downtime restart of service"
   task :restart do
