@@ -7,7 +7,6 @@ en:
         home: "Home"
         monitoring: "Monitoring"
         incidents: "Incidents"
-        status_pages: "Status pages"
         configuration: "Configuration"
         users: "Users"
       user:

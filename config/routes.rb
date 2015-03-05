@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     get '/' => 'monitoring#index', :as => :monitoring
     get '/sidekiq' => 'monitoring#sidekiq', :as => :sidekiq_monitoring
     get '/service(/:id)' => 'monitoring#service', :as => :service_monitoring
+    get '/service/:id/data' => 'monitoring#service_data', :as => :data_service_monitoring
   end
 
   scope '/configuration' do

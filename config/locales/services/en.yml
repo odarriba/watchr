@@ -90,6 +90,7 @@ en:
       host_deleted: "Host (%{name}) <b>deleted succesfully</b> from the service (%{service})."
     error:
       not_found: "The service with the requested ID doesn't exist."
+      not_active: "The service with the requested ID isn't active."
       hosts_not_exist: "To assign hosts to a service, <b>you have to create them first</b>."
       host_not_found: "The host with the requested ID doesn't exist."
       host_not_added: "Host (%{name}) <b>couldn't be added</b> to service (%{service})."

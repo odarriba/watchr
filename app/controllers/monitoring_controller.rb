@@ -39,10 +39,33 @@ class MonitoringController < ApplicationController
         # If no service item found, show an error
         flash[:error] = t("services.error.not_found")
       end
+
+      if (!@service.active)
+        # If the service isn't active, show an error.
+        flash[:error] = t("services.error.not_active")
+        
+        redirect_to service_monitoring_path()
+        return
+      end
     end
 
     respond_to do |format|
       format.html
+    end
+  end
+
+  # Action to get the data of the results from the probes over a service.
+  #
+  # [URL] 
+  #   GET /monitoring/service/:id/data
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *last* - The ID of the last result obtained
+  #
+  def service_data
+    respond_to do |format|
+      format.json
     end
   end
 

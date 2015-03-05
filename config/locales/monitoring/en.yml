@@ -12,8 +12,11 @@ en:
         host: "Host"
         status: "Status"
         result: "Result"
+      no_element: "There is no active service to show (yet)."
     service:
       title: "Service results"
+      no_service_selected: "no service selected"
+      no_service_selected_explain: "Select a service from the box to show it's results"
     sidebar:
       overall_results: "Overall results"
       service_results: "Service results"

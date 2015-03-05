@@ -7,16 +7,48 @@
     <div class="page-header clearfix">
       <h1>
         <%= t("monitoring.service.title") %>
-        <% if (!@service.blank?) %>
         <small>
-          <%= @service.title %>
+          <% if (!@service.blank?) %>
+            <%= @service.name %>
+          <% else %>
+            <%= t("monitoring.service.no_service_selected") %>
+          <% end %>
         </small>
-        <% end %>
+        <div id='service-selector' class='pull-right'>
+          <%= form_tag service_monitoring_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
+            <div class="form-group">
+              <%= select_tag "id", 
+                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }.insert(0, ["Select service",""])), 
+                    :class => "form-control", 
+                    :onchange => "if(this.value != '') { window.location='#{service_monitoring_path()}/'+this.value; }"
+                %>
+            </div>
+          <% end %>
+        </div>
       </h1>
     </div>
     <%= bootstrap_flash %>
     <div class='monitoring'>
-      
+      <% if (!@service.blank?) %>
+        <div id='chart-container' class='chart-container'></div>
+
+        <script>
+          $( document ).ready(function() {
+            monitoringChartStart({
+              container: "chart-container", 
+              name: "<%= @service.name %>", 
+              interval: <%= @service.interval %>, 
+              resume: "<%= @service.resume.to_s %>",
+              data_url: "<%= data_service_monitoring_path(@service.id) %>"
+            });
+          });
+        </script>
+      <% else %>
+        <div class="no-results">
+          <%= raw t("monitoring.service.no_service_selected_explain") %>
+        </div>
+        <hr class='divider' />
+      <% end %>
     </div>
   </div>
 </div>
