@@ -1,6 +1,0 @@
-en:
-  configuration:
-    sidebar:
-      hosts: "Hosts management"
-      services: "Services management"
-      alerts: "Alerts management"

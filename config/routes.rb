@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
 
   root 'panel#index'
+  get '/sidekiq' => 'panel#sidekiq', :as => :sidekiq_panel
 
   # Error links
   get "/404", :to => "application#error_not_found"
@@ -22,33 +23,29 @@ Rails.application.routes.draw do
 
   # Monitoring operations
   scope '/monitoring' do
-    get '/' => 'monitoring#index', :as => :monitoring
-    get '/sidekiq' => 'monitoring#sidekiq', :as => :sidekiq_monitoring
     get '/service(/:id)' => 'monitoring#service', :as => :service_monitoring
     get '/service/:id/data' => 'monitoring#service_data', :as => :data_service_monitoring
   end
 
-  scope '/configuration' do
-    # Hosts operations
-    resources :hosts
+  # Hosts operations
+  resources :hosts
 
-    # Services operations
-    resources :services
-    get 'services/new/probe_form/:probe' => 'services#get_probe_form'
-    get 'services/:id/probe_form/:probe' => 'services#get_probe_form', :as => :service_probe_form
-    get 'services/:id/hosts' => 'services#index_hosts', :as => :service_hosts
-    post 'services/:id/host/new' => 'services#new_host', :as => :new_service_host
-    delete 'services/:id/hosts/:host_id' => 'services#delete_host', :as => :delete_service_host
+  # Services operations
+  resources :services
+  get 'services/new/probe_form/:probe' => 'services#get_probe_form'
+  get 'services/:id/probe_form/:probe' => 'services#get_probe_form', :as => :service_probe_form
+  get 'services/:id/hosts' => 'services#index_hosts', :as => :service_hosts
+  post 'services/:id/host/new' => 'services#new_host', :as => :new_service_host
+  delete 'services/:id/hosts/:host_id' => 'services#delete_host', :as => :delete_service_host
 
-    # Alerts operations
-    resources :alerts
-    get 'alerts/:id/users' => 'alerts#index_users', :as => :alert_users
-    post 'alerts/:id/users/new' => 'alerts#new_user', :as => :new_alert_user
-    delete 'alerts/:id/users/:user_id' => 'alerts#delete_user', :as => :delete_alert_user
-  end
+  # Alerts operations
+  resources :alerts
+  get 'alerts/:id/users' => 'alerts#index_users', :as => :alert_users
+  post 'alerts/:id/users/new' => 'alerts#new_user', :as => :new_alert_user
+  delete 'alerts/:id/users/:user_id' => 'alerts#delete_user', :as => :delete_alert_user
 
   authenticate :user, lambda { |u| u.is_administrator? } do
-    mount Sidekiq::Web => '/sidekiq'
+    mount Sidekiq::Web => '/sidekiq_full'
   end
 
   # You can have the root of your site routed with "root"

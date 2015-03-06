@@ -1,2 +1,86 @@
-<%= bootstrap_flash %>
-<h1>You've logged in succesfully!</h1>
+<% content_for :title, t("panel.index.title") %>
+<div class='row-fluid'>
+  <div class='content-index col-md-8'>
+    <div class="page-header">
+      <h1>
+        <%= t("panel.index.title") %>
+        <small>
+          <%= t("panel.index.subtitle") %>
+        </small>
+      </h1>
+    </div>
+    <%= bootstrap_flash %>
+    <div class='results-panel fluid-columns'>
+      <div class="row">
+        <% @services.each do |serv| %>
+        <div class='item'>
+          <div class="panel panel-primary">
+            <div class="panel-heading clearfix">
+              <div class='pull-left'>
+                <b><%= serv.name %></b>
+              </div>
+              <div class='pull-right'>
+                <% if (serv.status == Service::STATUS_OK) %>
+                <span class='badge'><strong class='text-success'><%= t("panel.index.status.ok") %></strong></span>
+                <% elsif (serv.status == Service::STATUS_ERROR) %>
+                <span class='badge'><strong class='text-danger'><%= t("panel.index.status.error") %></strong></span>
+                <% elsif (serv.status == Service::STATUS_WARNING) %>
+                <span class='badge'><strong class='text-warning'><%= t("panel.index.status.warning") %></strong></span>
+                <% else %>
+                <span class='badge'><strong class='text-primary'><%= t("panel.index.status.unknown") %></strong></span>
+                <% end %>
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="col-xs-5"><%= t("panel.index.table.host") %></th>
+                  <th class="col-xs-3"><%= t("panel.index.table.status") %></th>
+                  <th class="col-xs-4"><%= t("panel.index.table.result") %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% serv.results.last.host_results.each do |hresult| %>
+                <tr>
+                  <td><%= hresult.host.name %></td>
+                  <td>
+                  <% if (hresult.is_ok?) %>
+                    <strong class='text-success'><%= t("panel.index.status.ok") %></strong>
+                  <% else %>
+                    <strong class='text-danger'><%= t("panel.index.status.error") %></strong>
+                  <% end %>
+                  </td>
+                  <td><%= hresult.value %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <% end %>
+      </div>
+      <% if @services.length == 0 %>
+        <div class="no-results">
+          <%= raw t("panel.index.no_element") %>
+        </div>
+      <% end %>
+      <hr class='divider' />
+    </div>
+  </div>
+  <div class='col-md-4'>
+    <div class="panel panel-primary">
+      <div class="panel-heading clearfix">
+        <div class='pull-left'>
+          <b>Alerts report</b>
+        </div>
+        <div class='pull-right'>
+          <span class='badge'><strong class='text-success'>0 ACTIVED</strong></span>
+        </div>
+      </div>
+
+      <div class="no-results">
+        <%= raw t("ui.table.no_element") %>
+      </div>
+    </div>
+  </div>
+</div>

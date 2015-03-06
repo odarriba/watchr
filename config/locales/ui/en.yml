@@ -5,9 +5,9 @@ en:
       toogle_navigation: "Toggle navigation"
       sections:
         home: "Home"
-        monitoring: "Monitoring"
-        incidents: "Incidents"
-        configuration: "Configuration"
+        services: "Services"
+        hosts: "Hosts"
+        alerts: "Alerts"
         users: "Users"
       user:
         preferences: "Preferences"

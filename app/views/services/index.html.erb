@@ -54,8 +54,8 @@
       <thead>
         <tr>
           <th class='col-xs-3'><%= t("services.table.name") %></th>
-          <th class='col-xs-3'><%= t("services.table.probe") %></th>
-          <th class='col-xs-6'></th>
+          <th class='col-xs-3 col-md-2'><%= t("services.table.probe") %></th>
+          <th class='col-xs-6 col-md-7'></th>
         </tr>
       </thead>
       <tbody>
@@ -74,6 +74,7 @@
           </td>
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.show")}</span>".html_safe, service_path(serv), :class => "btn btn-sm btn-success", :title => t("services.index.button.show") %>
+            <%= link_to "<i class='fa fa-bar-chart'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.results")}</span>".html_safe, service_path(serv), :class => "btn btn-sm btn-primary", :title => t("services.index.button.results") %>
             <%= link_to "<i class='fa fa-laptop'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.hosts")}</span>".html_safe, service_hosts_path(serv), :class => "btn btn-sm btn-warning", :title => t("services.index.button.hosts") %>
             <% if (current_user.is_normal?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.index.button.edit")}</span>".html_safe, edit_service_path(serv), :class => "btn btn-sm btn-info", :title => t("services.index.button.edit") %>

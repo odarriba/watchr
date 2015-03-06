@@ -25,6 +25,7 @@ en:
         new: "Create a service"
         show: "View"
         edit: "Edit"
+        results: "Results"
         hosts: "Hosts"
         destroy: "Destroy"
         destroy_confirmation: "Do you really want to destroy this service?"
