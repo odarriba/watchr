@@ -43,6 +43,8 @@ en:
     edit:
       title: "Edit a service"
       continue: "Save changes"
+    results:
+      title: "Service results"
     index_hosts:
       title: "Hosts to monitor"
       table:

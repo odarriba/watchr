@@ -48,6 +48,8 @@ en:
         show: "Show user"
         destroy: "Unsubscribe"
         destroy_confirmation: "Do you really want to unsubscribe this user?"
+    sidebar:
+      all: "View all"
     form:
       name: "Name"
       name_placeholder: "Name of the service"

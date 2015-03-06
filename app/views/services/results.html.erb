@@ -1,4 +1,4 @@
-<% content_for :title, t("monitoring.service.title") %>
+<% content_for :title, t("services.results.title") %>
 <div class='row-fluid'>
   <div class='sidebar'>
     <%= render :partial => "sidebar" %>
@@ -6,21 +6,17 @@
   <div class='content'>
     <div class="page-header clearfix">
       <h1>
-        <%= t("monitoring.service.title") %>
+        <%= t("services.results.title") %>
         <small>
-          <% if (!@service.blank?) %>
-            <%= @service.name %>
-          <% else %>
-            <%= t("monitoring.service.no_service_selected") %>
-          <% end %>
+          <%= @service.name %>
         </small>
         <div id='service-selector' class='pull-right'>
           <%= form_tag service_monitoring_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
             <div class="form-group">
               <%= select_tag "id", 
-                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }.insert(0, ["Select service",""])), 
+                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }), 
                     :class => "form-control", 
-                    :onchange => "if(this.value != '') { window.location='#{service_monitoring_path()}/'+this.value; }"
+                    :onchange => "if(this.value != '') { var url='#{results_service_path(:id => 'serviceid')}'; window.location=url.replace('serviceid', this.value); }"
                 %>
             </div>
           <% end %>
@@ -43,11 +39,6 @@
             });
           });
         </script>
-      <% else %>
-        <div class="no-results">
-          <%= raw t("monitoring.service.no_service_selected_explain") %>
-        </div>
-        <hr class='divider' />
       <% end %>
     </div>
   </div>

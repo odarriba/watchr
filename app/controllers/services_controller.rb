@@ -239,6 +239,24 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to view the results from the probes over a service.
+  #
+  # [URL] 
+  #   GET /services/:id/results
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def results
+    # Load the service from the database
+    load_service
+    return if (@service.blank?)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   # Action to index the hosts associated to a service.
   #
   # [URL] 

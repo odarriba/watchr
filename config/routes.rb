@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :services
   get 'services/new/probe_form/:probe' => 'services#get_probe_form'
   get 'services/:id/probe_form/:probe' => 'services#get_probe_form', :as => :service_probe_form
+  get 'services/:id/results' => 'services#results', :as => :results_service
   get 'services/:id/hosts' => 'services#index_hosts', :as => :service_hosts
   post 'services/:id/host/new' => 'services#new_host', :as => :new_service_host
   delete 'services/:id/hosts/:host_id' => 'services#delete_host', :as => :delete_service_host
