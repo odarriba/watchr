@@ -75,20 +75,26 @@ function chartLive(url, interval) {
 
     $.getJSON(call_url).success(function(data){
         for (var i = 0; i < data.length; i++) {
+            data[i].date[2]--; // Correct month number
+
+            // Create date object
             var date = Date.UTC.apply(this, data[i].date);
 
+            // Do we need to remove the first point in the chart?
             if ((chart.series[0].activePointCount > 0) && (date - chart.series[0].xData[0] >= chart_config.clean_interval*1000))
                 chart.series[0].addPoint([date, data[i].result], false, true);
             else
                 chart.series[0].addPoint([date, data[i].result], false);
         }
 
+        // If there is data received, save the lastest id.
         if (data.length > 0)
             chart_last_id = data[data.length-1].id;
 
+        // Redraw the chart
         chart.redraw();
         
-        setTimeout("chartLive('"+url+"',"+interval+")", interval);
+        setTimeout("chartLive('"+url+"',"+interval+")", chart_config.interval*1000);
     });
 
 }
