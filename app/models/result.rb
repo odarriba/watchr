@@ -29,13 +29,29 @@ class Result
     return self.host_services.select{|u| u.host_id = host}.first
   end
 
-  # Function to get the global value of the results done to the hosts.
+  # Function to get the resumed value of the results done to the hosts.
+  #
+  # *Note:* this function should not be used in batch functions because
+  # it causes high DB usage loading the service every time.
   #
   # [Returns]
   #   The float with the global value
   #
   def global_value
     return 0.0 if (self.all_error?)
+
+    # Return the value
+    return self.service.resume_values(self.get_values)
+  end
+
+  # Function to get an array with all the values of the results from the 
+  # probes done to the hosts.
+  #
+  # [Returns]
+  #   An array with all the results
+  #
+  def get_values
+    return [0.0] if (self.all_error?)
 
     results = []
 
@@ -45,7 +61,7 @@ class Result
     end
 
     # Return the value
-    return self.service.resume_values(results)
+    return results
   end
 
   # Function to know if there is an error in all the probes done

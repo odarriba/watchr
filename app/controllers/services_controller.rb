@@ -257,6 +257,58 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to view the results from the probes over a service.
+  #
+  # [URL] 
+  #   GET /services/:id/results/data
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *last* - (Optional) The id of the last obtained result.
+  #
+  def results_data
+    # Load the service from the database
+    load_service
+    return if (@service.blank?)
+
+    # If a last param was received, try to locate the result with that id.
+    if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
+      # Get the results obtained AFTER the one which id was received
+      @results = Result.where(:service => @service.id, :_id.gt => params[:last]).order({:created_at => 1})
+    else
+      # Get all the reuslts available
+      @results = Result.where(:service => @service.id).order({:created_at => 1})
+    end
+
+    respond_to do |format|
+      format.json {
+        # The results array
+        data = Array.new()
+
+        # Poblate the results array
+        @results.cache.each do |result|
+          data << {
+            :id => result.id.to_s, 
+            :date => [
+              result.created_at.year, 
+              result.created_at.month, 
+              result.created_at.day,
+              result.created_at.hour,
+              result.created_at.min,
+              result.created_at.sec
+            ],
+            # Call the resume_values function here to avoid high load on the DB produced by 
+            # loading the Service object every time in the result.global_value function.
+            :result => @service.resume_values(result.get_values)
+          }
+        end
+
+        # Render the results
+        render :json => data
+      }
+    end
+  end
+
   # Action to index the hosts associated to a service.
   #
   # [URL] 

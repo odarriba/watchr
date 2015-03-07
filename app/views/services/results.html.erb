@@ -30,13 +30,17 @@
 
         <script>
           $( document ).ready(function() {
-            chartStart({
+            var chart_config = {
               container: "chart-container", 
               name: "<%= @service.name %>", 
-              interval: <%= @service.interval %>, 
+              interval: <%= @service.interval %>,
+              clean_interval: <%= @service.clean_interval %>,
               resume: "<%= @service.resume.to_s %>",
-              data_url: "<%= data_service_monitoring_path(@service.id) %>"
-            });
+              data_url: "<%= data_results_service_path(@service.id) %>"
+            };
+
+            chartStart(chart_config);
+            chartLive();
           });
         </script>
       <% end %>
