@@ -1,0 +1,54 @@
+<div class="panel panel-primary">
+  <div class="panel-heading clearfix">
+    <div class='pull-left'>
+      <b><%= t("services.results.hosts_results.title") %></b>
+    </div>
+    <div class='pull-right'>
+      <% if (@service.status == Service::STATUS_OK) %>
+      <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
+      <% elsif (@service.status == Service::STATUS_ERROR) %>
+      <span class='badge'><strong class='text-danger'><%= t("services.error").upcase %></strong></span>
+      <% elsif (@service.status == Service::STATUS_WARNING) %>
+      <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
+      <% else %>
+      <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
+      <% end %>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="col-xs-5"><%= t("services.results.hosts_results.table.host") %></th>
+        <th class="col-xs-3"><%= t("services.results.hosts_results.table.status") %></th>
+        <th class="col-xs-4"><%= t("services.results.hosts_results.table.result") %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if (!@service.results.last.blank?) %>
+      <% @service.results.last.host_results.each do |hresult| %>
+      <tr>
+        <td><%= hresult.host.name %></td>
+        <td>
+        <% if (hresult.is_ok?) %>
+          <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
+        <% else %>
+          <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
+        <% end %>
+        </td>
+        <td><%= hresult.value %></td>
+      </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2">
+          <b><%= t("services.results.hosts_results.table.global") %></b>
+        </td>
+        <td>
+          <%= @service.results.last.global_value %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

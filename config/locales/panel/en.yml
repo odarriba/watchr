@@ -3,15 +3,11 @@ en:
     index:
       title: "Overall results"
       subtitle: "monitored services"
-      status:
-        ok: "OK"
-        warning: "WARNING"
-        error: "ERROR"
-        unknown: "UNKNOWN"
       table:
         host: "Host"
         status: "Status"
         result: "Result"
+        global: "Global result"
       no_element: "There is no active service to show (yet)."
     sidekiq:
       title: "Sidekiq panel"

@@ -309,6 +309,24 @@ class ServicesController < ApplicationController
     end
   end
 
+  # Action to render the hosts results table in the result view.
+  #
+  # [URL] 
+  #   GET /services/:id/results/hosts
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #
+  def hosts_results
+    # Load the service from the database
+    load_service
+    return if (@service.blank?)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # Action to index the hosts associated to a service.
   #
   # [URL] 

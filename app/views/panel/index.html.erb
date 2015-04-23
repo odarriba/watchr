@@ -21,13 +21,13 @@
               </div>
               <div class='pull-right'>
                 <% if (serv.status == Service::STATUS_OK) %>
-                <span class='badge'><strong class='text-success'><%= t("panel.index.status.ok") %></strong></span>
+                <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
                 <% elsif (serv.status == Service::STATUS_ERROR) %>
-                <span class='badge'><strong class='text-danger'><%= t("panel.index.status.error") %></strong></span>
+                <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
                 <% elsif (serv.status == Service::STATUS_WARNING) %>
-                <span class='badge'><strong class='text-warning'><%= t("panel.index.status.warning") %></strong></span>
+                <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
                 <% else %>
-                <span class='badge'><strong class='text-primary'><%= t("panel.index.status.unknown") %></strong></span>
+                <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
                 <% end %>
               </div>
             </div>
@@ -40,20 +40,32 @@
                 </tr>
               </thead>
               <tbody>
+              <% if (!serv.results.last.blank?) %>
                 <% serv.results.last.host_results.each do |hresult| %>
                 <tr>
                   <td><%= hresult.host.name %></td>
                   <td>
                   <% if (hresult.is_ok?) %>
-                    <strong class='text-success'><%= t("panel.index.status.ok") %></strong>
+                    <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
                   <% else %>
-                    <strong class='text-danger'><%= t("panel.index.status.error") %></strong>
+                    <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
                   <% end %>
                   </td>
                   <td><%= hresult.value %></td>
                 </tr>
                 <% end %>
+              <% end %>
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">
+                    <b><%= t("panel.index.table.global") %></b>
+                  </td>
+                  <td>
+                    <%= serv.results.last.global_value %>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

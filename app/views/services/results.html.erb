@@ -28,22 +28,98 @@
       <% if (!@service.blank?) %>
         <div id='chart-container' class='chart-container'></div>
 
-        <script>
-          $( document ).ready(function() {
-            var chart_config = {
-              container: "chart-container", 
-              name: "<%= @service.name %>", 
-              interval: <%= @service.interval %>,
-              clean_interval: <%= @service.clean_interval %>,
-              resume: "<%= @service.resume.to_s %>",
-              data_url: "<%= data_results_service_path(@service.id) %>"
-            };
+        <hr class='divider' />
 
-            chartStart(chart_config);
-            chartLive();
-          });
-        </script>
+        <div class='row'>
+          <div id='hosts-results' class='col-md-6 hosts-results'>
+            <%= render(:partial => "hosts_results") %>
+          </div>
+          <div id='service-info' class='col-md-6 service-info'>
+            <div class="panel panel-primary">
+              <div class="panel-heading clearfix">
+                <b><%= t("services.results.service_info.title") %></b>
+              </div>
+              <table class='table'>
+                <tbody>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.name") %></b>
+                    </td>
+                    <td>
+                      <%= @service.name %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.activation") %></b>
+                    </td>
+                    <td>
+                      <% if (@service.is_active?) %>
+                      <span class="text-success"><%= t("services.form.active") %></span>
+                      <% else %>
+                      <span class="text-danger"><%= t("services.form.inactive") %></span>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.priority") %></b>
+                    </td>
+                    <td>
+                      <%= t("services.priorities.priority_#{@service.priority.to_s}") %>
+                    </td>
+                  </tr>
+                  <% if (!@service.get_probe.blank?) %>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.interval") %></b>
+                    </td>
+                    <td>
+                      <%= @service.interval %>
+                    </td>
+                  </tr>
+                  <% end %>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.clean_interval") %></b>
+                    </td>
+                    <td>
+                      <%= @service.clean_interval %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b><%= t("services.form.resume") %></b>
+                    </td>
+                    <td>
+                      <%= t("services.resumes.resume_#{@service.resume.to_s}") %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
 </div>
+<script>
+  $( document ).ready(function() {
+    var chart_config = {
+      container: "chart-container", 
+      name: "<%= @service.name %>", 
+      interval: <%= @service.interval %>,
+      clean_interval: <%= @service.clean_interval %>,
+      resume: "<%= @service.resume.to_s %>",
+      data_url: "<%= results_data_service_path(@service.id) %>"
+    };
+
+    chartStart(chart_config);
+    chartLive();
+
+    setInterval(function() {
+      $.getScript("<%= hosts_results_service_path(@service.id) %>");
+    }, <%= @service.interval %>*1000);
+  });
+</script>

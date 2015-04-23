@@ -5,6 +5,11 @@ en:
         one: "service"
         other: "services"
   services:
+    status:
+      ok: "Ok"
+      warning: "Warning"
+      error: "Error"
+      unknown: "Unknown"
     priorities:
       priority_0: "High priority"
       priority_1: "Normal priority"
@@ -45,6 +50,15 @@ en:
       continue: "Save changes"
     results:
       title: "Service results"
+      service_info:
+        title: "Service information"
+      hosts_results:
+        title: "Lastest results per host"
+        table:
+          host: "Host"
+          status: "Status"
+          result: "Result"
+          global: "Global result"
     index_hosts:
       title: "Hosts to monitor"
       table:
