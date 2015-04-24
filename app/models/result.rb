@@ -41,7 +41,7 @@ class Result
     return 0.0 if (self.all_error?)
 
     # Return the value
-    return self.service.resume_values(self.get_values)
+    return self.service.resume_values(self.get_values).round(4)
   end
 
   # Function to get an array with all the values of the results from the 

@@ -14,7 +14,7 @@
           <%= form_tag service_monitoring_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
             <div class="form-group">
               <%= select_tag "id", 
-                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }), 
+                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }, @service.id.to_s), 
                     :class => "form-control", 
                     :onchange => "if(this.value != '') { var url='#{results_service_path(:id => 'serviceid')}'; window.location=url.replace('serviceid', this.value); }"
                 %>

@@ -51,15 +51,26 @@
                     <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
                   <% end %>
                   </td>
-                  <td><%= hresult.value %></td>
+                  <td><%= hresult.value.to_f %></td>
                 </tr>
                 <% end %>
               <% end %>
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="2">
+                  <td>
                     <b><%= t("panel.index.table.global") %></b>
+                  </td>
+                  <td>
+                    <% if (serv.status == Service::STATUS_OK) %>
+                    <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
+                    <% elsif (serv.status == Service::STATUS_ERROR) %>
+                    <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
+                    <% elsif (serv.status == Service::STATUS_WARNING) %>
+                    <strong class='text-warning'><%= t("services.status.warning").upcase %></strong>
+                    <% else %>
+                    <strong class='text-primary'><%= t("services.status.unknown").upcase %></strong>
+                    <% end %>
                   </td>
                   <td>
                     <%= serv.results.last.global_value %>

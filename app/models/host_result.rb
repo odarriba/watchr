@@ -76,6 +76,8 @@ class HostResult
       else
         # If the value is present, clean the error msg
         self.error = ""
+        # Round the reuslt
+        self.value = self.value.round(4)
       end
     elsif (self.status == HostResult::STATUS_ERROR)
       self.value = nil
