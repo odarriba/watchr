@@ -108,7 +108,8 @@
   $( document ).ready(function() {
     var chart_config = {
       container: "chart-container", 
-      name: "<%= @service.name %>", 
+      name: "<%= @service.name %>",
+      live: true,
       interval: <%= @service.interval %>,
       clean_interval: <%= @service.clean_interval %>,
       resume: "<%= @service.resume.to_s %>",
@@ -116,7 +117,6 @@
     };
 
     chartStart(chart_config);
-    chartLive();
 
     setInterval(function() {
       $.getScript("<%= hosts_results_service_path(@service.id) %>");

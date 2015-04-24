@@ -3,13 +3,15 @@ var chart_config = {};
 var chart_last_id = "";
 
 function chartStart(config) {
-	chart_config = config || {};
+	config = config || {};
+
+    config.live = config.live || true;
 
 	// Check if the container is defined
-	if (chart_config == {})
+	if (config == {})
 		return;
 
-	$('#'+chart_config.container).highcharts({
+	$('#'+config.container).highcharts({
         chart: {
             type: 'spline',
             zoomType: 'x'
@@ -32,7 +34,7 @@ function chartStart(config) {
         },
         yAxis: {
             title: {
-                text: chart_config.resume
+                text: config.resume
             },
             min: 0
         },
@@ -59,15 +61,17 @@ function chartStart(config) {
         }]
     });
 
-    chart = $('#'+chart_config.container).highcharts();
+    config.chart = $('#'+config.container).highcharts();
+
+    if (config.live)
+        chartLive(config);
 }
 
-function chartLive(url, interval) {
-    url = url || window.location+"/data.json";
-    interval = interval || 2000;
+function chartLive(config) {
+    url = config.url || window.location+"/data.json";
 
-    if (chart_last_id != "") {
-        var call_url = url + "?last=" + chart_last_id;
+    if (config.last_id != "") {
+        var call_url = url + "?last=" + config.last_id;
     }
     else {
         var call_url = url;
@@ -81,20 +85,22 @@ function chartLive(url, interval) {
             var date = Date.UTC.apply(this, data[i].date);
 
             // Do we need to remove the first point in the chart?
-            if ((chart.series[0].activePointCount > 0) && (date - chart.series[0].xData[0] >= chart_config.clean_interval*1000))
-                chart.series[0].addPoint([date, data[i].result], false, true);
+            if ((config.chart.series[0].activePointCount > 0) && (date - config.chart.series[0].xData[0] >= config.clean_interval*1000))
+                config.chart.series[0].addPoint([date, data[i].result], false, true);
             else
-                chart.series[0].addPoint([date, data[i].result], false);
+                config.chart.series[0].addPoint([date, data[i].result], false);
         }
 
         // If there is data received, save the lastest id.
         if (data.length > 0)
-            chart_last_id = data[data.length-1].id;
+            config.last_id = data[data.length-1].id;
 
         // Redraw the chart
-        chart.redraw();
+        config.chart.redraw();
         
-        setTimeout("chartLive('"+url+"',"+interval+")", chart_config.interval*1000);
+        setTimeout(function(){
+            chartLive(config);
+        }, config.interval*1000);
     });
 
 }
