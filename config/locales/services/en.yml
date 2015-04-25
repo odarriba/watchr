@@ -50,6 +50,12 @@ en:
       continue: "Save changes"
     results:
       title: "Service results"
+      results_history: "Results history"
+      chart:
+        title: "Results of %{service} service"
+        subtitle: "Executed every %{interval} seconds"
+        x_axis: "Date"
+        legend: "%{service} service"
       service_info:
         title: "Service information"
       hosts_results:

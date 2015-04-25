@@ -26,10 +26,12 @@
     <%= bootstrap_flash %>
     <div class='monitoring'>
       <% if (!@service.blank?) %>
-        <div id='chart-container' class='chart-container'></div>
-
-        <hr class='divider' />
-
+        <div class="panel panel-primary">
+          <div class="panel-heading clearfix">
+            <b><%= t("services.results.results_history") %></b>
+          </div>
+          <div id='chart-container' class='chart-container'></div>
+        </div>
         <div class='row'>
           <div id='hosts-results' class='col-md-6 hosts-results'>
             <%= render(:partial => "hosts_results") %>
@@ -107,12 +109,17 @@
 <script>
   $( document ).ready(function() {
     var chart_config = {
-      container: "chart-container", 
-      name: "<%= @service.name %>",
+      container: "chart-container",
       live: true,
       interval: <%= @service.interval %>,
       clean_interval: <%= @service.clean_interval %>,
-      resume: "<%= @service.resume.to_s %>",
+      texts: {
+        title: "<%= t('services.results.chart.title', :service => @service.name) %>",
+        subtitle: "<%= t('services.results.chart.subtitle', :interval => @service.interval) %>",
+        x_axis: "<%= t('services.results.chart.x_axis') %>",
+        legend: "<%= t('services.results.chart.legend', :service => @service.name) %>",
+        resume: "<%= @service.resume.to_s %>"
+      },
       data_url: "<%= results_data_service_path(@service.id) %>"
     };
 

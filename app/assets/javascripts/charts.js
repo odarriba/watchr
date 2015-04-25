@@ -13,14 +13,14 @@ function chartStart(config) {
 
 	$('#'+config.container).highcharts({
         chart: {
-            type: 'spline',
+            type: 'areaspline',
             zoomType: 'x'
         },
         title: {
-            text: 'Results of '+config.name
+            text: config.texts.title
         },
         subtitle: {
-            text: 'Executed every '+config.interval+' seconds.'
+            text: config.texts.subtitle
         },
         xAxis: {
             type: 'datetime',
@@ -29,12 +29,12 @@ function chartStart(config) {
                 year: '%b'
             },
             title: {
-                text: 'Date'
+                text: config.texts.x_axis
             }
         },
         yAxis: {
             title: {
-                text: config.resume
+                text: config.texts.resume
             },
             min: 0
         },
@@ -44,18 +44,22 @@ function chartStart(config) {
         },
 
         plotOptions: {
-            spline: {
+            areaspline: {
                 marker: {
                     enabled: false
-                }
+                },
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
             }
         },
 
         series: [{
-            name: config.name+' service',
-            // Define the data points. All series have a dummy year
-            // of 1970/71 in order to be compared on the same x axis. Note
-            // that in JavaScript, months start at 0 for January, 1 for February etc.
+            name: config.texts.legend,
             data: [
             ]
         }]
