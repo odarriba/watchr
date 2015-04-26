@@ -45,10 +45,11 @@ en:
       title: "Host results"
       service_panel:
         title: "Results of %{service} service."
+        button: "View full report"
       chart:
-        title: "Results of %{service} service"
+        title: "Results of %{service} service on %{host}"
         subtitle: "Executed every %{interval} seconds"
-        x_axis: "Date"
+        x_axis: "Time stamp"
         legend: "%{service} service"
     sidebar:
       all: "View all hosts"

@@ -1,13 +1,13 @@
-<div id='host-results-panel' class="panel panel-primary host-results-panel">
+<div id="host-results-panel" class="panel panel-primary host-results-panel">
   <div class="panel-heading clearfix">
-    <div class='pull-left'>
+    <div class="pull-left">
       <b><%= t("services.results.hosts_results.title") %></b>
     </div>
-    <div class='pull-right'>
+    <div class="pull-right">
       <% if (@service.status == Service::STATUS_OK) %>
       <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
       <% elsif (@service.status == Service::STATUS_ERROR) %>
-      <span class='badge'><strong class='text-danger'><%= t("services.error").upcase %></strong></span>
+      <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
       <% elsif (@service.status == Service::STATUS_WARNING) %>
       <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
       <% else %>
@@ -15,7 +15,7 @@
       <% end %>
     </div>
   </div>
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th class="col-xs-5"><%= t("services.results.hosts_results.table.host") %></th>
@@ -26,13 +26,13 @@
     <tbody>
     <% if (!@service.results.last.blank?) %>
       <% @service.results.last.host_results.each do |hresult| %>
-      <tr>
-        <td><%= hresult.host.name %></td>
+      <tr onclick="location.href='<%= host_results_service_path(:id => @service.id, :host_id => hresult.host_id) %>'">
+        <td><%= link_to(hresult.host.name, host_results_service_path(:id => @service.id, :host_id => hresult.host_id)) %></td>
         <td>
         <% if (hresult.is_ok?) %>
-          <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
+          <strong class="text-success"><%= t("services.status.ok").upcase %></strong>
         <% else %>
-          <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
+          <strong class="text-danger"><%= t("services.status.error").upcase %></strong>
         <% end %>
         </td>
         <td><%= hresult.value %></td>

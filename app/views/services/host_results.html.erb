@@ -1,0 +1,69 @@
+<% content_for :title, t("services.host_results.title") %>
+<div class='content-full row-fluid'>
+  <div class="page-header clearfix">
+    <h1>
+      <%= t("services.host_results.title") %>
+      <small>
+        <%= t("services.host_results.subtitle", :service => @service.name, :host => @host.name) %>
+      </small>
+      <div class='pull-right'>
+        <%= link_to(t("services.host_results.button").upcase, results_service_path(@service), :class => "btn btn-success") %>
+      </div>
+    </h1>
+  </div>
+
+  <div class='col-lg-9 col-md-8'>
+    <%= bootstrap_flash %>
+
+    <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
+      <div class="panel-heading clearfix">
+        <b><%= t("services.host_results.results_history", :host => @host.name) %></b>
+      </div>
+      <div id='chart-container' class='chart-container'></div>
+    </div>
+
+    <div id='alerts-panel' class="panel panel-primary alerts-panel"> <!-- chart container -->
+      <div class="panel-heading">
+        <b><%= t("services.host_results.alerts_history", :service => @service.name, :host => @host.name) %></b>
+      </div>
+      <div class='panel-body'>
+        No data yet.
+      </div>
+    </div>
+  </div>
+
+  <div class='col-lg-3 col-md-4'>
+    <div id='host-history'>
+      <%= render(:partial => "services/panels/host_history") %>
+    </div>
+
+    <div id='service-info'>
+      <%= render(:partial => "services/panels/service_info") %>
+    </div>
+
+    <div id='host-info'>
+      <%= render(:partial => "services/panels/host_info") %>
+    </div>
+  </div>
+<script>
+  $(document).ready(function() {
+    chartStart({
+      container: $("#chart-container"),
+      live: true,
+      interval: <%= @service.interval %>,
+      clean_interval: <%= @service.clean_interval %>,
+      texts: {
+        title: "<%= t('services.host_results.chart.title', :service => @service.name, :host => @host.name) %>",
+        subtitle: "<%= t('services.host_results.chart.subtitle', :interval => @service.interval) %>",
+        x_axis: "<%= t('services.host_results.chart.x_axis') %>",
+        y_axis: "<%= t('services.host_results.chart.x_axis') %> [<%= @service.get_units_short %>]",
+        legend: "<%= t('services.host_results.chart.legend', :service => @service.name) %>"
+      },
+      data_url: "<%= results_data_service_path(@service.id) %>"
+    });
+
+    /*setInterval(function() {
+      $.getScript("<%= results_service_path(@service.id) %>");
+    }, <%= @service.interval %>*1000);*/
+  });
+</script>

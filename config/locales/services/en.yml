@@ -55,13 +55,13 @@ en:
     results:
       title: "Service results"
       results_history: "Results history"
+      alerts_history: "Alerts regarding %{service} service"
+      service_info: "Service information"
       chart:
         title: "Results of %{service} service"
         subtitle: "Executed every %{interval} seconds"
-        x_axis: "Time"
+        x_axis: "Time stamp"
         legend: "%{service} service"
-      service_info:
-        title: "Service information"
       hosts_results:
         title: "Lastest results per host"
         table:
@@ -69,6 +69,25 @@ en:
           status: "Status"
           result: "Result (%{units})"
           global: "Global result"
+    host_results:
+      title: "Service results by host"
+      subtitle: "%{service} on %{host}"
+      button: "View service results"
+      results_history: "Results history on %{host}"
+      alerts_history: "Alerts regarding %{service} service on %{host}"
+      service_info: "Host information"
+      chart:
+        title: "Results of %{service} service on %{host}"
+        subtitle: "Executed every %{interval} seconds"
+        x_axis: "Time stamp"
+        y_axis: "Result"
+        legend: "%{service} service"
+      host_history:
+        title: "Latest results"
+        table:
+          time: "Time stamp"
+          status: "Status"
+          result: "Result"
     index_hosts:
       title: "Hosts to monitor"
       table:
@@ -117,6 +136,7 @@ en:
       not_active: "The service with the requested ID isn't active."
       hosts_not_exist: "To assign hosts to a service, <b>you have to create them first</b>."
       host_not_found: "The host with the requested ID doesn't exist."
+      host_service_not_found: "The host requested doesn't exist or isn't asigned to the service specified."
       host_not_added: "Host (%{name}) <b>couldn't be added</b> to service (%{service})."
       host_not_deleted: "Host (%{name}) <b>couldn't be deleted</b> from service (%{service})."
       not_destroyed: "Service (%{name}) couldn't be destroyed. Please, try again."

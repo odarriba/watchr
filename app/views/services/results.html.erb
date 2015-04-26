@@ -1,114 +1,57 @@
 <% content_for :title, t("services.results.title") %>
-<div class='row-fluid'>
-  <div class='sidebar'>
-    <%= render :partial => "sidebar" %>
-  </div>
-  <div class='content'>
-    <div class="page-header clearfix">
-      <h1>
-        <%= t("services.results.title") %>
-        <small>
-          <%= @service.name %>
-        </small>
-        <div id='service-selector' class='pull-right'>
-          <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
-            <div class="form-group">
-              <%= select_tag "id", 
-                    options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }, @service.id.to_s), 
-                    :class => "form-control", 
-                    :onchange => "if(this.value != '') { var url='#{results_service_path(:id => 'serviceid')}'; window.location=url.replace('serviceid', this.value); }"
-                %>
-            </div>
-          <% end %>
-        </div>
-      </h1>
-    </div>
-    <%= bootstrap_flash %>
-    <div id='service-results'>
-      <div class='row'>
-        <div class='col-md-12'><!-- service_info panel -->
-          <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
-            <div class="panel-heading clearfix">
-              <b><%= t("services.results.results_history") %></b>
-            </div>
-            <div id='chart-container' class='chart-container'></div>
+<div class='content-full row-fluid'>
+  <div class="page-header clearfix">
+    <h1>
+      <%= t("services.results.title") %>
+      <small>
+        <%= @service.name %>
+      </small>
+      <div id='service-selector' class='pull-right'>
+        <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
+          <div class="form-group">
+            <%= select_tag "id", 
+                  options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }, @service.id.to_s), 
+                  :class => "form-control", 
+                  :onchange => "if(this.value != '') { var url='#{results_service_path(:id => 'serviceid')}'; window.location=url.replace('serviceid', this.value); }"
+              %>
           </div>
-        </div>
-        <div id='hosts-results' class='col-md-6 hosts-results'><!-- host_results panel -->
-          <%= render(:partial => "hosts_results") %>
-        </div>
-        <div id='service-info' class='col-md-6 service-info'><!-- service_info panel -->
-          <div id='service-info-panel'class="panel panel-primary service-info-panel">
-            <div class="panel-heading clearfix">
-              <b><%= t("services.results.service_info.title") %></b>
-            </div>
-            <table class='table'>
-              <tbody>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.name") %></b>
-                  </td>
-                  <td>
-                    <%= @service.name %>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.activation") %></b>
-                  </td>
-                  <td>
-                    <% if (@service.is_active?) %>
-                    <span class="text-success"><%= t("services.form.active") %></span>
-                    <% else %>
-                    <span class="text-danger"><%= t("services.form.inactive") %></span>
-                    <% end %>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.priority") %></b>
-                  </td>
-                  <td>
-                    <%= t("services.priorities.priority_#{@service.priority.to_s}") %>
-                  </td>
-                </tr>
-                <% if (!@service.get_probe.blank?) %>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.interval") %></b>
-                  </td>
-                  <td>
-                    <%= @service.interval %>
-                  </td>
-                </tr>
-                <% end %>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.clean_interval") %></b>
-                  </td>
-                  <td>
-                    <%= @service.clean_interval %>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b><%= t("services.form.resume") %></b>
-                  </td>
-                  <td>
-                    <%= t("services.resumes.#{@service.resume.to_s}_explanation") %>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <% end %>
       </div>
+    </h1>
+  </div>
+  <div class='col-lg-9 col-md-8'>
+    <%= bootstrap_flash %>
+
+    <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
+      <div class="panel-heading">
+        <b><%= t("services.results.results_history") %></b>
+      </div>
+      <div id='chart-container' class='chart-container'></div>
+    </div>
+
+    <div id='alerts-panel' class="panel panel-primary alerts-panel"> <!-- chart container -->
+      <div class="panel-heading">
+        <b><%= t("services.results.alerts_history", :service => @service.name) %></b>
+      </div>
+      <div class='panel-body'>
+        No data yet.
+      </div>
+    </div>
+  </div>
+
+  <div class='col-lg-3 col-md-4'>
+    <div id='hosts-results'>
+      <%= render(:partial => "services/panels/hosts_results") %>
+    </div>
+
+    <div id='service-info'>
+      <%= render(:partial => "services/panels/service_info") %>
     </div>
   </div>
 </div>
 <script>
-  $( document ).ready(function() {
-    var chart_config = {
+  $(document).ready(function() {
+    chartStart({
       container: $("#chart-container"),
       live: true,
       interval: <%= @service.interval %>,
@@ -121,12 +64,10 @@
         legend: "<%= t('services.results.chart.legend', :service => @service.name) %>"
       },
       data_url: "<%= results_data_service_path(@service.id) %>"
-    };
-
-    chartStart(chart_config);
+    });
 
     setInterval(function() {
-      $.getScript("<%= hosts_results_service_path(@service.id) %>");
+      $.getScript("<%= results_service_path(@service.id) %>");
     }, <%= @service.interval %>*1000);
   });
 </script>

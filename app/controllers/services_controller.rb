@@ -254,6 +254,7 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
     end
   end
 
@@ -309,21 +310,31 @@ class ServicesController < ApplicationController
     end
   end
 
-  # Action to render the hosts results table in the result view.
+  # Action to view the results from the probes over a service.
   #
   # [URL] 
-  #   GET /services/:id/results/hosts
+  #   GET /services/:id/results
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
   #
-  def hosts_results
+  def host_results
     # Load the service from the database
     load_service
     return if (@service.blank?)
 
+    # Find the host between the service's associated
+    @host = Host.where(:_id => params[:host_id], :service_ids => @service.id).first
+
+    if (@host.blank?)
+      # If not found, show an error and redirect
+      flash[:error] = t("services.error.host_service_not_found")
+      redirect_to services_path()
+      return
+    end
+
     respond_to do |format|
-      format.js
+      format.html
     end
   end
 

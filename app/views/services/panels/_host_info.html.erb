@@ -1,0 +1,45 @@
+<div id="host-info-panel" class="panel panel-primary host-info-panel">
+  <div class="panel-heading clearfix">
+    <b><%= t("services.host_results.host_info") %></b>
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td class="col-xs-4">
+          <b><%= t("hosts.form.name") %></b>
+        </td>
+        <td class="col-xs-8">
+          <%= @host.name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b><%= t("hosts.form.activation") %></b>
+        </td>
+        <td>
+          <% if (@service.is_active?) %>
+          <span class="text-success"><%= t("hosts.form.active") %></span>
+          <% else %>
+          <span class="text-danger"><%= t("hosts.form.inactive") %></span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b><%= t("hosts.form.type") %></b>
+        </td>
+        <td>
+          <%= t("hosts.types.type_#{@host.type.to_s}") %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b><%= t("hosts.form.address") %></b>
+        </td>
+        <td>
+          <%= @host.address %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

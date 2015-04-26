@@ -1,0 +1,51 @@
+<%
+  # Filter the results
+  @results_orig = Result.where(:service_id => @service.id).desc(:created_at).limit(5).to_a
+  @results = @results_orig.map{|u| u = u.host_results.select{|hr| hr.host_id == @host.id}.first}
+%>
+<div id="host-results-panel" class="panel panel-primary host-results-panel">
+  <div class="panel-heading clearfix">
+    <div class="pull-left">
+      <b><%= t("services.host_results.host_history.title") %></b>
+    </div>
+    <div class="pull-right">
+      <% if (@results[0].status == Service::STATUS_OK) %>
+      <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
+      <% elsif (@results[0].status == Service::STATUS_ERROR) %>
+      <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
+      <% elsif (@results[0].status == Service::STATUS_WARNING) %>
+      <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
+      <% else %>
+      <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
+      <% end %>
+    </div>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-xs-4"><%= t("services.host_results.hosts_results.table.time") %></th>
+        <th class="col-xs-4"><%= t("services.host_results.hosts_results.table.status") %></th>
+        <th class="col-xs-4"><%= t("services.host_results.hosts_results.table.result", :units => @service.get_units_short) %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if (!@results.blank?) %>
+      <% @results.each do |res| %>
+      <tr>
+        <td>
+          <%= @results_orig.select{|u| u.host_results.include?(res)}.first.created_at.strftime("%H:%M:%S") %>
+        </td>
+        <td>
+        <% if (res.is_ok?) %>
+          <strong class="text-success"><%= t("services.status.ok").upcase %></strong>
+        <% else %>
+          <strong class="text-danger"><%= t("services.status.error").upcase %></strong>
+        <% end %>
+        </td>
+        <td><%= res.value %></td>
+      </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+</div>

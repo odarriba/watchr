@@ -1,4 +1,4 @@
-<% content_for :title, t("hosts.show.title") %>
+<% content_for :title, t("hosts.results.title") %>
 <div class='row-fluid'>
   <div class='sidebar'>
     <%= render :partial => "sidebar" %>
@@ -24,32 +24,49 @@
       </h1>
     </div>
     <%= bootstrap_flash %>
-    <div id='host-results'>
+    <div id='host-results row'>
       <% @host.services.each do |serv| %>
-      <div id='service-panel-<%= serv.id.to_s %>' class="panel panel-primary service-panel">
-        <div class="panel-heading clearfix">
-          <b><%= t('hosts.results.service_panel.title', :service => serv.name) %></b>
+      <div class='col-md-6'>
+        <div id='service-panel-<%= serv.id.to_s %>' class="panel panel-primary service-panel">
+          <div class="panel-heading clearfix">
+            <b><%= t('hosts.results.service_panel.title', :service => serv.name) %></b>
+            <div class='pull-right'>
+              <% if (serv.status == Service::STATUS_OK) %>
+              <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
+              <% elsif (serv.status == Service::STATUS_ERROR) %>
+              <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
+              <% elsif (serv.status == Service::STATUS_WARNING) %>
+              <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
+              <% else %>
+              <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
+              <% end %>
+            </div>
+          </div>
+          <div class='panel-body'>
+            <div id='chart-container' class='chart-container'></div>
+            <%= link_to(t('hosts.results.service_panel.button'), host_results_service_path(:id => serv.id, :host_id => @host.id), :class => 'btn btn-block btn-primary') %>
+          </div>
         </div>
-        <div id='chart-container' class='chart-container'></div>
       </div>
       <% end %>
     </div>
   </div>
 </div>
 <script>
-  $( document ).ready(function() {
+  $(document).ready(function() {
     <% @host.services.each do |serv| %>
     chartStart({
       container: $("#service-panel-<%= serv.id.to_s %> #chart-container"),
+      height: 300,
       live: true,
       interval: <%= serv.interval %>,
       clean_interval: <%= serv.clean_interval %>,
       texts: {
-        title: "<%= t('services.results.chart.title', :service => serv.name) %>",
-        subtitle: "<%= t('services.results.chart.subtitle', :interval => serv.interval) %>",
-        x_axis: "<%= t('services.results.chart.x_axis') %>",
-        legend: "<%= t('services.results.chart.legend', :service => serv.name) %>",
-        resume: "<%= serv.resume.to_s %>"
+        title: "<%= t('hosts.results.chart.title', :service => serv.name, :host => @host.name) %>",
+        subtitle: "<%= t('hosts.results.chart.subtitle', :interval => serv.interval) %>",
+        x_axis: "<%= t('hosts.results.chart.x_axis') %>",
+        y_axis: "<%= t('services.resumes.'+ serv.resume.to_s) %> [<%= serv.get_units_short %>]",
+        legend: "<%= t('hosts.results.chart.legend', :service => serv.name) %>"
       },
       data_url: "<%= results_data_service_path(serv.id) %>"
     });

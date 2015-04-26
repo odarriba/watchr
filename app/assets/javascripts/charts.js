@@ -14,6 +14,7 @@ function chartStart(config) {
 	$(config.container).highcharts({
         chart: {
             type: 'areaspline',
+            height: config.height,
             zoomType: 'x'
         },
         title: {

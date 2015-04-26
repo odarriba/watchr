@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   get 'services/:id/results' => 'services#results', :as => :results_service
   get 'services/:id/results/data' => 'services#results_data', :as => :results_data_service
   get 'services/:id/results/hosts' => 'services#hosts_results', :as => :hosts_results_service
+  get 'services/:id/results/:host_id' => 'services#host_results', :as => :host_results_service
   get 'services/:id/hosts' => 'services#index_hosts', :as => :service_hosts
   post 'services/:id/host/new' => 'services#new_host', :as => :new_service_host
   delete 'services/:id/hosts/:host_id' => 'services#delete_host', :as => :delete_service_host
