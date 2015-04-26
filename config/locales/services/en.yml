@@ -69,6 +69,7 @@ en:
           status: "Status"
           result: "Result (%{units})"
           global: "Global result"
+          no_results: "There is no data available (yet)"
     host_results:
       title: "Service results by host"
       subtitle: "%{service} on %{host}"
@@ -88,6 +89,7 @@ en:
           time: "Time stamp"
           status: "Status"
           result: "Result"
+          no_results: "There is no data available (yet)"
     index_hosts:
       title: "Hosts to monitor"
       table:
