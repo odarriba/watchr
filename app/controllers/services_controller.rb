@@ -12,7 +12,7 @@ class ServicesController < ApplicationController
   # It also allows to search in the services by _name_, _description_ and/or _probe_
   #
   # [URL] 
-  #   GET /configuration/services
+  #   GET /services
   #
   # [Parameters] 
   #   * *priority* - _(Optional)_ The priority of the services to show.
@@ -52,7 +52,7 @@ class ServicesController < ApplicationController
   # Action to show the service creation form.
   #
   # [URL] 
-  #   GET /configuration/services/new
+  #   GET /services/new
   #
   # [Parameters] 
   #   * *priority* - _(Optional)_ The default priority of the host to create.
@@ -76,7 +76,7 @@ class ServicesController < ApplicationController
   # Action to create a new service with the data received from the form.
   #
   # [URL] 
-  #   POST /configuration/services
+  #   POST /services
   #
   # [Parameters]
   #   * *service* - All the data recolected of the new service.
@@ -110,7 +110,7 @@ class ServicesController < ApplicationController
   # Action to show a the information about an existing service.
   #
   # [URL] 
-  #   GET /configuration/services/:id
+  #   GET /services/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -131,7 +131,7 @@ class ServicesController < ApplicationController
   # Action to show a form to edit an existing service.
   #
   # [URL] 
-  #   GET /configuration/services/:id/edit
+  #   GET /services/:id/edit
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -152,8 +152,8 @@ class ServicesController < ApplicationController
   # Action to update an existing service with the data received from the form.
   #
   # [URL] 
-  #   PUT /configuration/services/:id
-  #   PATCH /configuration/services/:id
+  #   PUT /services/:id
+  #   PATCH /services/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
@@ -188,7 +188,7 @@ class ServicesController < ApplicationController
   # Action to destroy an existing service in the database.
   #
   # [URL] 
-  #   DELETE /configuration/services/:id
+  #   DELETE /services/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -215,8 +215,8 @@ class ServicesController < ApplicationController
   # Action to get a probe configuration form using AJAX.
   #
   # [URL] 
-  #   * GET /configuration/services/:id/probe_form/:probe
-  #   * GET /configuration/services/new/probe_form/:probe
+  #   * GET /services/:id/probe_form/:probe
+  #   * GET /services/new/probe_form/:probe
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -330,7 +330,7 @@ class ServicesController < ApplicationController
   # Action to index the hosts associated to a service.
   #
   # [URL] 
-  #   * GET /configuration/services/:id/hosts
+  #   * GET /services/:id/hosts
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -350,7 +350,7 @@ class ServicesController < ApplicationController
   # Action to associate a hosts to a service.
   #
   # [URL] 
-  #   * POST /configuration/services/:id/hosts/new
+  #   * POST /services/:id/hosts/new
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -395,7 +395,7 @@ class ServicesController < ApplicationController
   # Action to disassociate a hosts to a service.
   #
   # [URL] 
-  #   * DELETE /configuration/services/:id/hosts/:host_id
+  #   * DELETE /services/:id/hosts/:host_id
   #
   # [Parameters]
   #   * *id* - The identificator of the service.

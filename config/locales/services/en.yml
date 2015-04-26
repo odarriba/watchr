@@ -15,10 +15,14 @@ en:
       priority_1: "Normal priority"
       priority_2: "Low priority"
     resumes:
-      resume_max_value: "Get the maximum value"
-      resume_min_value: "Get the minimum value"
-      resume_mean_value: "Get the mean of all the values"
-      resume_sum: "Get the sum of all values"
+      max_value: "Maximum value"
+      max_value_explanation: "Get the maximum value"
+      min_value: "Minimum value"
+      min_value_explantion: "Get the minimum value"
+      mean_value: "Mean value"
+      mean_value_explanation: "Get the mean of all the values"
+      sum: "Sum value"
+      sum_explanation: "Get the sum of all values"
     index:
       title: "Services management"
       subtitle:
@@ -54,7 +58,7 @@ en:
       chart:
         title: "Results of %{service} service"
         subtitle: "Executed every %{interval} seconds"
-        x_axis: "Date"
+        x_axis: "Time"
         legend: "%{service} service"
       service_info:
         title: "Service information"
@@ -63,7 +67,7 @@ en:
         table:
           host: "Host"
           status: "Status"
-          result: "Result"
+          result: "Result (%{units})"
           global: "Global result"
     index_hosts:
       title: "Hosts to monitor"
@@ -76,11 +80,8 @@ en:
         destroy: "Delete"
         destroy_confirmation: "Do you really want to stop monitoring this host? The monitoring results for this host will be deleted."
     sidebar:
-      all: "View all"
-      view_by_type: "View by priority of service"
-      priority_high: "High priority"
-      priority_normal: "Normal priority"
-      priority_low: "Low priority"
+      all: "View all services"
+      view_by_type: "View services by priority"
     form:
       name: "Name"
       name_placeholder: "Name of the service"

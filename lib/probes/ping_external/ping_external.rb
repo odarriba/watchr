@@ -11,6 +11,10 @@ module Watchr
     PROBE_NAME = "ping_external"
     # Probe description
     PROBE_DESCRIPTION = "It uses the ping utility provided by the operating system to test the connectivity to a remote host."
+    # Results' units
+    RESULTS_UNITS = "milliseconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "ms"
 
     # Register this probe
     self.register_this
@@ -32,6 +36,27 @@ module Watchr
     #
     def self.description_html
       return t("probes.ping_external.description_html") if (t("probes.ping_external.description_html"))
+      super
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return t("probes.ping_external.results_units") if (t("probes.ping_external.results_units"))
+      super
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return t("probes.ping_external.results_units_short") if (t("probes.ping_external.results_units_short"))
       super
     end
 
@@ -80,7 +105,7 @@ module Watchr
       if (ping.ping(host.address, count, interval))
         # Save the duration
         result.status = HostResult::STATUS_OK
-        result.value = (ping.duration-(interval*(count-1)))/count
+        result.value = ((ping.duration-(interval*(count-1)))/count)*1000
       else
         # If the ping ends in error, save the error
         result.status = HostResult::STATUS_ERROR

@@ -3,6 +3,8 @@ en:
     ping_external:
       description: "It uses the ping utility provided by the operating system to test the connectivity to a remote host."
       description_html: "It uses the ping utility provided by the operating system to test the connectivity to a remote host."
+      results_units: "milliseconds"
+      results_units_short: "ms"
       form:
         count: "Number of pings"
         count_placeholder: "Number of pings"

@@ -1,0 +1,58 @@
+<% content_for :title, t("hosts.show.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("hosts.results.title") %>
+        <small>
+          <%= @host.name %>
+        </small>
+        <div id='host-selector' class='pull-right'>
+          <%= form_tag results_host_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
+            <div class="form-group">
+              <%= select_tag "id", 
+                    options_for_select(Host.where(:active => true).collect{ |u| [u.name, u.id] }, @host.id.to_s), 
+                    :class => "form-control", 
+                    :onchange => "if(this.value != '') { var url='#{results_host_path(:id => 'hostid')}'; window.location=url.replace('hostid', this.value); }"
+                %>
+            </div>
+          <% end %>
+        </div>
+      </h1>
+    </div>
+    <%= bootstrap_flash %>
+    <div id='host-results'>
+      <% @host.services.each do |serv| %>
+      <div id='service-panel-<%= serv.id.to_s %>' class="panel panel-primary service-panel">
+        <div class="panel-heading clearfix">
+          <b><%= t('hosts.results.service_panel.title', :service => serv.name) %></b>
+        </div>
+        <div id='chart-container' class='chart-container'></div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  $( document ).ready(function() {
+    <% @host.services.each do |serv| %>
+    chartStart({
+      container: $("#service-panel-<%= serv.id.to_s %> #chart-container"),
+      live: true,
+      interval: <%= serv.interval %>,
+      clean_interval: <%= serv.clean_interval %>,
+      texts: {
+        title: "<%= t('services.results.chart.title', :service => serv.name) %>",
+        subtitle: "<%= t('services.results.chart.subtitle', :interval => serv.interval) %>",
+        x_axis: "<%= t('services.results.chart.x_axis') %>",
+        legend: "<%= t('services.results.chart.legend', :service => serv.name) %>",
+        resume: "<%= serv.resume.to_s %>"
+      },
+      data_url: "<%= results_data_service_path(serv.id) %>"
+    });
+    <% end %>
+  });
+</script>

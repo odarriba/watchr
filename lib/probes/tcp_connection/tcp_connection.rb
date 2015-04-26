@@ -11,6 +11,10 @@ module Watchr
     PROBE_NAME = "tcp_connection"
     # Probe description
     PROBE_DESCRIPTION = "It checks the ability to perform a TCP connection to a port of the remote host."
+    # Results' units
+    RESULTS_UNITS = "miliseconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "ms"
 
     # Register this probe
     self.register_this
@@ -32,6 +36,27 @@ module Watchr
     #
     def self.description_html
       return t("probes.tcp_connection.description_html") if (t("probes.tcp_connection.description_html"))
+      super
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return t("probes.tcp_connection.results_units") if (t("probes.tcp_connection.results_units"))
+      super
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return t("probes.tcp_connection.results_units_short") if (t("probes.tcp_connection.results_units_short"))
       super
     end
 
@@ -78,7 +103,7 @@ module Watchr
       if (conn.ping(host.address))
         # Save the duration
         result.status = HostResult::STATUS_OK
-        result.value = conn.duration
+        result.value = conn.duration*1000
       else
         # If the connection ends in error, save the error
         result.status = HostResult::STATUS_ERROR

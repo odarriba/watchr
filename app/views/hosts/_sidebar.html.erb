@@ -5,7 +5,7 @@
       <hr class='divider' />
       <li class='disabled'><a><%= t("hosts.sidebar.view_by_type")%></a></li>
       <% Host::AVAILABLE_TYPES.each do |htype| %>
-      <li<% if ((@type == htype) && (action_name == "index")) %> class="active"<% end %>><%= link_to t("hosts.sidebar.#{htype.to_s}"), hosts_path(:type => htype) %></li>
+      <li<% if ((@type == htype) && (action_name == "index")) %> class="active"<% end %>><%= link_to t("hosts.types.type_#{htype.to_s}"), hosts_path(:type => htype) %></li>
       <% end %>
     </ul>
   </div>

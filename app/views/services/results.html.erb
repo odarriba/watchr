@@ -11,7 +11,7 @@
           <%= @service.name %>
         </small>
         <div id='service-selector' class='pull-right'>
-          <%= form_tag service_monitoring_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
+          <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
             <div class="form-group">
               <%= select_tag "id", 
                     options_for_select(Service.where(:active => true).collect{ |u| [u.name, u.id] }, @service.id.to_s), 
@@ -24,92 +24,92 @@
       </h1>
     </div>
     <%= bootstrap_flash %>
-    <div class='monitoring'>
-      <% if (!@service.blank?) %>
-        <div class="panel panel-primary">
-          <div class="panel-heading clearfix">
-            <b><%= t("services.results.results_history") %></b>
-          </div>
-          <div id='chart-container' class='chart-container'></div>
-        </div>
-        <div class='row'>
-          <div id='hosts-results' class='col-md-6 hosts-results'>
-            <%= render(:partial => "hosts_results") %>
-          </div>
-          <div id='service-info' class='col-md-6 service-info'>
-            <div class="panel panel-primary">
-              <div class="panel-heading clearfix">
-                <b><%= t("services.results.service_info.title") %></b>
-              </div>
-              <table class='table'>
-                <tbody>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.name") %></b>
-                    </td>
-                    <td>
-                      <%= @service.name %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.activation") %></b>
-                    </td>
-                    <td>
-                      <% if (@service.is_active?) %>
-                      <span class="text-success"><%= t("services.form.active") %></span>
-                      <% else %>
-                      <span class="text-danger"><%= t("services.form.inactive") %></span>
-                      <% end %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.priority") %></b>
-                    </td>
-                    <td>
-                      <%= t("services.priorities.priority_#{@service.priority.to_s}") %>
-                    </td>
-                  </tr>
-                  <% if (!@service.get_probe.blank?) %>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.interval") %></b>
-                    </td>
-                    <td>
-                      <%= @service.interval %>
-                    </td>
-                  </tr>
-                  <% end %>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.clean_interval") %></b>
-                    </td>
-                    <td>
-                      <%= @service.clean_interval %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <b><%= t("services.form.resume") %></b>
-                    </td>
-                    <td>
-                      <%= t("services.resumes.resume_#{@service.resume.to_s}") %>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+    <div id='service-results'>
+      <div class='row'>
+        <div class='col-md-12'><!-- service_info panel -->
+          <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
+            <div class="panel-heading clearfix">
+              <b><%= t("services.results.results_history") %></b>
             </div>
+            <div id='chart-container' class='chart-container'></div>
           </div>
         </div>
-      <% end %>
+        <div id='hosts-results' class='col-md-6 hosts-results'><!-- host_results panel -->
+          <%= render(:partial => "hosts_results") %>
+        </div>
+        <div id='service-info' class='col-md-6 service-info'><!-- service_info panel -->
+          <div id='service-info-panel'class="panel panel-primary service-info-panel">
+            <div class="panel-heading clearfix">
+              <b><%= t("services.results.service_info.title") %></b>
+            </div>
+            <table class='table'>
+              <tbody>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.name") %></b>
+                  </td>
+                  <td>
+                    <%= @service.name %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.activation") %></b>
+                  </td>
+                  <td>
+                    <% if (@service.is_active?) %>
+                    <span class="text-success"><%= t("services.form.active") %></span>
+                    <% else %>
+                    <span class="text-danger"><%= t("services.form.inactive") %></span>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.priority") %></b>
+                  </td>
+                  <td>
+                    <%= t("services.priorities.priority_#{@service.priority.to_s}") %>
+                  </td>
+                </tr>
+                <% if (!@service.get_probe.blank?) %>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.interval") %></b>
+                  </td>
+                  <td>
+                    <%= @service.interval %>
+                  </td>
+                </tr>
+                <% end %>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.clean_interval") %></b>
+                  </td>
+                  <td>
+                    <%= @service.clean_interval %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b><%= t("services.form.resume") %></b>
+                  </td>
+                  <td>
+                    <%= t("services.resumes.#{@service.resume.to_s}_explanation") %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <script>
   $( document ).ready(function() {
     var chart_config = {
-      container: "chart-container",
+      container: $("#chart-container"),
       live: true,
       interval: <%= @service.interval %>,
       clean_interval: <%= @service.clean_interval %>,
@@ -117,8 +117,8 @@
         title: "<%= t('services.results.chart.title', :service => @service.name) %>",
         subtitle: "<%= t('services.results.chart.subtitle', :interval => @service.interval) %>",
         x_axis: "<%= t('services.results.chart.x_axis') %>",
-        legend: "<%= t('services.results.chart.legend', :service => @service.name) %>",
-        resume: "<%= @service.resume.to_s %>"
+        y_axis: "<%= t('services.resumes.'+ @service.resume.to_s) %> [<%= @service.get_units_short %>]",
+        legend: "<%= t('services.results.chart.legend', :service => @service.name) %>"
       },
       data_url: "<%= results_data_service_path(@service.id) %>"
     };

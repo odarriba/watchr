@@ -12,6 +12,10 @@ module Watchr
     PROBE_NAME = nil
     # Probe description
     PROBE_DESCRIPTION = nil
+    # Results' units
+    RESULTS_UNITS = "seconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "s"
 
     # This function allows to register a Probe to be used in
     # the application to probe services.
@@ -55,6 +59,27 @@ module Watchr
     def self.description_html
       return nil if (!self::PROBE_DESCRIPTION.is_a?(String))
       return self::PROBE_DESCRIPTION.html_safe
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return nil if (!self::RESULTS_UNITS.is_a?(String))
+      return self::RESULTS_UNITS
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return nil if (!self::RESULTS_UNITS_SHORT.is_a?(String))
+      return self::RESULTS_UNITS_SHORT
     end
 
     # Function to get the class object of the probe

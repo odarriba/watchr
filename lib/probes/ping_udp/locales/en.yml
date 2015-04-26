@@ -3,6 +3,8 @@ en:
     ping_udp:
       description: "It pings a remote host sending a message to an UDP port and waiting for the same message in response."
       description_html: "It pings a remote host sending a message to an UDP port and waiting for the same message in response."
+      results_units: "milliseconds"
+      results_units_short: "ms"
       form:
         port: "Remote port"
         port_placeholder: "Remote port (1-65535)"

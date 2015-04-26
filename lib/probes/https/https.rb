@@ -11,6 +11,10 @@ module Watchr
     PROBE_NAME = "https"
     # Probe description
     PROBE_DESCRIPTION = "It checks the status and delay of an HTTPS service."
+    # Results' units
+    RESULTS_UNITS = "milliseconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "ms"
 
     # Register this probe
     self.register_this
@@ -32,6 +36,27 @@ module Watchr
     #
     def self.description_html
       return t("probes.https.description_html") if (t("probes.https.description_html"))
+      super
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return t("probes.https.results_units") if (t("probes.https.results_units"))
+      super
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return t("probes.https.results_units_short") if (t("probes.https.results_units_short"))
       super
     end
 
@@ -106,7 +131,7 @@ module Watchr
       if (petition.ping)
         # Save the duration
         result.status = HostResult::STATUS_OK
-        result.value = petition.duration
+        result.value = petition.duration*1000
       else
         # If the petition ends in error, save the error
         result.status = HostResult::STATUS_ERROR

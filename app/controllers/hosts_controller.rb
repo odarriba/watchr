@@ -10,7 +10,7 @@ class HostsController < ApplicationController
   # It also allows to search in the hosts by _name_, _description_ and/or _address_
   #
   # [URL] 
-  #   GET /configuration/hosts
+  #   GET /hosts
   #
   # [Parameters] 
   #   * *type* - _(Optional)_ The type oh hosts to show.
@@ -50,7 +50,7 @@ class HostsController < ApplicationController
   # Action to show the host creation form.
   #
   # [URL] 
-  #   GET /configuration/hosts/new
+  #   GET /hosts/new
   #
   # [Parameters] 
   #   * *type* - _(Optional)_ The default type of the host to create.
@@ -70,7 +70,7 @@ class HostsController < ApplicationController
   # Action to create a new host with the data received from the form.
   #
   # [URL] 
-  #   POST /configuration/hosts
+  #   POST /hosts
   #
   # [Parameters]
   #   * *host* - All the data recolected of the new host.
@@ -97,7 +97,7 @@ class HostsController < ApplicationController
   # Action to show the information available about a host.
   #
   # [URL] 
-  #   GET /configuration/hosts/:id
+  #   GET /hosts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
@@ -114,7 +114,7 @@ class HostsController < ApplicationController
   # Action to show a form to edit an existing host.
   #
   # [URL] 
-  #   GET /configuration/hosts/:id/edit
+  #   GET /hosts/:id/edit
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
@@ -131,8 +131,8 @@ class HostsController < ApplicationController
   # Action to update an existing host with the data received from the form.
   #
   # [URL] 
-  #   PUT /configuration/hosts/:id
-  #   PATCH /configuration/hosts/:id
+  #   PUT /hosts/:id
+  #   PATCH /hosts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
@@ -161,7 +161,7 @@ class HostsController < ApplicationController
   # Action to destroy an existing host from the database.
   #
   # [URL] 
-  #   DELETE /configuration/hosts/:id
+  #   DELETE /hosts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the host.
@@ -182,6 +182,23 @@ class HostsController < ApplicationController
         end
         return
       }
+    end
+  end
+
+  # Action to show the information available about a host.
+  #
+  # [URL] 
+  #   GET /hosts/:id/results
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #
+  def results
+    load_host
+    return if (@host.blank?)
+
+    respond_to do|format|
+      format.html
     end
   end
 

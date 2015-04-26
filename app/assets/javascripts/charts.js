@@ -11,7 +11,7 @@ function chartStart(config) {
 	if (config == {})
 		return;
 
-	$('#'+config.container).highcharts({
+	$(config.container).highcharts({
         chart: {
             type: 'areaspline',
             zoomType: 'x'
@@ -34,7 +34,7 @@ function chartStart(config) {
         },
         yAxis: {
             title: {
-                text: config.texts.resume
+                text: config.texts.y_axis
             },
             min: 0
         },
@@ -54,7 +54,7 @@ function chartStart(config) {
                         [0, Highcharts.getOptions().colors[0]],
                         [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                     ]
-                },
+                }
             }
         },
 
@@ -65,14 +65,14 @@ function chartStart(config) {
         }]
     });
 
-    config.chart = $('#'+config.container).highcharts();
+    config.chart = $(config.container).highcharts();
 
     if (config.live)
         chartLive(config);
 }
 
 function chartLive(config) {
-    url = config.url || window.location+"/data.json";
+    url = config.data_url || window.location+"/data.json";
 
     if (config.last_id != "") {
         var call_url = url + "?last=" + config.last_id;

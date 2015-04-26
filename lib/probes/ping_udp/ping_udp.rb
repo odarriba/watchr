@@ -12,6 +12,10 @@ module Watchr
     PROBE_NAME = "ping_udp"
     # Probe description
     PROBE_DESCRIPTION = "It pings a remote host sending a message to an UDP port and waiting for the same message in response."
+    # Results' units
+    RESULTS_UNITS = "miliseconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "ms"
 
     # Register this probe
     self.register_this
@@ -33,6 +37,27 @@ module Watchr
     #
     def self.description_html
       return t("probes.ping_udp.description_html") if (t("probes.ping_udp.description_html"))
+      super
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return t("probes.ping_udp.results_units") if (t("probes.ping_udp.results_units"))
+      super
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return t("probes.ping_udp.results_units_short") if (t("probes.ping_udp.results_units_short"))
       super
     end
 
@@ -79,7 +104,7 @@ module Watchr
       if (ping.ping(host.address))
         # Save the duration
         result.status = HostResult::STATUS_OK
-        result.value = ping.duration
+        result.value = ping.duration*1000
       else
         # If the ping ends in error, save the error
         result.status = HostResult::STATUS_ERROR

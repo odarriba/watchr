@@ -23,6 +23,7 @@ en:
       button:
         new: "Create a host"
         show: "View"
+        results: "Results"
         edit: "Edit"
         destroy: "Destroy"
         destroy_confirmation: "Do you really want to destroy this host? The monitoring results for this host will also be destroyed."
@@ -40,14 +41,18 @@ en:
     edit:
       title: "Edit a host"
       continue: "Save changes"
+    results:
+      title: "Host results"
+      service_panel:
+        title: "Results of %{service} service."
+      chart:
+        title: "Results of %{service} service"
+        subtitle: "Executed every %{interval} seconds"
+        x_axis: "Date"
+        legend: "%{service} service"
     sidebar:
-      all: "View all"
-      view_by_type: "View by type of host"
-      router: "Router hosts"
-      switch: "Switch hosts"
-      server: "Server hosts"
-      computer: "Computer hosts"
-      generic: "Generic hosts"
+      all: "View all hosts"
+      view_by_type: "View hosts by type"
     form:
       name: "Name"
       name_placeholder: "Name of the host"

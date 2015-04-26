@@ -96,6 +96,26 @@ class Service
     return Watchr::Probes.get_probe(self.probe)
   end
 
+  # Function to get the units in which are expressed the results
+  # of the probe.
+  #
+  # [Returns]
+  #   A string with the units
+  #
+  def get_units
+    return self.get_probe.results_units
+  end
+
+  # Function to get the short name of the units in which are expressed 
+  # the results of the probe.
+  #
+  # [Returns]
+  #   A string with the short name of the units
+  #
+  def get_units_short
+    return self.get_probe.results_units_short
+  end
+
   # Function to check if the service is active.
   #
   # [Returns]

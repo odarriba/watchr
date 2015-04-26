@@ -36,7 +36,7 @@
                 <tr>
                   <th class="col-xs-5"><%= t("panel.index.table.host") %></th>
                   <th class="col-xs-3"><%= t("panel.index.table.status") %></th>
-                  <th class="col-xs-4"><%= t("panel.index.table.result") %></th>
+                  <th class="col-xs-4"><%= t("panel.index.table.result", :units => serv.get_units_short) %></th>
                 </tr>
               </thead>
               <tbody>

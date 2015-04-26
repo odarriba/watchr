@@ -21,14 +21,9 @@ Rails.application.routes.draw do
   put '/preferences' => 'users#save_preferences'
   patch '/preferences' => 'users#save_preferences'
 
-  # Monitoring operations
-  scope '/monitoring' do
-    get '/service(/:id)' => 'monitoring#service', :as => :service_monitoring
-    get '/service/:id/data' => 'monitoring#service_data', :as => :data_service_monitoring
-  end
-
   # Hosts operations
   resources :hosts
+  get 'hosts/:id/results' => 'hosts#results', :as => :results_host
 
   # Services operations
   resources :services

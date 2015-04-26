@@ -74,6 +74,7 @@
           </td>
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.show")}</span>".html_safe, host_path(host), :class => "btn btn-sm btn-success", :title => t("hosts.index.button.show") %>
+            <%= link_to "<i class='fa fa-bar-chart'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.results")}</span>".html_safe, results_host_path(host), :class => "btn btn-sm btn-primary", :title => t("services.index.button.results") %>
             <% if (current_user.is_normal?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.edit")}</span>".html_safe, edit_host_path(host), :class => "btn btn-sm btn-info", :title => t("hosts.index.button.edit") %>
             <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.destroy")}</span>".html_safe, host_path(host), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("hosts.index.button.destroy"), :data => {:confirm => t("hosts.index.button.destroy_confirmation")} %>

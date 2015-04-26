@@ -13,6 +13,10 @@ module Watchr
     PROBE_NAME = "dummy"
     # Probe description
     PROBE_DESCRIPTION = "This is a dummy probe that do nothing."
+    # Results' units
+    RESULTS_UNITS = "seconds"
+    # Short name of results' units
+    RESULTS_UNITS_SHORT = "s"
 
     # Register this probe
     self.register_this
@@ -34,6 +38,27 @@ module Watchr
     #
     def self.description_html
       return t("probes.dummy.description_html") if (t("probes.dummy.description_html"))
+      super
+    end
+
+    # Function to get the units in which are expresed the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units
+      return t("probes.dummy.results_units") if (t("probes.dummy.results_units"))
+      super
+    end
+
+    # Function to get the short name of the units in which are expresed 
+    # the results
+    #
+    # [Returns]
+    #   A string with the units of the results
+    #
+    def self.results_units_short
+      return t("probes.dummy.results_units_short") if (t("probes.dummy.results_units_short"))
       super
     end
 

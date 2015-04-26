@@ -96,7 +96,7 @@ GEM
     libv8 (3.16.14.7)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.4.3)
+    mime-types (2.5)
     minitest (5.6.0)
     mongoid (4.0.2)
       activemodel (~> 4.0)

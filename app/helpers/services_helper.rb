@@ -40,7 +40,7 @@ module ServicesHelper
     result = Hash.new
 
     Service::AVAILABLE_RESUMES.each do |resume|
-      result[t("services.resumes.resume_#{resume.to_s}")] = resume.to_s
+      result[t("services.resumes.#{resume.to_s}_explanation")] = resume.to_s
     end
 
     return result

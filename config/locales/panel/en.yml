@@ -6,7 +6,7 @@ en:
       table:
         host: "Host"
         status: "Status"
-        result: "Result"
+        result: "Result (%{units})"
         global: "Global result"
       no_element: "There is no active service to show (yet)."
     sidekiq:

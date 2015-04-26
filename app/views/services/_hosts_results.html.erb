@@ -1,4 +1,4 @@
-<div class="panel panel-primary">
+<div id='host-results-panel' class="panel panel-primary host-results-panel">
   <div class="panel-heading clearfix">
     <div class='pull-left'>
       <b><%= t("services.results.hosts_results.title") %></b>
@@ -20,7 +20,7 @@
       <tr>
         <th class="col-xs-5"><%= t("services.results.hosts_results.table.host") %></th>
         <th class="col-xs-3"><%= t("services.results.hosts_results.table.status") %></th>
-        <th class="col-xs-4"><%= t("services.results.hosts_results.table.result") %></th>
+        <th class="col-xs-4"><%= t("services.results.hosts_results.table.result", :units => @service.get_units_short) %></th>
       </tr>
     </thead>
     <tbody>

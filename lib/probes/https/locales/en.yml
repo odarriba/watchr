@@ -3,6 +3,8 @@ en:
     https:
       description: "It checks the status and delay of an HTTPS service."
       description_html: "It checks the status and delay of an HTTPS service."
+      results_units: "milliseconds"
+      results_units_short: "ms"
       form:
         port: "Remote port"
         port_placeholder: "Remote port (1-65535)"
