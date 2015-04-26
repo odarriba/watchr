@@ -9,18 +9,18 @@
       <b><%= t("services.host_results.host_history.title") %></b>
     </div>
     <div class="pull-right">
-      <% if (@results[0].status == Service::STATUS_OK) %>
+      <% if (!@results[0].blank? && @results[0].status == Service::STATUS_OK) %>
       <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
-      <% elsif (@results[0].status == Service::STATUS_ERROR) %>
+      <% elsif (!@results[0].blank? && @results[0].status == Service::STATUS_ERROR) %>
       <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
-      <% elsif (@results[0].status == Service::STATUS_WARNING) %>
+      <% elsif (!@results[0].blank? && @results[0].status == Service::STATUS_WARNING) %>
       <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
       <% else %>
-      <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
+      <span class='badge'><strong class='text-info'><%= t("services.status.unknown").upcase %></strong></span>
       <% end %>
     </div>
   </div>
-  <table class="table table-hover">
+  <table class="table table-hover table-results">
     <thead>
       <tr>
         <th class="col-xs-4"><%= t("services.host_results.hosts_results.table.time") %></th>
@@ -45,6 +45,12 @@
         <td><%= res.value %></td>
       </tr>
       <% end %>
+    <% else %>
+      <tr class='no-results'>
+        <td colspan="3">
+          There is no data available (yet)
+        </td>
+      </tr>
     <% end %>
     </tbody>
   </table>

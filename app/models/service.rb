@@ -133,8 +133,8 @@ class Service
   def status
     result = self.results.last
 
-    # If no result is saved yet, return OK
-    return Service::STATUS_OK if (result.blank?)
+    # If no result is saved yet, return nil (UNKNOWN)
+    return nil if (result.blank?)
 
     # OK if all are ok (or no one is present)
     return Service::STATUS_OK if (result.host_results.select{|hr| hr.is_ok?}.count == result.host_results.count)

@@ -27,7 +27,7 @@
                 <% elsif (serv.status == Service::STATUS_WARNING) %>
                 <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
                 <% else %>
-                <span class='badge'><strong class='text-primary'><%= t("services.status.unknown").upcase %></strong></span>
+                <span class='badge'><strong class='text-info'><%= t("services.status.unknown").upcase %></strong></span>
                 <% end %>
               </div>
             </div>
@@ -69,7 +69,7 @@
                     <% elsif (serv.status == Service::STATUS_WARNING) %>
                     <strong class='text-warning'><%= t("services.status.warning").upcase %></strong>
                     <% else %>
-                    <strong class='text-primary'><%= t("services.status.unknown").upcase %></strong>
+                    <strong class='text-info'><%= t("services.status.unknown").upcase %></strong>
                     <% end %>
                   </td>
                   <td>

@@ -15,14 +15,14 @@
   <div class='col-lg-9 col-md-8'>
     <%= bootstrap_flash %>
 
-    <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
+    <div id='chart-panel' class="panel panel-primary chart-panel">
       <div class="panel-heading clearfix">
         <b><%= t("services.host_results.results_history", :host => @host.name) %></b>
       </div>
       <div id='chart-container' class='chart-container'></div>
     </div>
 
-    <div id='alerts-panel' class="panel panel-primary alerts-panel"> <!-- chart container -->
+    <div id='alerts-panel' class="panel panel-primary alerts-panel">
       <div class="panel-heading">
         <b><%= t("services.host_results.alerts_history", :service => @service.name, :host => @host.name) %></b>
       </div>

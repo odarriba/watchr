@@ -43,6 +43,7 @@ en:
       continue: "Save changes"
     results:
       title: "Host results"
+      no_service: "There is no service monitored in this host (yet)."
       service_panel:
         title: "Results of %{service} service."
         button: "View full report"
