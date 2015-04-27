@@ -20,7 +20,7 @@
                 <b><%= serv.name %></b>
               </div>
               <div class='pull-right'>
-                <%= service_status_badge(serv.status) %>
+                <%= status_badge(serv) %>
               </div>
             </div>
             <table class="table table-results">
@@ -36,13 +36,7 @@
                 <% serv.results.last.host_results.each do |hresult| %>
                 <tr>
                   <td><%= hresult.host.name %></td>
-                  <td>
-                  <% if (hresult.is_ok?) %>
-                    <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
-                  <% else %>
-                    <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
-                  <% end %>
-                  </td>
+                  <td><%= host_result_status_text(hresult) %></td>
                   <td><%= hresult.value.to_f %></td>
                 </tr>
                 <% end %>

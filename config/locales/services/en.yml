@@ -9,7 +9,7 @@ en:
       ok: "Ok"
       warning: "Warning"
       error: "Error"
-      inactive: "No data"
+      inactive: "Inactive"
       unknown: "Unknown"
     priorities:
       priority_0: "High priority"

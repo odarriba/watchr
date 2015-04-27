@@ -64,7 +64,7 @@ class Result
   #   An array with all the results
   #
   def get_values
-    return [0.0] if (self.all_error?)
+    return [0.0] if (!self.any_ok?)
 
     results = []
 
@@ -84,7 +84,7 @@ class Result
   #   A boolean that indicates if there is a global error or not.
   #
   def all_error?
-    return self.host_results.select{|h| !h.error?}.blank?
+    return self.host_results.select{|h| !h.is_error?}.blank?
   end
 
   # Function to know if there is an error in any of the hosts monitored
@@ -94,7 +94,7 @@ class Result
   #   A boolean that indicates if there is any error in the host results or not.
   #
   def any_error?
-    return (!self.host_results.index{|h| h.error?}.blank?)
+    return (!self.host_results.index{|h| h.is_error?}.blank?)
   end
 
   # Function to know if all the probes done to the host were valid or not.
@@ -102,8 +102,8 @@ class Result
   # [Returns]
   #   A boolean that indicates if all the results are valid or not.
   #
-  def all_valid?
-    return self.host_results.select{|h| !h.valid?}.blank?
+  def all_ok?
+    return self.host_results.select{|h| !h.is_ok?}.blank?
   end
 
   # Function to know if there is any valid probe done to the hosts monitored
@@ -112,8 +112,8 @@ class Result
   # [Returns]
   #   A boolean that indicates if there is any valid result or not.
   #
-  def any_valid?
-    return (!self.host_results.index{|h| h.valid?}.blank?)
+  def any_ok?
+    return (!self.host_results.index{|h| h.is_ok?}.blank?)
   end
 
   # Function to get the timestamp of the result.

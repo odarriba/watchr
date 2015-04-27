@@ -45,7 +45,7 @@ en:
       title: "Host results"
       no_service: "There is no service monitored in this host (yet)."
       service_panel:
-        title: "Results of %{service} service."
+        title: "%{service} service"
         button: "View full report"
       chart:
         title: "Results of %{service} service on %{host}"

@@ -1,6 +1,9 @@
 # Controller with the actions of the main panel with statistics and general data.
 # 
 class PanelController < ApplicationController
+  # Check the privilege level required.
+  before_action :check_administrator_user, :only => [:sidekiq]
+
   # Action to show main panel, which contains basic results information.
   #
   # [URL]

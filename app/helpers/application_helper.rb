@@ -39,17 +39,57 @@ module ApplicationHelper
     flash_messages.join("\n").html_safe
   end
 
-  def service_status_badge(status)
-    return "<span class='badge'>#{service_status_text(status)}</span>".html_safe
+  # Function to obtain the status badge of a Service/HostResult to
+  # show in the UI.
+  #
+  # [Returns]
+  #   HTML code with the badge of status.
+  #
+  def status_badge(object)
+    if (object.is_a?(Service))
+      return "<span class='badge'>#{service_status_text(object)}</span>".html_safe
+    elsif (object.is_a?(HostResult))
+      return "<span class='badge'>#{host_result_status_text(object)}</span>".html_safe
+    end
   end
 
-  def service_status_text(status)
-    if (status == Service::STATUS_OK)
+  # Function to obtain the status text of a Service to show in the UI.
+  #
+  # [Returns]
+  #   HTML code with the text of status.
+  #
+  def service_status_text(object)
+    if (!object.is_a?(Service))
+      return nil
+    end
+
+    if (object.status == Service::STATUS_OK)
       return "<strong class='text-success'>#{t("services.status.ok").upcase}</strong>".html_safe
-    elsif (status == Service::STATUS_ERROR)
+    elsif (object.status == Service::STATUS_ERROR)
       return "<strong class='text-danger'>#{t("services.status.error").upcase}</strong>".html_safe
-    elsif (status == Service::STATUS_WARNING)
+    elsif (object.status == Service::STATUS_WARNING)
       return "<strong class='text-warning'>#{t("services.status.warning").upcase}</strong>".html_safe
+    end
+    
+    return "<strong class='text-info'>#{t("services.status.unknown").upcase}</strong>".html_safe
+  end
+
+  # Function to obtain the status text of a HostResult to show in the UI.
+  #
+  # [Returns]
+  #   HTML code with the text of status.
+  #
+  def host_result_status_text(object)
+    if (!object.is_a?(HostResult))
+      return nil
+    end
+    
+    if (object.status == HostResult::STATUS_OK)
+      return "<strong class='text-success'>#{t("services.status.ok").upcase}</strong>".html_safe
+    elsif (object.status == HostResult::STATUS_ERROR)
+      return "<strong class='text-danger'>#{t("services.status.error").upcase}</strong>".html_safe
+    elsif (object.status == HostResult::STATUS_INACTIVE)
+      return "<strong class='text-info'>#{t("services.status.inactive").upcase}</strong>".html_safe
     end
     
     return "<strong class='text-info'>#{t("services.status.unknown").upcase}</strong>".html_safe

@@ -137,7 +137,7 @@ class Service
     return nil if (result.blank?)
 
     # OK if all are ok (or no one is present)
-    return Service::STATUS_OK if (result.host_results.select{|hr| hr.is_ok?}.count == result.host_results.count)
+    return Service::STATUS_OK if (result.host_results.select{|hr| hr.is_ok? || hr.is_inactive?}.count == result.host_results.count)
     # ERROR if all are errors
     return Service::STATUS_ERROR if (result.host_results.select{|hr| hr.is_error?}.count == result.host_results.count)
 

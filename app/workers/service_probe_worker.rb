@@ -38,14 +38,19 @@ class ServiceProbeWorker
       return
     end
 
-    # Check if there is any active host assigned
-    if (service.hosts.select{|h| h.is_active?}.count > 0)
+    # Check if there is any host assigned
+    if (service.hosts.count > 0)
       # Create a new result object
       result = Result.new(:service => service)
 
       # Execute over every host and save in the results.
-      service.hosts.select{|h| h.is_active?}.each do |host|
-        hresult = probe.execute(host, probe_config)
+      service.hosts.each do |host|
+        if (host.is_active?)
+          hresult = probe.execute(host, probe_config)
+        else
+          hresult = HostResult.new(:status => HostResult::STATUS_INACTIVE, :host => host)
+        end
+        
         result.host_results << hresult if (hresult.is_a?(HostResult))
       end
 

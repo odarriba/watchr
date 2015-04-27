@@ -4,7 +4,7 @@
       <b><%= t("services.results.hosts_results.title") %></b>
     </div>
     <div class="pull-right">
-      <%= service_status_badge(@service.status) %>
+      <%= status_badge(@service) %>
     </div>
   </div>
   <table class="table table-hover table-results">
@@ -17,30 +17,11 @@
     </thead>
     <tbody>
     <% if (!@service.results.last.blank?) %>
-      <% 
-      host_results = @service.results.last.host_results.to_a
-      
-      @service.hosts.each do |host| 
-        hresult = host_results.select{|u| u.host_id == host.id}.first
-        %>
-      <tr onclick="location.href='<%= host_results_service_path(:id => @service.id, :host_id => host.id) %>'">
-        <td><%= link_to(host.name, host_results_service_path(:id => @service.id, :host_id => host.id)) %></td>
-        <td>
-        <% if (!hresult.blank?) # is there a result of this host? %>
-          <% if (hresult.is_ok?) %>
-          <strong class="text-success"><%= t("services.status.ok").upcase %></strong>
-          <% else %>
-          <strong class="text-danger"><%= t("services.status.error").upcase %></strong>
-          <% end %>
-        <% else %>
-          <strong class="text-info"><%= t("services.status.inactive").upcase %></strong>
-        <% end %>
-        </td>
-        <td>
-          <% if (!hresult.blank?) %>
-          <%= hresult.value %>
-          <% end %>
-        </td>
+      <% @service.results.last.host_results.each do |hresult|%>
+      <tr onclick="location.href='<%= host_results_service_path(:id => @service.id, :host_id => hresult.host_id) %>'">
+        <td><%= link_to(hresult.host.name, host_results_service_path(:id => @service.id, :host_id => hresult.host_id)) %></td>
+        <td><%= host_result_status_text(hresult) %></td>
+        <td><%= hresult.value.to_f %></td>
       </tr>
       <% end %>
     <% else %>
@@ -58,7 +39,7 @@
           <b><%= t("services.results.hosts_results.table.global") %></b>
         </td>
         <td>
-          <%= service_status_text(@service.status) %>
+          <%= service_status_text(@service) %>
         </td>
         <td>
           <%= @service.results.last.global_value %>

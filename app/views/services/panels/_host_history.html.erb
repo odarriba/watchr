@@ -1,7 +1,7 @@
 <%
   # Filter the results (only get the ones that has results from this host)
   @results_orig = Result.where(:service_id => @service.id).in("host_results.host_id" => @host.id).desc(:created_at).limit(4).to_a
-  @results = @results_orig.map{|u| u = u.host_results.select{|hr| hr.host_id == @host.id}.first}
+  @hresults = @results_orig.map{|u| u = u.host_results.select{|hr| hr.host_id == @host.id}.first}
 %>
 <div id="host-results-panel" class="panel panel-primary host-results-panel">
   <div class="panel-heading clearfix">
@@ -9,8 +9,8 @@
       <b><%= t("services.host_results.host_history.title") %></b>
     </div>
     <div class="pull-right">
-      <% if (!@results[0].blank?) %>
-        <%= service_status_badge(@results[0].status) %>
+      <% if (!@hresults[0].blank?) %>
+        <%= status_badge(@hresults[0]) %>
       <% else %>
         <%= service_status_badge(nil) %>
       <% end %>
@@ -25,20 +25,12 @@
       </tr>
     </thead>
     <tbody>
-    <% if (!@results.blank?) %>
-      <% @results.each do |res| %>
+    <% if (!@hresults.blank?) %>
+      <% @hresults.each do |hres| %>
       <tr>
-        <td>
-          <%= @results_orig.select{|u| u.host_results.include?(res)}.first.created_at.strftime("%H:%M:%S") %>
-        </td>
-        <td>
-        <% if (res.is_ok?) %>
-          <strong class="text-success"><%= t("services.status.ok").upcase %></strong>
-        <% else %>
-          <strong class="text-danger"><%= t("services.status.error").upcase %></strong>
-        <% end %>
-        </td>
-        <td><%= res.value %></td>
+        <td><%= @results_orig.select{|u| u.host_results.include?(hres)}.first.created_at.strftime("%H:%M:%S") %></td>
+        <td><%= host_result_status_text(hres) %></td>
+        <td><%= hres.value.to_f %></td>
       </tr>
       <% end %>
     <% else %>

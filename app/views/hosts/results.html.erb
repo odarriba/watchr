@@ -28,11 +28,8 @@
       <% @host.services.each do |serv| %>
       <div class='col-md-6'>
         <div id='service-panel-<%= serv.id.to_s %>' class="panel panel-primary service-panel">
-          <div class="panel-heading clearfix">
+          <div class="panel-heading">
             <b><%= t('hosts.results.service_panel.title', :service => serv.name) %></b>
-            <div class='pull-right'>
-              <%= service_status_badge(serv.status) %>
-            </div>
           </div>
           <div class='panel-body'>
             <div id='chart-container' class='chart-container'></div>

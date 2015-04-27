@@ -10,9 +10,11 @@ class HostResult
   STATUS_OK = :ok
   # Symbol that indicates an invalid result
   STATUS_ERROR = :error
+  # Symbol taht indicates an inactive host result
+  STATUS_INACTIVE = :inactive
 
   # Array with the available statuses
-  AVAILABLE_STATUSES = [STATUS_OK, STATUS_ERROR]
+  AVAILABLE_STATUSES = [STATUS_OK, STATUS_ERROR, STATUS_INACTIVE]
 
   # Fields of the result
   field :status,      :type => Symbol, :default => HostResult::STATUS_OK
@@ -49,6 +51,15 @@ class HostResult
     return (self.status == HostResult::STATUS_OK)
   end
 
+  # Function to know if the result of this host is valid
+  #
+  # [Returns]
+  #   A boolean that indicates if the result for this host is valid or not.
+  #
+  def is_inactive?
+    return (self.status == HostResult::STATUS_INACTIVE)
+  end
+
   # Function to get the timestamp of the result.
   #
   # [Returns]
@@ -81,6 +92,9 @@ class HostResult
       end
     elsif (self.status == HostResult::STATUS_ERROR)
       self.value = nil
+    elsif (self.status == HostResult::STATUS_INACTIVE)
+      self.value = nil
+      self.error = nil
     else
       # Result type undefined???
       errors.add(:result, "the result is undefined")
