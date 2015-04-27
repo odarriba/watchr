@@ -38,4 +38,20 @@ module ApplicationHelper
     end
     flash_messages.join("\n").html_safe
   end
+
+  def service_status_badge(status)
+    return "<span class='badge'>#{service_status_text(status)}</span>".html_safe
+  end
+
+  def service_status_text(status)
+    if (status == Service::STATUS_OK)
+      return "<strong class='text-success'>#{t("services.status.ok").upcase}</strong>".html_safe
+    elsif (status == Service::STATUS_ERROR)
+      return "<strong class='text-danger'>#{t("services.status.error").upcase}</strong>".html_safe
+    elsif (status == Service::STATUS_WARNING)
+      return "<strong class='text-warning'>#{t("services.status.warning").upcase}</strong>".html_safe
+    end
+    
+    return "<strong class='text-info'>#{t("services.status.unknown").upcase}</strong>".html_safe
+  end
 end

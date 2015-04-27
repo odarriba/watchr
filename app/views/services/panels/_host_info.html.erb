@@ -17,7 +17,7 @@
           <b><%= t("hosts.form.activation") %></b>
         </td>
         <td>
-          <% if (@service.is_active?) %>
+          <% if (@host.is_active?) %>
           <span class="text-success"><%= t("hosts.form.active") %></span>
           <% else %>
           <span class="text-danger"><%= t("hosts.form.inactive") %></span>

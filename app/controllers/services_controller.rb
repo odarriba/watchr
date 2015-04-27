@@ -313,7 +313,7 @@ class ServicesController < ApplicationController
   # Action to view the results from the probes over a service.
   #
   # [URL] 
-  #   GET /services/:id/results
+  #   GET /services/:id/results/:host_id
   #
   # [Parameters]
   #   * *id* - The identificator of the service.
@@ -335,6 +335,73 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
+    end
+  end
+
+  # Action to view the results from the probes over a service.
+  #
+  # [URL] 
+  #   GET /services/:id/results/:host_id/data
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the service.
+  #   * *last* - (Optional) The id of the last obtained result.
+  #
+  def host_results_data
+    # Load the service from the database
+    load_service
+    return if (@service.blank?)
+
+    # Find the host between the service's associated
+    @host = Host.where(:_id => params[:host_id], :service_ids => @service.id).first
+
+    # Avoid searching results if there is no host.
+    if (!@host.blank?)
+      # If a last param was received, try to locate the result with that id.
+      if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
+        # Get the results obtained AFTER the one which id was received
+        @results = Result.where(:service => @service.id, :_id.gt => params[:last])
+      else
+        # Get all the reuslts available
+        @results = Result.where(:service => @service.id)
+      end
+
+      # Only the results that include results from this host (and in descendent order by time)
+      @results = @results.in("host_results.host_id" => @host.id).desc(:created_at)
+    end
+
+    respond_to do |format|
+      format.json {
+        # The results array
+        data = Array.new()
+
+        if (@host.blank?)
+          # If not found, return an error
+          data[:error] = t("services.error.host_service_not_found")
+        else
+          # Poblate the results array
+          @results.cache.each do |result|
+            data << {
+              :id => result.id.to_s, 
+              :date => [
+                result.created_at.year, 
+                result.created_at.month, 
+                result.created_at.day,
+                result.created_at.hour,
+                result.created_at.min,
+                result.created_at.sec
+              ],
+              # Call the resume_values function here to avoid high load on the DB produced by 
+              # loading the Service object every time in the result.global_value function.
+              :result => result.get_host_value(@host)
+            }
+          end
+        end
+
+        # Render the results
+        render :json => data
+      }
     end
   end
 

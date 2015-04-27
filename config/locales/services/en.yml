@@ -9,6 +9,7 @@ en:
       ok: "Ok"
       warning: "Warning"
       error: "Error"
+      inactive: "No data"
       unknown: "Unknown"
     priorities:
       priority_0: "High priority"
@@ -63,7 +64,7 @@ en:
         x_axis: "Time stamp"
         legend: "%{service} service"
       hosts_results:
-        title: "Lastest results per host"
+        title: "Latest results"
         table:
           host: "Host"
           status: "Status"

@@ -20,18 +20,10 @@
                 <b><%= serv.name %></b>
               </div>
               <div class='pull-right'>
-                <% if (serv.status == Service::STATUS_OK) %>
-                <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
-                <% elsif (serv.status == Service::STATUS_ERROR) %>
-                <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
-                <% elsif (serv.status == Service::STATUS_WARNING) %>
-                <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
-                <% else %>
-                <span class='badge'><strong class='text-info'><%= t("services.status.unknown").upcase %></strong></span>
-                <% end %>
+                <%= service_status_badge(serv.status) %>
               </div>
             </div>
-            <table class="table">
+            <table class="table table-results">
               <thead>
                 <tr>
                   <th class="col-xs-5"><%= t("panel.index.table.host") %></th>
@@ -54,29 +46,29 @@
                   <td><%= hresult.value.to_f %></td>
                 </tr>
                 <% end %>
+              <% else %>
+                <tr class='no-results'>
+                  <td colspan="3">
+                    <%= t("services.results.hosts_results.table.no_results") %>
+                  </td>
+                </tr>
               <% end %>
               </tbody>
+              <% if (!serv.results.last.blank?) %>
               <tfoot>
                 <tr>
                   <td>
                     <b><%= t("panel.index.table.global") %></b>
                   </td>
                   <td>
-                    <% if (serv.status == Service::STATUS_OK) %>
-                    <strong class='text-success'><%= t("services.status.ok").upcase %></strong>
-                    <% elsif (serv.status == Service::STATUS_ERROR) %>
-                    <strong class='text-danger'><%= t("services.status.error").upcase %></strong>
-                    <% elsif (serv.status == Service::STATUS_WARNING) %>
-                    <strong class='text-warning'><%= t("services.status.warning").upcase %></strong>
-                    <% else %>
-                    <strong class='text-info'><%= t("services.status.unknown").upcase %></strong>
-                    <% end %>
+                    <%= service_status_text(serv.status) %>
                   </td>
                   <td>
                     <%= serv.results.last.global_value %>
                   </td>
                 </tr>
               </tfoot>
+              <% end %>
             </table>
           </div>
         </div>

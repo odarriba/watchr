@@ -59,11 +59,11 @@
         y_axis: "<%= t('services.host_results.chart.x_axis') %> [<%= @service.get_units_short %>]",
         legend: "<%= t('services.host_results.chart.legend', :service => @service.name) %>"
       },
-      data_url: "<%= results_data_service_path(@service.id) %>"
+      data_url: "<%= host_results_data_service_path(:id => @service.id, :host_id => @host.id) %>"
     });
 
-    /*setInterval(function() {
-      $.getScript("<%= results_service_path(@service.id) %>");
-    }, <%= @service.interval %>*1000);*/
+    setInterval(function() {
+      $.getScript("<%= host_results_service_path(:id => @service.id, :host_id => @host.id) %>");
+    }, <%= @service.interval %>*1000);
   });
 </script>

@@ -4,15 +4,7 @@
       <b><%= t("services.results.hosts_results.title") %></b>
     </div>
     <div class="pull-right">
-      <% if (@service.status == Service::STATUS_OK) %>
-      <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
-      <% elsif (@service.status == Service::STATUS_ERROR) %>
-      <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
-      <% elsif (@service.status == Service::STATUS_WARNING) %>
-      <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
-      <% else %>
-      <span class='badge'><strong class='text-info'><%= t("services.status.unknown").upcase %></strong></span>
-      <% end %>
+      <%= service_status_badge(@service.status) %>
     </div>
   </div>
   <table class="table table-hover table-results">
@@ -25,17 +17,30 @@
     </thead>
     <tbody>
     <% if (!@service.results.last.blank?) %>
-      <% @service.results.last.host_results.each do |hresult| %>
-      <tr onclick="location.href='<%= host_results_service_path(:id => @service.id, :host_id => hresult.host_id) %>'">
-        <td><%= link_to(hresult.host.name, host_results_service_path(:id => @service.id, :host_id => hresult.host_id)) %></td>
+      <% 
+      host_results = @service.results.last.host_results.to_a
+      
+      @service.hosts.each do |host| 
+        hresult = host_results.select{|u| u.host_id == host.id}.first
+        %>
+      <tr onclick="location.href='<%= host_results_service_path(:id => @service.id, :host_id => host.id) %>'">
+        <td><%= link_to(host.name, host_results_service_path(:id => @service.id, :host_id => host.id)) %></td>
         <td>
-        <% if (hresult.is_ok?) %>
+        <% if (!hresult.blank?) # is there a result of this host? %>
+          <% if (hresult.is_ok?) %>
           <strong class="text-success"><%= t("services.status.ok").upcase %></strong>
-        <% else %>
+          <% else %>
           <strong class="text-danger"><%= t("services.status.error").upcase %></strong>
+          <% end %>
+        <% else %>
+          <strong class="text-info"><%= t("services.status.inactive").upcase %></strong>
         <% end %>
         </td>
-        <td><%= hresult.value %></td>
+        <td>
+          <% if (!hresult.blank?) %>
+          <%= hresult.value %>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     <% else %>
@@ -49,8 +54,11 @@
     <% if (!@service.results.last.blank?) %>
     <tfoot>
       <tr>
-        <td colspan="2">
+        <td>
           <b><%= t("services.results.hosts_results.table.global") %></b>
+        </td>
+        <td>
+          <%= service_status_text(@service.status) %>
         </td>
         <td>
           <%= @service.results.last.global_value %>

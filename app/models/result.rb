@@ -26,7 +26,20 @@ class Result
   #
   def get_host_result(host)
     host = host.id if (host.is_a?(Host))
-    return self.host_services.select{|u| u.host_id = host}.first
+    return self.host_results.select{|u| u.host_id = host}.first
+  end
+
+  # Function to get the value associated to the host
+  #
+  # [Parameters]
+  #   * *host* - The Host objecto or the id of a Host object.
+  #
+  # [Returns]
+  #   The _HostResult_ object.
+  #
+  def get_host_value(host)
+    host = host.id if (host.is_a?(Host))
+    return self.get_host_result(host).value.to_i.round(4)
   end
 
   # Function to get the resumed value of the results done to the hosts.

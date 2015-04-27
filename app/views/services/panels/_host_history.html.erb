@@ -1,6 +1,6 @@
 <%
-  # Filter the results
-  @results_orig = Result.where(:service_id => @service.id).desc(:created_at).limit(5).to_a
+  # Filter the results (only get the ones that has results from this host)
+  @results_orig = Result.where(:service_id => @service.id).in("host_results.host_id" => @host.id).desc(:created_at).limit(4).to_a
   @results = @results_orig.map{|u| u = u.host_results.select{|hr| hr.host_id == @host.id}.first}
 %>
 <div id="host-results-panel" class="panel panel-primary host-results-panel">
@@ -9,14 +9,10 @@
       <b><%= t("services.host_results.host_history.title") %></b>
     </div>
     <div class="pull-right">
-      <% if (!@results[0].blank? && @results[0].status == Service::STATUS_OK) %>
-      <span class='badge'><strong class='text-success'><%= t("services.status.ok").upcase %></strong></span>
-      <% elsif (!@results[0].blank? && @results[0].status == Service::STATUS_ERROR) %>
-      <span class='badge'><strong class='text-danger'><%= t("services.status.error").upcase %></strong></span>
-      <% elsif (!@results[0].blank? && @results[0].status == Service::STATUS_WARNING) %>
-      <span class='badge'><strong class='text-warning'><%= t("services.status.warning").upcase %></strong></span>
+      <% if (!@results[0].blank?) %>
+        <%= service_status_badge(@results[0].status) %>
       <% else %>
-      <span class='badge'><strong class='text-info'><%= t("services.status.unknown").upcase %></strong></span>
+        <%= service_status_badge(nil) %>
       <% end %>
     </div>
   </div>
