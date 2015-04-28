@@ -15,6 +15,8 @@ class Result
 
   validates_presence_of :service
   validate :has_host_results
+  validate :check_host_results
+  validate :only_one_host_per_result
 
   # Function to get the _HostResult_ object of a determined host
   #
@@ -137,6 +139,40 @@ class Result
     if (self.host_results.empty?)
       errors.add(:host_results, 'cannot be empty')
       return false
+    end
+
+    return true
+  end
+
+  # Function to check if the host of every HostResult is assigned to the
+  # serviceof this Result object.
+  #
+  # [Returns]
+  #   A boolean indicating if everything is ok.
+  #
+  def check_host_results
+    self.host_results.each do |hresult|
+      if (!self.service.host_ids.include?(hresult.host_id))
+        errors.add(:host_results, 'has a host_result with an unlinked host')
+        return false
+      end
+    end
+
+    return true
+  end
+
+  # Function to check if there is a host with more than one HostResult 
+  # assigned to this Result object.
+  #
+  # [Returns]
+  #   A boolean indicating if everything is ok.
+  #
+  def only_one_host_per_result
+    self.host_results.each do |hresult|
+      if (self.host_results.select{|hres| hres.host_id == hresult.host_id}.count > 1)
+        errors.add(:host_results, 'has a host_result with a duplicated host')
+        return false
+      end
     end
 
     return true
