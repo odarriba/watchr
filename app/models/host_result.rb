@@ -86,7 +86,7 @@ class HostResult
         return false
       else
         # If the value is present, clean the error msg
-        self.error = ""
+        self.error = nil
         # Round the reuslt
         self.value = self.value.round(4)
       end
