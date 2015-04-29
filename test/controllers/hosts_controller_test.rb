@@ -178,6 +178,27 @@ class HostsControllerTest < ActionController::TestCase
     sign_out :user
   end
 
+  test "should show service results of existing hosts" do
+    create_host
+
+    # Check for every privilege level
+    [@user_admin, @user_normal, @user_guest].each do |user|
+      sign_in :user, user
+
+      # Can get service results
+      get :results, :id => @host.id
+      assert_response :success
+      assert_template :layout => :application
+      assert_template :results
+
+      # Can't get service results of an unexisting service
+      get :results, :id => "inexistenthost"
+      assert_redirected_to hosts_path()
+
+      sign_out :user
+    end
+  end
+
   test "should do actions over existing hosts only" do
     sign_in :user, @user_admin
 

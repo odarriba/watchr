@@ -269,16 +269,17 @@ class ServicesController < ApplicationController
   #
   def results_data
     # Load the service from the database
-    load_service
-    return if (@service.blank?)
-
-    # If a last param was received, try to locate the result with that id.
-    if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
-      # Get the results obtained AFTER the one which id was received
-      @results = Result.where(:service => @service.id, :_id.gt => params[:last]).order({:created_at => 1})
-    else
-      # Get all the reuslts available
-      @results = Result.where(:service => @service.id).order({:created_at => 1})
+    load_service(false)
+    
+    if (!@service.blank?)
+      # If a last param was received, try to locate the result with that id.
+      if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
+        # Get the results obtained AFTER the one which id was received
+        @results = Result.where(:service => @service.id, :_id.gt => params[:last]).order({:created_at => 1})
+      else
+        # Get all the reuslts available
+        @results = Result.where(:service => @service.id).order({:created_at => 1})
+      end
     end
 
     respond_to do |format|
@@ -286,26 +287,35 @@ class ServicesController < ApplicationController
         # The results array
         data = Array.new()
 
-        # Poblate the results array
-        @results.cache.each do |result|
-          data << {
-            :id => result.id.to_s, 
-            :date => [
-              result.created_at.year, 
-              result.created_at.month, 
-              result.created_at.day,
-              result.created_at.hour,
-              result.created_at.min,
-              result.created_at.sec
-            ],
-            # Call the resume_values function here to avoid high load on the DB produced by 
-            # loading the Service object every time in the result.global_value function.
-            :result => @service.resume_values(result.get_values)
-          }
+        if (@service.blank?)
+          # If not found, return an error
+          data = {:error => t("services.error.not_found")}
+        else
+          # Poblate the results array
+          @results.cache.each do |result|
+            data << {
+              :id => result.id.to_s, 
+              :date => [
+                result.created_at.year, 
+                result.created_at.month, 
+                result.created_at.day,
+                result.created_at.hour,
+                result.created_at.min,
+                result.created_at.sec
+              ],
+              # Call the resume_values function here to avoid high load on the DB produced by 
+              # loading the Service object every time in the result.global_value function.
+              :result => @service.resume_values(result.get_values)
+            }
+          end
         end
 
         # Render the results
-        render :json => data
+        if (@service.blank?)
+          render :json => data, :status => 404
+        else
+          render :json => data
+        end
       }
     end
   end
@@ -350,25 +360,26 @@ class ServicesController < ApplicationController
   #
   def host_results_data
     # Load the service from the database
-    load_service
-    return if (@service.blank?)
+    load_service(false)
 
-    # Find the host between the service's associated
-    @host = Host.where(:_id => params[:host_id], :service_ids => @service.id).first
+    if (!@service.blank?)
+      # Find the host between the service's associated
+      @host = Host.where(:_id => params[:host_id], :service_ids => @service.id).first
 
-    # Avoid searching results if there is no host.
-    if (!@host.blank?)
-      # If a last param was received, try to locate the result with that id.
-      if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
-        # Get the results obtained AFTER the one which id was received
-        @results = Result.where(:service => @service.id, :_id.gt => params[:last])
-      else
-        # Get all the reuslts available
-        @results = Result.where(:service => @service.id)
+      # Avoid searching results if there is no host.
+      if (!@host.blank?)
+        # If a last param was received, try to locate the result with that id.
+        if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
+          # Get the results obtained AFTER the one which id was received
+          @results = Result.where(:service => @service.id, :_id.gt => params[:last])
+        else
+          # Get all the reuslts available
+          @results = Result.where(:service => @service.id)
+        end
+
+        # Only the results that include results from this host (and in descendent order by time)
+        @results = @results.in("host_results.host_id" => @host.id).desc(:created_at)
       end
-
-      # Only the results that include results from this host (and in descendent order by time)
-      @results = @results.in("host_results.host_id" => @host.id).desc(:created_at)
     end
 
     respond_to do |format|
@@ -376,9 +387,12 @@ class ServicesController < ApplicationController
         # The results array
         data = Array.new()
 
-        if (@host.blank?)
+        if (@service.blank?)
           # If not found, return an error
-          data[:error] = t("services.error.host_service_not_found")
+          data = {:error => t("services.error.not_found")}
+        elsif (@host.blank?)
+          # If not found, return an error
+          data = {:error => t("services.error.host_service_not_found")}
         else
           # Poblate the results array
           @results.cache.each do |result|
@@ -400,7 +414,11 @@ class ServicesController < ApplicationController
         end
 
         # Render the results
-        render :json => data
+        if (@service.blank? || @host.blank?)
+          render :json => data, :status => 404
+        else
+          render :json => data
+        end
       }
     end
   end
@@ -542,10 +560,13 @@ class ServicesController < ApplicationController
   #
   # It returns the Service object and makes it available at @service.
   #
+  # [Parameters]
+  #   * *redirect* - Boolean indicating if there should be redirection.
+  #
   # [Returns]
   #   A valid _Service_ object or _nil_ if it doesn't exists.
   #
-  def load_service
+  def load_service(redirect = true)
     if (params[:id].blank?)
       @service = nil
       return @service
@@ -553,7 +574,7 @@ class ServicesController < ApplicationController
 
     @service = Service.where(:_id => params[:id]).first
 
-    if (@service.blank?)
+    if (@service.blank? && redirect)
       # If not found, show an error and redirect
       flash[:error] = t("services.error.not_found")
       redirect_to services_path()

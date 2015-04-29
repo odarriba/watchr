@@ -201,6 +201,107 @@ class ServicesControllerTest < ActionController::TestCase
     sign_out :user
   end
 
+  test "should show service results of existing services" do
+    create_host
+    create_service
+
+    # Check for every privilege level
+    [@user_admin, @user_normal, @user_guest].each do |user|
+      sign_in :user, user
+
+      # Can get service results
+      get :results, :id => @service.id
+      assert_response :success
+      assert_template :layout => :application
+      assert_template :results
+
+      # Can get service results updates
+      xhr :get, :results, :id => @service.id, :format => 'js'
+      assert_response :success
+      assert_template :results
+
+      # Can't get service results of an unexisting service
+      get :results, :id => "inexistentservice"
+      assert_redirected_to services_path()
+
+      # Can't get service results updates of an unexisting service
+      xhr :get, :results, :id => "inexistentservice", :format => 'js'
+      assert_redirected_to services_path()
+
+      # Can get service results' data
+      get :results_data, :id => @service.id, :format => 'json'
+      assert_response :success
+
+      # Can't get service results of an unexisting service
+      get :results_data, :id => "inexistentservice", :format => 'json'
+      assert_response 404
+      assert_not JSON.parse(@response.body)["error"].blank?
+
+      sign_out :user
+    end
+  end
+
+  test "should show service-per-host results of existing services" do
+    create_service
+
+    # Assigned host
+    create_host
+    host_assigned = @host
+
+    # Not assigned host
+    create_host
+    host_not_assigned = @host
+
+    @service.hosts << host_assigned
+
+    # Check for every privilege level
+    [@user_admin, @user_normal, @user_guest].each do |user|
+      sign_in :user, user
+
+      # Can get host-service results
+      get :host_results, :id => @service.id, :host_id => host_assigned.id
+      assert_response :success
+      assert_template :layout => :application
+      assert_template :host_results
+
+      # Can get host-service results updates
+      xhr :get, :host_results, :id => @service.id, :host_id => host_assigned.id, :format => 'js'
+      assert_response :success
+      assert_template :host_results
+
+      # Can't get service results of an unexisting service
+      get :host_results, :id => "inexistentservice", :host_id => host_assigned.id
+      assert_redirected_to services_path()
+
+      # Can't get service results updates of an unexisting service
+      xhr :get, :host_results, :id => "inexistentservice", :host_id => host_assigned.id, :format => 'js'
+      assert_redirected_to services_path()
+
+      # Can't get service results of service in a host not assigned
+      get :host_results, :id => @service.id, :host_id => host_not_assigned.id
+      assert_redirected_to services_path()
+
+      # Can't get service results updated of service in a host not assigned
+      xhr :get, :host_results, :id => @service.id, :host_id => host_not_assigned.id, :format => 'js'
+      assert_redirected_to services_path()
+
+      # Can get service in host results' data
+      get :host_results_data, :id => @service.id, :host_id => host_assigned.id, :format => 'json'
+      assert_response :success
+
+      # Can't get service results of an unexisting service
+      get :host_results_data, :id => "inexistentservice", :host_id => host_assigned.id, :format => 'json'
+      assert_not JSON.parse(@response.body)["error"].blank?
+
+      # Can't get service results of service in a non-assigned host
+      get :host_results_data, :id => @service.id, :host_id => host_not_assigned.id, :format => 'json'
+      assert_response 404
+      assert_not JSON.parse(@response.body)["error"].blank?
+
+      sign_out :user
+    end
+  end
+
   test "should not show, assign or delete services if no host exists" do
     create_service(@create_hash)
 
