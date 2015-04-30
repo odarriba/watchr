@@ -28,7 +28,7 @@ class Result
   #
   def get_host_result(host)
     host = host.id if (host.is_a?(Host))
-    return self.host_results.select{|u| u.host_id = host}.first
+    return self.host_results.select{|u| u.host_id == host}.first
   end
 
   # Function to get the value associated to the host

@@ -378,7 +378,7 @@ class ServicesController < ApplicationController
         end
 
         # Only the results that include results from this host (and in descendent order by time)
-        @results = @results.in("host_results.host_id" => @host.id).desc(:created_at)
+        @results = @results.where("host_results.host_id" => @host.id).desc(:created_at)
       end
     end
 
