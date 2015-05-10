@@ -25,6 +25,15 @@
     <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
       <div class="panel-heading">
         <b><%= t("services.results.results_history") %></b>
+        <div class="pull-right form-inline" >
+          <b>View:&nbsp;</b> 
+          <%= select_tag :resume, 
+                options_for_select(service_short_resumes_hash(), 
+                :selected => @service.resume), 
+                { :class => "form-control input-sm", 
+                  :style => "margin-top: -5px",
+                  :onchange => "changeChartResume(this.value)" } %>
+        </div>
       </div>
       <div id='chart-container' class='chart-container'></div>
     </div>
@@ -50,8 +59,10 @@
   </div>
 </div>
 <script>
+  var chart_id = null;
+
   $(document).ready(function() {
-    chartStart({
+    chart_id = chartStart({
       container: $("#chart-container"),
       live: true,
       interval: <%= @service.interval %>,
@@ -60,14 +71,38 @@
         title: "<%= t('services.results.chart.title', :service => @service.name) %>",
         subtitle: "<%= t('services.results.chart.subtitle', :interval => @service.interval) %>",
         x_axis: "<%= t('services.results.chart.x_axis') %>",
-        y_axis: "<%= t('services.resumes.'+ @service.resume.to_s) %> [<%= @service.get_units_short %>]",
+        y_axis: "<%= t('services.results.chart.y_axis') %> [<%= @service.get_units_short %>]",
         legend: "<%= t('services.results.chart.legend', :service => @service.name) %>"
       },
-      data_url: "<%= results_data_service_path(@service.id) %>"
+      data_url: "<%= results_data_service_path(@service.id) %>",
+      resume: "<%= @service.resume %>"
     });
 
     setInterval(function() {
       $.getScript("<%= results_service_path(@service.id) %>");
     }, <%= @service.interval %>*1000);
   });
+
+  /*
+   * Function to change the resume function of the chart.
+   */
+  function changeChartResume(resume) {
+    chartStop(chart_id);
+
+    chart_id = chartStart({
+      container: $("#chart-container"),
+      live: true,
+      interval: <%= @service.interval %>,
+      clean_interval: <%= @service.clean_interval %>,
+      texts: {
+        title: "<%= t('services.results.chart.title', :service => @service.name) %>",
+        subtitle: "<%= t('services.results.chart.subtitle', :interval => @service.interval) %>",
+        x_axis: "<%= t('services.results.chart.x_axis') %>",
+        y_axis: "<%= t('services.results.chart.y_axis') %> [<%= @service.get_units_short %>]",
+        legend: "<%= t('services.results.chart.legend', :service => @service.name) %>"
+      },
+      data_url: "<%= results_data_service_path(@service.id) %>",
+      resume: resume
+    });
+  }
 </script>

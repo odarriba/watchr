@@ -266,10 +266,17 @@ class ServicesController < ApplicationController
   # [Parameters]
   #   * *id* - The identificator of the service.
   #   * *last* - (Optional) The id of the last obtained result.
+  #   * *resume* - (Optional) The resume used to obtain the service value, 
+  #                and the resume must be from Service::AVAILABLE_RESUMES.
   #
   def results_data
     # Load the service from the database
     load_service(false)
+
+    if (!params[:resume].blank?)
+      resume = params[:resume].to_sym
+      resume = nil if (!Service::AVAILABLE_RESUMES.include?(resume))
+    end
     
     if (!@service.blank?)
       # If a last param was received, try to locate the result with that id.
@@ -305,7 +312,7 @@ class ServicesController < ApplicationController
               ],
               # Call the resume_values function here to avoid high load on the DB produced by 
               # loading the Service object every time in the result.global_value function.
-              :result => @service.resume_values(result.get_values)
+              :result => @service.resume_values(result.get_values, resume)
             }
           end
         end
@@ -378,7 +385,7 @@ class ServicesController < ApplicationController
         end
 
         # Only the results that include results from this host (and in descendent order by time)
-        @results = @results.where("host_results.host_id" => @host.id).desc(:created_at)
+        @results = @results.where("host_results.host_id" => @host.id).asc(:created_at)
       end
     end
 

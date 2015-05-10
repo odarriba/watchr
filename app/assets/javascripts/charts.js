@@ -1,15 +1,33 @@
-var chart = null;
-var chart_config = {};
-var chart_last_id = "";
-
+/*
+ * Function to start the representation of an auto-updated chart using
+ * a configuration hash obtained by the parameter 'chart_config':
+ *
+ * {
+ *    container: containerObject,
+ *    live: true|false,
+ *    interval: updateIntervalInMiliseconds,
+ *    clean_interval: cleanIntervalInMiliseconds,
+ *    texts: {
+ *      title: "Title of the chart",
+ *      subtitle: "Subtitle of the chart",
+ *      x_axis: "X axis text",
+ *      y_axis: "Y axis text",
+ *      legend: "Legend of the data"
+ *    },
+ *    data_url: "URL to obtain the data using GET method",
+ *    resume: "resume function passed to the URL by 'resume' parameter."
+ *  }
+ */
 function chartStart(config) {
 	config = config || {};
-
-    config.live = config.live || true;
 
 	// Check if the container is defined
 	if (config == {})
 		return;
+
+    config.live = config.live || true;
+    config.resume = config.resume || "default";
+    config.last_id = config.last_id || "";
 
 	$(config.container).highcharts({
         chart: {
@@ -59,22 +77,44 @@ function chartStart(config) {
         }]
     });
 
+    // Get the chart object
     config.chart = $(config.container).highcharts();
 
-    if (config.live)
-        chartLive(config);
+    // Update the chart
+    chartUpdate(config);
+
+    if (config.live == true)
+        return setInterval(function(){
+            chartUpdate(config);
+        }, config.interval*1000);
+
+    return true;
 }
 
-function chartLive(config) {
-    url = config.data_url || window.location+"/data.json";
+/*
+ * Function to stop the auto-update of a chart by removing it's config.
+ */
+function chartStop(chart_id) {
+    // Drop the config
+    clearInterval(chart_id);
+}
 
+/*
+ * Function to update the chart data according to it's config, going an AJAX call.
+ */
+function chartUpdate(config) {
+    // Is it valid?
+    if (config == null)
+        return;
+
+    // Generate the URL
+    var base_url = config.data_url || window.location+"/data.json";
+    var call_url = base_url + "?resume="+config.resume
     if (config.last_id != "") {
-        var call_url = url + "?last=" + config.last_id;
-    }
-    else {
-        var call_url = url;
+        call_url = call_url + "&last=" + config.last_id;
     }
 
+    // Do the API call
     $.getJSON(call_url).success(function(data){
         for (var i = 0; i < data.length; i++) {
             data[i].date[2]--; // Correct month number
@@ -95,10 +135,6 @@ function chartLive(config) {
 
         // Redraw the chart
         config.chart.redraw();
-        
-        setTimeout(function(){
-            chartLive(config);
-        }, config.interval*1000);
     });
 
 }

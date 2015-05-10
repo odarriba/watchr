@@ -149,21 +149,24 @@ class Service
   #
   # [Parameters]
   #   * *values* - An array with float values.
+  #   * *resume* - Resume type to use (if not passed or not valid, self.resume is used)
   #
   # [Returns]
   #   The resume value.
   #
-  def resume_values(values)
-    if (self.resume == :max_value)
+  def resume_values(values, resume = nil)
+    resume = self.resume if (!Service::AVAILABLE_RESUMES.include?(resume))
+
+    if (resume == :max_value)
       return values.max
-    elsif (self.resume == :min_value)
+    elsif (resume == :min_value)
       return values.min
-    elsif (self.resume == :mean_value)
+    elsif (resume == :mean_value)
       return values.reduce(:+).to_f / values.size
-    elsif (self.resume == :sum)
+    elsif (resume == :sum)
       return values.inject(:+)
     else
-      return nil
+      return 0.0
     end
   end
 

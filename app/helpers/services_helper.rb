@@ -34,13 +34,28 @@ module ServicesHelper
   # Helper function to get a hash with the valid resumes of _Service_ model.
   #
   # [Returns]
-  #   Hash with the resume identificators associated to the translations of the resume names.
+  #   Hash with the resume identificators associated to the translations of the resume functionalities.
   #
   def service_resumes_hash
     result = Hash.new
 
     Service::AVAILABLE_RESUMES.each do |resume|
       result[t("services.resumes.#{resume.to_s}_explanation")] = resume.to_s
+    end
+
+    return result
+  end
+
+  # Helper function to get a hash with the valid resumes of _Service_ model.
+  #
+  # [Returns]
+  #   Hash with the resume identificators associated to the translations of the resume names.
+  #
+  def service_short_resumes_hash
+    result = Hash.new
+
+    Service::AVAILABLE_RESUMES.each do |resume|
+      result[t("services.resumes.#{resume.to_s}")] = resume.to_s
     end
 
     return result

@@ -49,14 +49,21 @@ class Result
   # *Note:* this function should not be used in batch functions because
   # it causes high DB usage loading the service every time.
   #
-  # [Returns]
-  #   The float with the global value
+  # [Parameters]
+  #   * *resume* - The resume type to use (from Service::AVAILABLE_RESUMES). 
+  #                If it isn't passed or not valid, service's default is used.
   #
-  def global_value
+  # [Returns]
+  #   The float with the global value rounded to 4 digits.
+  #
+  def global_value(resume = nil)
     return 0.0 if (self.all_error?)
 
+    # Put the resume to it's default value if it isn't recognised
+    resume = self.service.resume if (!Service::AVAILABLE_RESUMES.include?(resume))
+
     # Return the value
-    return self.service.resume_values(self.get_values).round(4)
+    return self.service.resume_values(self.get_values, resume).round(4)
   end
 
   # Function to get an array with all the values of the results from the 
