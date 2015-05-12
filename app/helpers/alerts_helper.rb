@@ -39,8 +39,8 @@ module AlertsHelper
   def alert_targets_hash
     result = Hash.new
 
-    Alert::AVAILABLE_TARGETS.each do |targ|
-      result[t("alerts.targets.target_#{targ.to_s}")] = targ
+    Alert::AVAILABLE_CONDITION_TARGETS.each do |targ|
+      result[t("alerts.condition_targets.condition_target_#{targ.to_s}")] = targ
     end
 
     return result

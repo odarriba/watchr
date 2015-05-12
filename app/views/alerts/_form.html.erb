@@ -23,12 +23,18 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("alerts.error.limit_invalid") %>
   </div>
-<% elsif (!resource.errors[:target].blank?) %>
+<% elsif (!resource.errors[:condition_target].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <%= raw t("alerts.error.target_invalid") %>
+    <%= raw t("alerts.error.condition_target_invalid") %>
+  </div>
+<% elsif (!resource.errors[:error_control].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("alerts.error.error_control_invalid") %>
   </div>
 <% end %>
+<% p resource.errors.inspect %>
 <%= form_for resource, :html => {:class => "form-horizontal"} do |f| %>
   <div class="form-group<% if (!resource.errors[:name].blank?) %> has-error<% end %>">
     <label for="alert_name" class="col-sm-2 control-label"><%= t("alerts.form.name") %></label>
@@ -53,11 +59,21 @@
       <%= f.select :active, options_for_select({t("alerts.form.active") => true, t("alerts.form.inactive") => false}, :selected => resource.active), {}, :class => "form-control" %>
     </div>
   </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
+    </div>
+  </div>
   <div class="form-group<% if (!resource.errors[:service].blank?) %> has-error<% end %>">
     <label for="alert_service_id" class="col-sm-2 control-label"><%= t("alerts.form.service") %></label>
     <div class="col-md-7 col-sm-10">
       <%= f.select :service_id, options_for_select(alert_services_hash(), :selected => resource.service_id), {}, :class => "form-control" %>
       <span class="help-block"><%= t("alerts.form.service_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-7 col-sm-10">
+      <hr class='divider' />
     </div>
   </div>
   <div class="form-group<% if (!resource.errors[:condition].blank?) %> has-error<% end %>">
@@ -73,16 +89,11 @@
       <%= f.number_field :limit, :step => 0.1, :class => "form-control", :placeholder => t("alerts.form.limit_placeholder"), :required => true %>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-md-7 col-sm-10">
-      <hr class='divider' />
-    </div>
-  </div>
-  <div class="form-group<% if (!resource.errors[:target].blank?) %> has-error<% end %>">
-    <label for="service_target" class="col-sm-2 control-label"><%= t("alerts.form.target") %></label>
+  <div class="form-group<% if (!resource.errors[:condition_target].blank?) %> has-error<% end %>">
+    <label for="service_target" class="col-sm-2 control-label"><%= t("alerts.form.condition_target") %></label>
     <div class="col-md-7 col-sm-10">
-      <%= f.select :target, options_for_select(alert_targets_hash(), :selected => resource.target), {}, :class => "form-control" %>
-      <span class="help-block"><%= t("alerts.form.target_helper") %></span>
+      <%= f.select :condition_target, options_for_select(alert_targets_hash(), :selected => resource.condition_target), {}, :class => "form-control" %>
+      <span class="help-block"><%= t("alerts.form.condition_target_helper") %></span>
     </div>
   </div>
   <div class="form-group">

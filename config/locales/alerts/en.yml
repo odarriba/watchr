@@ -11,9 +11,9 @@ en:
       condition_equal_to: "Value equal to limit"
       condition_less_than_or_equal_to: "Value less or equal to limit"
       condition_less_than: "Value less than limit"
-    targets:
-      target_service: "All monitored hosts"
-      target_host: "At least one monitored host"
+    condition_targets:
+      condition_target_all: "All monitored hosts"
+      condition_target_one: "At least one monitored host"
     index:
       title: "Alerts management"
       subtitle: "viewing all alerts"
@@ -65,8 +65,8 @@ en:
       condition_helper: "The condition to match in order to activate the alert."
       limit: "Limit"
       limit_placeholder: "The limit value of the condition."
-      target: "Target"
-      target_helper: "Selects if the condition has to match with the results of all the hosts assigned to the service or only with one of them."
+      condition_target: "Condition target"
+      condition_target_helper: "Selects if the condition has to match with the results of all the hosts assigned to the alert or only with one of them."
       users: "Users subscribed"
       created_at: "Created at"
       updated_at: "Updated at"
@@ -89,4 +89,5 @@ en:
       service_invalid: "The service selected is invalid or isn't available at the moment."
       condition_invalid: "The condition selected is invalid. Check it and try again."
       limit_invalid: "The limit is invalid. Check that it is a number a try again."
-      target_invalid: "The target selected is invalid. Check it and try again."
+      condition_target_invalid: "The target selected is invalid. Check it and try again."
+      error_control_invalid: "The error control status is invalid. Check it and try again."

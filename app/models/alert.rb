@@ -51,7 +51,6 @@ class Alert
   validates_presence_of :condition_target
   validates_presence_of :error_control
   validates_presence_of :service
-  validates_presence_of :hosts
 
   # Function to check if the alert is active.
   #
