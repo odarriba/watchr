@@ -1,0 +1,1 @@
+$("#hosts_container").html("<%= escape_javascript(render(:partial => 'hosts_select', :locals => {:service_id => params[:service_id]})) %>");

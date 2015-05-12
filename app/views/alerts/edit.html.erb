@@ -15,3 +15,20 @@
     <%= render "form", :resource => @alert %>
   </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    function getServiceHosts(service_id){
+      // Construct the URL
+      var url = "<%= service_hosts_alert_path(:id => @alert.id, :service_id => 'servid') %>";
+      url = url.replace("servid", service_id)
+
+      // Get the data
+      $.getScript(url);
+    }
+
+    $("#alert_service_id").on("change", function() {
+      getServiceHosts(this.value);
+    });
+});
+</script>

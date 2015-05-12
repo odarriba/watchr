@@ -13,6 +13,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <%= raw t("alerts.error.service_invalid") %>
   </div>
+<% elsif (!resource.errors[:hosts].blank?) %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%= raw t("alerts.error.hosts_invalid") %>
+  </div>
 <% elsif (!resource.errors[:condition].blank?) %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -69,6 +74,15 @@
     <div class="col-md-7 col-sm-10">
       <%= f.select :service_id, options_for_select(alert_services_hash(), :selected => resource.service_id), {}, :class => "form-control" %>
       <span class="help-block"><%= t("alerts.form.service_helper") %></span>
+    </div>
+  </div>
+  <div class="form-group<% if (!resource.errors[:hosts].blank?) %> has-error<% end %>">
+    <label for="alert_host_ids" class="col-sm-2 control-label"><%= t("alerts.form.hosts") %></label>
+    <div class="col-md-7 col-sm-10">
+      <span id="hosts_container">
+        <%= render :partial => "hosts_select", :locals => {:service_id => resource.service_id} %>
+      </span>
+      <span class="help-block"><%= t("alerts.form.hosts_helper") %></span>
     </div>
   </div>
   <div class="form-group">

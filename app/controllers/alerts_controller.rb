@@ -68,6 +68,11 @@ class AlertsController < ApplicationController
   def create
     parameters = alert_params
     parameters[:service] = Service.where(:_id => parameters[:service_id]).first
+    parameters[:hosts] = Host.where(:_id.in => parameters[:host_ids]).to_a
+
+    # Delete string'd id's
+    parameters.delete(:service_id)
+    parameters.delete(:host_ids)
 
     # Apply the params received
     @alert = Alert.new(parameters)
@@ -136,7 +141,14 @@ class AlertsController < ApplicationController
     return if (@alert.blank?)
 
     parameters = alert_params
-    parameters[:service] = Service.where(:_id => parameters[:service]).first if (!parameters[:service].blank?)
+    parameters[:service] = Service.where(:_id => parameters[:service_ids]).first if (!parameters[:service_ids].blank?)
+
+    if (!parameters[:host_ids].blank?)
+      parameters[:hosts] = Host.where(:_id.in => parameters[:host_ids]).to_a
+    else
+      # Empty the hosts array
+      parameters[:hosts] = []
+    end
 
     respond_to do|format|
       format.html{
@@ -177,6 +189,31 @@ class AlertsController < ApplicationController
         end
         return
       }
+    end
+  end
+
+  # Action to get a selector of hosts to monitor.
+  #
+  # [URL] 
+  #   * GET /alerts/:id/service_hosts/:service_id
+  #   * GET /alerts/new/service_hosts/:service_id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #   * *service_id* - The id of the service selected.
+  #
+  def get_service_hosts
+    if (!params[:id].blank?)
+      load_alert
+      return if (@alert.blank?)
+    else
+      @alert = Alert.new()
+    end
+
+    @service = Service.where(:_id => params[:service_id]).first
+
+    respond_to do |format|
+      format.js
     end
   end
 
@@ -329,6 +366,6 @@ class AlertsController < ApplicationController
   #   The filtered version of *params[:alert]*.
   #
   def alert_params
-    params.require(:alert).permit(:name, :description, :active, :service_id, :condition, :limit, :target)
+    params.require(:alert).permit(:name, :description, :active, :service_id, :condition, :limit, :condition_target, :host_ids => [])
   end
 end
