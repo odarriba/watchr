@@ -55,7 +55,7 @@ class ActiveSupport::TestCase
       @alert = Alert.create(data)
     else
       create_service
-      @alert = Alert.create(:name => "Test Alert #{rand(1..1000)}", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :target => :service, :service_id => @service.id)
+      @alert = Alert.create(:name => "Test Alert #{rand(1..1000)}", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :service_id => @service.id)
     end
   end
 

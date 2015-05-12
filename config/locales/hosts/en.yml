@@ -69,6 +69,7 @@ en:
       active: "Active"
       inactive: "Inactive"
       services: "Services assigned"
+      alerts: "Alerts assigned"
       created_at: "Created at"
       updated_at: "Updated at"
     notice:

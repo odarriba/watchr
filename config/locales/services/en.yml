@@ -124,8 +124,8 @@ en:
       clean_interval_helper: "The time (in seconds) that the results of the testing are stored."
       resume: "Default resume"
       resume_helper: "The default function used to resume the data of multiple hosts into one value."
-      hosts: "Hosts"
-      alerts: "Alerts"
+      hosts: "Hosts assigned"
+      alerts: "Alerts assigned"
       created_at: "Created at"
       updated_at: "Updated at"
     notice:

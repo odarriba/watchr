@@ -5,7 +5,7 @@ class AlertTest < ActiveSupport::TestCase
     create_service
 
     # MongoID hasn't got fixtures support :(
-    @alert = Alert.new(:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :target => :service, :service_id => @service.id)
+    @alert = Alert.new(:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :service_id => @service.id)
   end
 
   def teardown

@@ -49,13 +49,13 @@ class Service
   field :resume,          :type => Symbol, :default => :mean_value
 
   # Has assigned hosts to test the service
-  has_and_belongs_to_many :hosts, :dependent => :nullify, :after_remove => :clean_host_results
+  has_and_belongs_to_many :hosts, :dependent => :nullify, :after_remove => :clean_host_remove
 
   # Has results of testing the service over the hosts
   has_many :results, :dependent => :destroy
 
   # Has alerts that monitor the results of the service
-  has_many :alerts, :dependent => :nullify
+  has_many :alerts, :dependent => :destroy
 
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
@@ -393,13 +393,13 @@ class Service
     return self.job_stop if (self.interval_changed?)
   end
 
-  # Function to remove the existing result data from a host that
-  # is no longer assigned to thsi service.
+  # Function to remove the existing data from a host that is no longer 
+  # assigned to this service (and the alerts of this service).
   #
   # [Parameters]
-  #   * *host* - A _Host_ objecto of the host deleted from this service.
+  #   * *host* - A _Host_ object of the host deleted from this service.
   #
-  def clean_host_results(host)
+  def clean_host_remove(host)
     # Get the results of this service with the deleted host
     Result.where("host_results.host_id" => host.id, :service_id => self.id).each do |result|
       # If it hasn't got more host results, destroy the result (violently).
@@ -409,6 +409,13 @@ class Service
         # If there is other host results, delete only this one.
         result.host_results.select{|hresult| hresult.host_id == host.id}.each{|hr| hr.destroy}
       end
+    end
+
+    # Delete the host from the alerts that monitors it
+    Alert.where(:service_id => self.id, :host_ids => host.id).each do |alert|
+      # Delete the host and save
+      alert.hosts.delete(host)
+      alert.save
     end
   end
 end

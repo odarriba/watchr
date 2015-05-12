@@ -27,7 +27,11 @@ class Host
   field :address,       :type => String, :default => ""
   field :type,          :type => Symbol, :default => Host::TYPE_GENERIC
 
+  # Services of this host
   has_and_belongs_to_many :services, :dependent => :nullify
+
+  # Alerts of this host
+  has_and_belongs_to_many :alerts, :dependent => :nullify
 
   before_destroy :remove_services
 

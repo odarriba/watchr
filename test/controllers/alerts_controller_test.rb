@@ -9,7 +9,7 @@ class AlertsControllerTest < ActionController::TestCase
     # Create test service
     create_service
 
-    @create_hash = {:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :target => :service, :service_id => @service.id}
+    @create_hash = {:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :service_id => @service.id}
   end
 
   def teardown
