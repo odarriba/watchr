@@ -278,6 +278,11 @@ class Service
     if (self.is_active?)
       return self.job_start
     else
+      # Close opened alert records for this service
+      AlertRecord.where(:service_id => self.id, :opened => true).each do |ar|
+        ar.update_attributes!(:opened => false)
+      end
+
       return self.job_stop
     end
   end
