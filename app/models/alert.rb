@@ -79,6 +79,15 @@ class Alert
     return (self.condition_target == CONDITION_TARGET_ONE)
   end
 
+  # Function to check if the alert must be opened or not based
+  # in latest results obtained.
+  #
+  # [Parameters]
+  #   * *result* An _Result_ object which we want to analyse.
+  #
+  # [Returns]
+  #   Nothing.
+  #
   def check_activation(result)
     # Check hosts assignation and alert activation
     return if ((self.host_ids.blank?) || (self.is_active? != true))
