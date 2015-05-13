@@ -21,6 +21,10 @@ class AlertsController < ApplicationController
   def index
     @alerts = Alert.all
 
+    # If an activation status is passed, get the specified alerts
+    check_active_param
+    @alerts = @alerts.where(:active => @active) if (@active != nil)
+
     # If a search query is received, filter the results
     if (!params[:q].blank?)
       # Do the search
@@ -322,6 +326,26 @@ class AlertsController < ApplicationController
 
   protected
 
+  # Function to check the existence of the *active* parameter in the URL.
+  # Also checks if the activation status is valid.
+  #
+  # If the active parameter exists and it's valid, the variable @active is setted.
+  #
+  # [Returns]
+  #   The value of @active (the number received or _nil_)
+  #
+  def check_active_param
+    if (!params[:active].blank?)
+      if (params[:active] == true || params[:active] == "true")
+        @active = true
+      elsif (params[:active] == false || params[:active] == "false")
+        @active = false
+      end
+    end
+
+    return @active
+  end
+
   # Function lo load an alert from the database using *id* parameter in the URL.
   #
   # It returns the Alert object and makes it available at @alert.
@@ -366,6 +390,6 @@ class AlertsController < ApplicationController
   #   The filtered version of *params[:alert]*.
   #
   def alert_params
-    params.require(:alert).permit(:name, :description, :active, :service_id, :condition, :limit, :condition_target, :host_ids => [])
+    params.require(:alert).permit(:name, :description, :active, :service_id, :condition, :limit, :condition_target, :error_control, :host_ids => [])
   end
 end

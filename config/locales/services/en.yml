@@ -38,7 +38,7 @@ en:
         results: "Results"
         hosts: "Hosts"
         destroy: "Destroy"
-        destroy_confirmation: "Do you really want to destroy this service?"
+        destroy_confirmation: "Do you really want to destroy this service? The alerts (and alert records) associated to this service will be destroyed too."
       table:
         name: "Name"
         probe: "Probe"

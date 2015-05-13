@@ -110,6 +110,13 @@
       <span class="help-block"><%= t("alerts.form.condition_target_helper") %></span>
     </div>
   </div>
+  <div class="form-group<% if (!resource.errors[:error_control].blank?) %> has-error<% end %>">
+    <label for="service_target" class="col-sm-2 control-label"><%= t("alerts.form.error_control") %></label>
+    <div class="col-md-7 col-sm-10">
+      <%= f.select :error_control, options_for_select({t("alerts.form.active") => true, t("alerts.form.inactive") => false}, :selected => resource.error_control), {}, :class => "form-control" %>
+      <span class="help-block"><%= t("alerts.form.error_control_helper") %></span>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-md-7 col-sm-10">
       <hr class='divider' />

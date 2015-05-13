@@ -16,7 +16,10 @@ en:
       condition_target_one: "At least one monitored host"
     index:
       title: "Alerts management"
-      subtitle: "viewing all alerts"
+      subtitle:
+        all: "viewing all alerts"
+        active: "viewing active alerts"
+        inactive: "viewing inactive alerts"
       button:
         new: "Create an alert"
         show: "View"
@@ -49,7 +52,10 @@ en:
         destroy: "Unsubscribe"
         destroy_confirmation: "Do you really want to unsubscribe this user?"
     sidebar:
-      all: "View all"
+      all: "View all alerts"
+      view_by_status: "View by status"
+      active: "Active alerts"
+      inactive: "Inactive alerts"
     form:
       name: "Name"
       name_placeholder: "Name of the service"
@@ -59,7 +65,8 @@ en:
       active: "Active"
       inactive: "Inactive"
       service: "Service"
-      service_not_assigned: "Not assigned"
+      service_not_assigned: "No service assigned"
+      hosts_not_assigned: "No hosts assigned"
       service_helper: "The service to which results are watched."
       hosts: "Hosts"
       hosts_helper: "The hosts which results for this service will be monitored"
@@ -69,6 +76,8 @@ en:
       limit_placeholder: "The limit value of the condition."
       condition_target: "Condition target"
       condition_target_helper: "Selects if the condition has to match with the results of all the hosts assigned to the alert or only with one of them."
+      error_control: "Error control"
+      error_control_helper: "Select if the alarm is activated if there is an error in the result on host's results of the condition target"
       users: "Users subscribed"
       created_at: "Created at"
       updated_at: "Updated at"
@@ -89,7 +98,7 @@ en:
       name_invalid: "The name is invalid, length must be between 2 and 30 characters."
       active_invalid: "The activation status is invalid. Check it and try again."
       service_invalid: "The service selected is invalid or isn't available at the moment."
-      hosts_invalid: "The hosts selected are invalid. Check them and try again."
+      hosts_invalid: "There are not hosts selected, or they are invalid. Check them and try again."
       condition_invalid: "The condition selected is invalid. Check it and try again."
       limit_invalid: "The limit is invalid. Check that it is a number a try again."
       condition_target_invalid: "The condition's target selected is invalid. Check it and try again."

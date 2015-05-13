@@ -13,6 +13,8 @@ class Result
   # Embeds many host results (one for every host associated to the service)
   embeds_many :host_results, :as => true, :cascade_callbacks => true
 
+  after_create :check_alerts
+
   validates_presence_of :service
   validate :has_host_results
   validate :check_host_results
@@ -166,6 +168,14 @@ class Result
     end
 
     return true
+  end
+
+  def check_alerts
+    alerts = Alert.where(:service_id => self.service_id)
+
+    alerts.each do |alert|
+      alert.check_activation(self)
+    end
   end
 
   # Function to check if there is a host with more than one HostResult 

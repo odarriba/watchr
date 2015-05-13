@@ -102,11 +102,18 @@ module Watchr
       count = probe_config[:count].to_i
       interval = probe_config[:interval].to_f
 
-      if (ping.ping(host.address, count, interval))
-        # Save the duration
-        result.status = HostResult::STATUS_OK
-        result.value = ((ping.duration-(interval*(count-1)))/count)*1000
-      else
+        begin
+        if (ping.ping(host.address, count, interval))
+          # Save the duration
+          result.status = HostResult::STATUS_OK
+          result.value = ((ping.duration-(interval*(count-1)))/count)*1000
+        else
+          # If the ping ends in error, save the error
+          result.status = HostResult::STATUS_ERROR
+          result.error = ping.exception
+          result.error = "Unknown error" if (result.error.blank?)
+        end
+      rescue
         # If the ping ends in error, save the error
         result.status = HostResult::STATUS_ERROR
         result.error = ping.exception

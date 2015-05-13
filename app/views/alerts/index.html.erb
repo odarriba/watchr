@@ -9,7 +9,13 @@
       <h1>
         <%= t("alerts.index.title") %>
         <small>
-          <%= t("alerts.index.subtitle") %>
+          <% if (@active == nil) %>
+          <%= t("alerts.index.subtitle.all") %>
+          <% elsif (@active == true) %>
+          <%= t("alerts.index.subtitle.active") %>
+          <% elsif (@active == false) %>
+          <%= t("alerts.index.subtitle.inactive") %>
+          <% end %>
         </small>
         <% if (current_user.is_normal?) %>
         <span class='pull-right'>

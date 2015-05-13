@@ -30,5 +30,7 @@ $(document).ready(function() {
     $("#alert_service_id").on("change", function() {
       getServiceHosts(this.value);
     });
+
+    getServiceHosts($("#alert_service_id").val());
 });
 </script>
