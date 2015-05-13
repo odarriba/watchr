@@ -11,6 +11,9 @@ class AlertRecord
 
   # Hosts affected
   has_and_belongs_to_many :hosts, :inverse_of => nil
+  
+  # Service affected
+  belongs_to :service, :inverse_of => nil
 
   # Belongs to an alert
   belongs_to :alert, :dependent => :nullify

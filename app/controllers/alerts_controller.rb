@@ -145,10 +145,17 @@ class AlertsController < ApplicationController
     return if (@alert.blank?)
 
     parameters = alert_params
-    parameters[:service] = Service.where(:_id => parameters[:service_ids]).first if (!parameters[:service_ids].blank?)
+    parameters[:service] = Service.where(:_id => parameters[:service_id]).first if (!parameters[:service_id].blank?)
 
     if (!parameters[:host_ids].blank?)
-      parameters[:hosts] = Host.where(:_id.in => parameters[:host_ids]).to_a
+      # Remove removed hosts
+      @alert.hosts.select{|h| parameters[:host_ids].include?(h.id.to_s) == false}.each{|h| @alert.hosts.delete(h)}
+
+      # Add the new hosts
+      host_ids_add = parameters[:host_ids].select{|h| @alert.host_ids.include?(h) == false}
+      Host.where(:_id.in => host_ids_add, :service_ids => parameters[:service_id]).to_a.each do |h|
+        @alert.hosts << h
+      end
     else
       # Empty the hosts array
       parameters[:hosts] = []

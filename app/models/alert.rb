@@ -35,6 +35,9 @@ class Alert
   # Records of activation of the alert
   has_many :alert_records, :dependent => :destroy
 
+  # Check changes
+  before_update :close_required_alerts
+
   # Validate fields.
   validates_length_of :name, minimum: 2, maximum: 30
   validates_inclusion_of :condition, in: Alert::AVAILABLE_CONDITIONS
@@ -104,12 +107,12 @@ class Alert
         ##### Alert opened!!!!!
 
         # Is there an alert opened?
-        alert_record = AlertRecord.where(:alert_id => self.id, :opened => true).first
+        alert_record = AlertRecord.where(:alert_id => self.id, :opened => true, :service_id => self.service_id).first
 
         # Check if there is an alert record for this
         if (alert_record.blank?)
           # If not, create
-          alert_record = AlertRecord.create!(:alert => self, :host_ids => hosts_matched.map{|h| h = h.id}, :opened => true)
+          alert_record = AlertRecord.create!(:alert => self, :host_ids => hosts_matched.map{|h| h = h.id}, :opened => true, :service_id => self.service_id)
         else
           # If yes, update hosts
           alert_record.update_attributes!(:host_ids => hosts_matched.map{|h| h = h.id}, :opened => true)
@@ -118,7 +121,7 @@ class Alert
         ##### Alert not opened!!!
 
         # Is there any alert opened?
-        alert_record = AlertRecord.where(:alert_id => self.id, :opened => true).first
+        alert_record = AlertRecord.where(:alert_id => self.id, :opened => true, :service_id => self.service_id).first
         # Close it if there is one
         alert_record.update_attributes!(:opened => false) if (!alert_record.blank?)
       end
@@ -129,12 +132,12 @@ class Alert
           ##### Alert opened for this host !!!!
 
           # Check if it is an alert opened for this
-          alert_record = AlertRecord.where(:alert_id => self.id, :host_ids => [h.id], :opened => true).first
+          alert_record = AlertRecord.where(:alert_id => self.id, :host_ids => [h.id], :opened => true, :service_id => self.service_id).first
 
           # Check if there is an alert record for this
           if (alert_record.blank?)
             # If not, create
-            AlertRecord.create!(:alert => self, :host_ids => [h.id], :opened => true)
+            AlertRecord.create!(:alert => self, :host_ids => [h.id], :opened => true, :service_id => self.service_id)
           else
             # If yes, update hosts
             alert_record.update_attributes!(:host_ids => [h.id], :opened => true)
@@ -143,7 +146,7 @@ class Alert
           ##### Alert no opened for this host !!!!
 
           # Is there any alert opened?
-          alert_record = AlertRecord.where(:alert_id => self.id, :host_ids => h.id, :opened => true).first
+          alert_record = AlertRecord.where(:alert_id => self.id, :host_ids => h.id, :opened => true, :service_id => self.service_id).first
 
           # Close it if there is one
           alert_record.update_attributes!(:opened => false) if (!alert_record.blank?)
@@ -151,7 +154,7 @@ class Alert
       end
 
       # Close any alert from hosts not registered right now on the alert (but yes in the past)
-      AlertRecord.where(:alert_id => self.id, :host_ids.nin => self.host_ids, :opened => true).each do |ar|
+      AlertRecord.where(:alert_id => self.id, :host_ids.nin => self.host_ids, :opened => true, :service_id => self.service_id).each do |ar|
         ar.update_attributes!(:opened => false)
       end
     end
@@ -221,6 +224,27 @@ class Alert
     return true
   end
 
+  def close_required_alerts
+    if (self.active == false)
+      # If inactive, close all opened alerts
+      AlertRecord.where(:alert_id => self.id, :opened => true).each{|ar| ar.update_attributes!(:opened => false)}
+    else
+      # If not, do other things
+
+      # Close all the alerts referenced to other services
+      AlertRecord.where(:alert_id => self.id, :service_id.ne => self.service_id, :opened => true).each{|ar| ar.update_attributes!(:opened => false)}
+
+      if (self.condition_target_changed?)
+        # If the condition target changed, close all existing alerts
+        AlertRecord.where(:alert_id => self.id, :opened => true).each{|ar| ar.update_attributes!(:opened => false)}
+      end
+
+      # In case there are other changes, run another alert comprobation
+      last_result = self.service.results.last
+      self.check_activation(last_result) if(!last_result.blank?)
+    end
+  end
+
   # Function to close opened alerts when a host is removed from the alert
   # and there is no longer possibility of checking it's host results.
   #
@@ -231,7 +255,7 @@ class Alert
     # If there is any alert opened individually for this host, close it
     if (self.is_condition_target_one?)
       # Is there any alert opened?
-      alert_records = AlertRecord.where(:alert_id => self.id, :host_ids => h.id, :opened => true)
+      alert_records = AlertRecord.where(:alert_id => self.id, :host_ids => host.id, :opened => true)
 
       # Close it if there is one
       alert_records.each{|ar| ar.update_attributes!(:opened => false)}

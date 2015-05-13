@@ -275,8 +275,11 @@ class Service
   #   The return value of _job_start_ or _job_stop_ functions.
   #
   def manage_job
-    return self.job_start if (self.active == true)
-    return self.job_stop if (self.active == false)
+    if (self.is_active?)
+      return self.job_start
+    else
+      return self.job_stop
+    end
   end
 
   # Function to clean the results of the probe taking care of the
