@@ -83,13 +83,13 @@
       <div class="form-group">
         <label for="host_created_at" class="col-sm-3 control-label"><%= t("hosts.form.created_at") %></label>
         <div class="col-md-7 col-sm-9">
-          <p class="form-control-static"><%= @host.created_at.strftime("%m/%d/%Y - %H:%M") %></p>
+          <p class="form-control-static"><%= @host.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
         </div>
       </div>
       <div class="form-group">
         <label for="hosts_updated_at" class="col-sm-3 control-label"><%= t("hosts.form.updated_at") %></label>
         <div class="col-md-7 col-sm-9">
-          <p class="form-control-static"><%= @host.updated_at.strftime("%m/%d/%Y - %H:%M") %></p>
+          <p class="form-control-static"><%= @host.updated_at.strftime("%d/%m/%Y - %H:%M") %></p>
         </div>
       </div>
       <div class="form-group">

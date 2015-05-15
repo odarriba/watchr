@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
   # Alerts operations
   resources :alerts
+  get 'alerts/records/:id' => 'alerts#index_records', :as => :alert_records
   get 'alerts/new/service_hosts/:service_id' => 'alerts#get_service_hosts'
   get 'alerts/:id/service_hosts/:service_id' => 'alerts#get_service_hosts', :as => :service_hosts_alert
   get 'alerts/:id/users' => 'alerts#index_users', :as => :alert_users

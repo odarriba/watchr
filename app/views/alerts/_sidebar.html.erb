@@ -2,10 +2,13 @@
   <div class="panel-body">
     <ul class="nav nav-pills nav-stacked">
       <li<% if ((@active == nil) && (action_name == "index")) %> class="active"<% end %>><%= link_to t("alerts.sidebar.all"), alerts_path() %></li>
+      <li<% if ((@active == nil) && (action_name == "alert_records_index")) %> class="active"<% end %>><%= link_to t("alerts.sidebar.records"), alert_records_path('all') %></li>
       <hr class='divider' />
       <li class='disabled'><a><%= t("hosts.sidebar.view_by_status")%></a></li>
-      <li<% if ((@active == true) && (action_name == "index")) %> class="active"<% end %>><%= link_to t("alerts.sidebar.active"), alerts_path(:active => true) %></li>
-      <li<% if ((@active == false) && (action_name == "index")) %> class="active"<% end %>><%= link_to t("alerts.sidebar.inactive"), alerts_path(:active => false) %></li>
+      <% if (action_name == "index") %>
+      <li<% if (@active == true) %> class="active"<% end %>><%= link_to t("alerts.sidebar.alerts_status.active"), alerts_path(:active => true) %></li>
+      <li<% if (@active == false) %> class="active"<% end %>><%= link_to t("alerts.sidebar.alerts_status.inactive"), alerts_path(:active => false) %></li>
+      <% end %>
     </ul>
   </div>
 </div>

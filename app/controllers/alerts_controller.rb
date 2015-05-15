@@ -331,6 +331,25 @@ class AlertsController < ApplicationController
     end
   end
 
+  def index_records
+    @alert_records = AlertRecord.all.desc(:opened).desc(:updated_at)
+
+    # If a page number is received, save it (if not, the page is the first)
+    if (!params[:page].blank?)
+      page = params[:page].to_i
+      page = 1 if (page < 1)
+    else
+      page = 1
+    end
+    
+    # Paginate!
+    @alert_records = @alert_records.page(page)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   protected
 
   # Function to check the existence of the *active* parameter in the URL.

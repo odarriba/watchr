@@ -4,6 +4,9 @@ en:
       alert:
         one: "alert"
         other: "alerts"
+      alert_record:
+        one: "alert record"
+        other: "alert records"
   alerts:
     conditions:
       condition_greater_than: "Value greater than limit"
@@ -14,6 +17,9 @@ en:
     condition_targets:
       condition_target_all: "All monitored hosts"
       condition_target_one: "At least one monitored host"
+    record_status:
+      opened: "Opened"
+      closed: "Closed"
     index:
       title: "Alerts management"
       subtitle:
@@ -51,11 +57,27 @@ en:
         show: "Show user"
         destroy: "Unsubscribe"
         destroy_confirmation: "Do you really want to unsubscribe this user?"
+    index_records:
+      title: "Alerts records management"
+      subtitle:
+        all: "viewing all alert records"
+      button:
+        show: "View record"
+      table:
+        status: "Status"
+        description: "Description"
+        registration_date: "Date"
+        no_data: "No data available"
+      description:
+        host: "Service <b>%{service}</b> on host <b>%{host}</b>"
+        hosts: "Service <b>%{service}</b> on <b>multiple hosts</b>"
     sidebar:
       all: "View all alerts"
+      records: "View all records"
       view_by_status: "View by status"
-      active: "Active alerts"
-      inactive: "Inactive alerts"
+      alerts_status:
+        active: "Active alerts"
+        inactive: "Inactive alerts"
     form:
       name: "Name"
       name_placeholder: "Name of the service"

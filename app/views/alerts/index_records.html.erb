@@ -1,0 +1,94 @@
+<% content_for :title, t("alerts.index.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <%= bootstrap_flash %>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("alerts.index_records.title") %>
+        <small>
+          <%= t("alerts.index_records.subtitle.all") %>
+        </small>
+        <span class='pull-right'>
+          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("alerts.index.button.new")}</b></span>".html_safe, new_alert_path(), :class => "btn btn-success", :title => t("alerts.index.button.new") %>
+        </span>
+      </h1>
+    </div>
+    <div class='table-header clearfix'>
+      <div class='pull-left'>
+        <% if (@query.blank?) %>
+        <%= raw t("ui.table.showing_all", :entry_name => @alert_records.model_name.human(count: 2)) %>
+        <% else %>
+        <%= raw t("ui.table.showing_results", :entry_name => @alert_records.model_name.human(count: 2), :query => @query) %>
+        <% end %>
+        <br /><%= page_entries_info @alert_records%>
+      </div>
+    </div>
+    <br />
+    <table class="table table-hover table-elements">
+      <thead>
+        <tr>
+          <th class="col-xs-2 text-center"><%= t("alerts.index_records.table.status") %></th>
+          <th class="col-xs-5"><%= t("alerts.index_records.table.description") %></th>
+          <th class="col-xs-3"><%= t("alerts.index_records.table.registration_date") %></th>
+          <th class="col-xs-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @alert_records.each do |alert_record| %>
+        <tr class="element <% if (alert_record.opened) %>danger<% end %>">
+          <td class="text-center">
+            <strong>
+              <% if (alert_record.opened) %>
+              <%= t("alerts.record_status.opened").upcase %>
+              <% else %>
+              <span class="text-success">
+                <%= t("alerts.record_status.closed").upcase %>
+              </span>
+              <% end %>
+            </strong>
+          </td>
+          <td>
+            <% if (!alert_record.service.blank?) %>
+              <% if (alert_record.host_ids.count == 1) %>
+                <%= raw t("alerts.index_records.description.host", :service => alert_record.service.name, :host => alert_record.hosts.first.name) %>
+              <% else %>
+                <%= raw t("alerts.index_records.description.hosts", :service => alert_record.service.name) %>
+              <% end %>
+            <% else %>
+            <span class="text-danger"><%= t("alerts.table.no_data") %></span>
+            <% end %>
+          </td>
+          <td>
+            <%= alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %>
+          </td>
+          <td align="right">
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index_records.button.show")}</span>".html_safe, alert_path(alert_record), :class => "btn btn-sm btn-primary", :title => t("alerts.index_records.button.show") %>
+          </td>
+        </tr>
+        <% end %>
+        <% if (@alert_records.count == 0) %>
+          <% if (!@query.blank?) %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_result") %>
+              </td>
+            </tr>
+          <% else %>
+            <tr class="no-elements">
+              <td colspan="3">
+                <%= raw t("ui.table.no_element") %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <div class='pull-right clearfix'>
+      <%= paginate @alert_records %>
+    </div>
+  </div>
+</div>
+      

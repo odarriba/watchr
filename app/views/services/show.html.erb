@@ -117,13 +117,13 @@
       <div class="form-group">
         <label for="service_created_at" class="col-sm-3 control-label"><%= t("services.form.created_at") %></label>
         <div class="col-md-7 col-sm-9">
-          <p class="form-control-static"><%= @service.created_at.strftime("%m/%d/%Y - %H:%M") %></p>
+          <p class="form-control-static"><%= @service.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
         </div>
       </div>
       <div class="form-group">
         <label for="services_updated_at" class="col-sm-3 control-label"><%= t("services.form.updated_at") %></label>
         <div class="col-md-7 col-sm-9">
-          <p class="form-control-static"><%= @service.updated_at.strftime("%m/%d/%Y - %H:%M") %></p>
+          <p class="form-control-static"><%= @service.updated_at.strftime("%d/%m/%Y - %H:%M") %></p>
         </div>
       </div>
       <div class="form-group">
