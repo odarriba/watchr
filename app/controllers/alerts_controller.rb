@@ -72,7 +72,7 @@ class AlertsController < ApplicationController
   def create
     parameters = alert_params
     parameters[:service] = Service.where(:_id => parameters[:service_id]).first
-    parameters[:hosts] = Host.where(:_id.in => parameters[:host_ids]).to_a
+    parameters[:hosts] = Host.where(:_id.in => parameters[:host_ids]).to_a if (!parameters[:host_ids].blank?)
 
     # Delete string'd id's
     parameters.delete(:service_id)
@@ -231,7 +231,7 @@ class AlertsController < ApplicationController
   # Action to index the users subscribed to an alert.
   #
   # [URL] 
-  #   * GET /configuration/alerts/:id/users
+  #   * GET /alerts/:id/users
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -251,7 +251,7 @@ class AlertsController < ApplicationController
   # Action to subscribe a user to an alert.
   #
   # [URL] 
-  #   * POST /configuration/alerts/:id/users/new
+  #   * POST /alerts/:id/users/new
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -296,7 +296,7 @@ class AlertsController < ApplicationController
   # Action to desubscribe a user to an alert.
   #
   # [URL] 
-  #   * DELETE /configuration/alerts/:id/users/:user_id
+  #   * DELETE /alerts/:id/users/:user_id
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -331,8 +331,29 @@ class AlertsController < ApplicationController
     end
   end
 
+  # Action to index the alert records of an alert.
+  #
+  # [URL] 
+  #   * GET /alerts/records/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert.
+  #
   def index_records
-    @alert_records = AlertRecord.all.desc(:opened).desc(:updated_at)
+    # If there is an ID passed, try to load the alert
+    if (!params[:id].blank?) && (params[:id] != "all")
+      @alert = Alert.where(:_id => params[:id]).first
+    end
+
+    # if there is an alert loaded, filter the results
+    if (!@alert.blank?)
+      @alert_records = AlertRecord.where(:alert_id => @alert.id)
+    else
+      @alert_records = AlertRecord.all
+    end
+
+    # Ordering results
+    @alert_records = @alert_records.desc(:opened).desc(:updated_at)
 
     # If a page number is received, save it (if not, the page is the first)
     if (!params[:page].blank?)

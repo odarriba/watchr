@@ -58,11 +58,14 @@ en:
         destroy: "Unsubscribe"
         destroy_confirmation: "Do you really want to unsubscribe this user?"
     index_records:
-      title: "Alerts records management"
+      title: "Alerts records"
       subtitle:
         all: "viewing all alert records"
+        alert: "viewing records of %{alert} alert"
       button:
         show: "View record"
+      form:
+        all: "All alerts"
       table:
         status: "Status"
         description: "Description"
@@ -73,7 +76,7 @@ en:
         hosts: "Service <b>%{service}</b> on <b>multiple hosts</b>"
     sidebar:
       all: "View all alerts"
-      records: "View all records"
+      records: "View alert records"
       view_by_status: "View by status"
       alerts_status:
         active: "Active alerts"

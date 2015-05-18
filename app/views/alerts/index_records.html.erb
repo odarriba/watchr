@@ -9,10 +9,22 @@
       <h1>
         <%= t("alerts.index_records.title") %>
         <small>
+          <% if (!@alert.blank?) %>
+          <%= t("alerts.index_records.subtitle.alert", :alert => @alert.name) %>
+          <% else %>
           <%= t("alerts.index_records.subtitle.all") %>
+          <% end %>
         </small>
         <span class='pull-right'>
-          <%= link_to "<i class='fa fa-plus'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;<b>#{t("alerts.index.button.new")}</b></span>".html_safe, new_alert_path(), :class => "btn btn-success", :title => t("alerts.index.button.new") %>
+          <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
+          <div class="form-group">
+            <%= select_tag "id", 
+                  options_for_select(Alert.all.collect{ |u| [u.name, u.id] }.insert(0,[t("alerts.index_records.form.all"), "all"]), params[:id]), 
+                  :class => "form-control", 
+                  :onchange => "var url='#{alert_records_path(:id => 'alertid')}'; if(this.value != '') {window.location=url.replace('alertid', this.value);}"
+              %>
+          </div>
+        <% end %>
         </span>
       </h1>
     </div>
@@ -38,19 +50,18 @@
       </thead>
       <tbody>
         <% @alert_records.each do |alert_record| %>
-        <tr class="element <% if (alert_record.opened) %>danger<% end %>">
+        <tr class="element">
           <td class="text-center">
-            <strong>
+            <strong class="<% if (alert_record.opened) %>text-danger<% else %>text-success<% end %>">
               <% if (alert_record.opened) %>
               <%= t("alerts.record_status.opened").upcase %>
               <% else %>
-              <span class="text-success">
-                <%= t("alerts.record_status.closed").upcase %>
-              </span>
+              <%= t("alerts.record_status.closed").upcase %>
               <% end %>
             </strong>
           </td>
           <td>
+            <% if (alert_record.opened) %><strong class='text-danger'><% end %>
             <% if (!alert_record.service.blank?) %>
               <% if (alert_record.host_ids.count == 1) %>
                 <%= raw t("alerts.index_records.description.host", :service => alert_record.service.name, :host => alert_record.hosts.first.name) %>
@@ -60,12 +71,15 @@
             <% else %>
             <span class="text-danger"><%= t("alerts.table.no_data") %></span>
             <% end %>
+            <% if (alert_record.opened) %></strong><% end %>
           </td>
           <td>
+            <% if (alert_record.opened) %><strong class='text-danger'><% end %>
             <%= alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %>
+            <% if (alert_record.opened) %></strong><% end %>
           </td>
           <td align="right">
-            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index_records.button.show")}</span>".html_safe, alert_path(alert_record), :class => "btn btn-sm btn-primary", :title => t("alerts.index_records.button.show") %>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index_records.button.show")}</span>".html_safe, alert_path(alert_record), :class => "btn btn-sm btn-success", :title => t("alerts.index_records.button.show") %>
           </td>
         </tr>
         <% end %>
