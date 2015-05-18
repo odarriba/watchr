@@ -26,7 +26,7 @@
     <%= bootstrap_flash %>
     <div id='host-results row'>
       <% @host.services.each do |serv| %>
-      <div class='col-md-6'>
+      <div class='col-lg-6'>
         <div id='service-panel-<%= serv.id.to_s %>' class="panel panel-primary service-panel">
           <div class="panel-heading">
             <b><%= t('hosts.results.service_panel.title', :service => serv.name) %></b>

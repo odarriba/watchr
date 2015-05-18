@@ -185,7 +185,7 @@ class HostsController < ApplicationController
     end
   end
 
-  # Action to show the information available about a host.
+  # Action to show the information available about a host's results.
   #
   # [URL] 
   #   GET /hosts/:id/results
@@ -198,6 +198,36 @@ class HostsController < ApplicationController
     return if (@host.blank?)
 
     respond_to do|format|
+      format.html
+    end
+  end
+
+  # Action to show the the alert records generated on this host.
+  #
+  # [URL] 
+  #   GET /hosts/:id/alert_records
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the host.
+  #
+  def alert_records
+    load_host
+    return if (@host.blank?)
+
+    @alert_records = AlertRecord.where(:host_ids => @host.id).desc(:opened).desc(:updated_at)
+
+     # If a page number is received, save it (if not, the page is the first)
+    if (!params[:page].blank?)
+      page = params[:page].to_i
+      page = 1 if (page < 1)
+    else
+      page = 1
+    end
+    
+    # Paginate!
+    @alert_records = @alert_records.page(page)
+
+    respond_to do |format|
       format.html
     end
   end

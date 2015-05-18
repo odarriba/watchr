@@ -14,6 +14,7 @@ class PanelController < ApplicationController
   #
   def index
     @services = Service.where(:active => true).select{|serv| (serv.host_ids.count > 0)}
+    @alert_records = AlertRecord.all.desc(:opened).desc(:updated_at).limit(15)
     
     respond_to do |format|
       format.html

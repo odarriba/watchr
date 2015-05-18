@@ -20,6 +20,9 @@ en:
     record_status:
       opened: "Opened"
       closed: "Closed"
+    record_description:
+        host: "Actived alert <b>%{alert}</b> on host <b>%{host}</b>"
+        hosts: "Actived alert <b>%{alert}</b> on <b>multiple hosts</b>"
     index:
       title: "Alerts management"
       subtitle:
@@ -58,7 +61,7 @@ en:
         destroy: "Unsubscribe"
         destroy_confirmation: "Do you really want to unsubscribe this user?"
     index_records:
-      title: "Alerts records"
+      title: "Alert records"
       subtitle:
         all: "viewing all alert records"
         alert: "viewing records of %{alert} alert"
@@ -71,9 +74,19 @@ en:
         description: "Description"
         registration_date: "Date"
         no_data: "No data available"
-      description:
-        host: "Service <b>%{service}</b> on host <b>%{host}</b>"
-        hosts: "Service <b>%{service}</b> on <b>multiple hosts</b>"
+    show_record:
+      title: "View an alert record"
+      subtitle: "showing details"
+      form:
+        alert: "Alert"
+        opened: "Status"
+        service: "Service affected"
+        hosts: "Hosts affected"
+        created_at: "Opened at"
+        updated_at: "Last update"
+      button:
+        alert: "View alert"
+        back: "Back to list"
     sidebar:
       all: "View all alerts"
       records: "View alert records"
@@ -115,6 +128,7 @@ en:
       user_deleted: "User (%{name}) <b>unsubscribed succesfully</b> from the alert (%{alert})."
     error:
       not_found: "The alert with the requested ID doesn't exist."
+      record_not_found: "The alert record with the requested ID doesn't exist."
       not_destroyed: "Alert (%{name}) couldn't be destroyed. Please, try again."
       user_not_found: "The user with the requested ID doesn't exist."
       user_not_added: "User (%{name}) <b>couldn't be subscribed</b> to the alert (%{alert})."

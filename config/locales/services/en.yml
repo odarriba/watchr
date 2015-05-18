@@ -56,7 +56,11 @@ en:
     results:
       title: "Service results"
       results_history: "Results history"
-      alerts_history: "Alerts regarding %{service} service"
+      alerts_history:
+        title: "Alerts regarding %{service} service"
+        opened:
+          singular: "actived"
+          plural: "actived"
       service_info: "Service information"
       chart:
         title: "Results of %{service} service"
@@ -77,7 +81,8 @@ en:
       subtitle: "%{service} on %{host}"
       button: "View service results"
       results_history: "Results history on %{host}"
-      alerts_history: "Alerts regarding %{service} service on %{host}"
+      alerts_history: 
+        title: "Alerts regarding %{service} service on %{host}"
       service_info: "Host information"
       chart:
         title: "Results of %{service} service on %{host}"

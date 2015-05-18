@@ -1,4 +1,4 @@
-<% content_for :title, t("alerts.index_records.title") %>
+<% content_for :title, t("hosts.alert_records.title") %>
 <div class='row-fluid'>
   <div class='sidebar'>
     <%= render :partial => "sidebar" %>
@@ -7,25 +7,10 @@
     <%= bootstrap_flash %>
     <div class="page-header clearfix">
       <h1>
-        <%= t("alerts.index_records.title") %>
+        <%= t("hosts.alert_records.title") %>
         <small>
-          <% if (!@alert.blank?) %>
-          <%= t("alerts.index_records.subtitle.alert", :alert => @alert.name) %>
-          <% else %>
-          <%= t("alerts.index_records.subtitle.all") %>
-          <% end %>
+          <%= t("hosts.alert_records.subtitle", :host => @host.name) %>
         </small>
-        <span class='pull-right'>
-          <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
-          <div class="form-group">
-            <%= select_tag "id", 
-                  options_for_select(Alert.all.collect{ |u| [u.name, u.id] }.insert(0,[t("alerts.index_records.form.all"), "all"]), params[:id]), 
-                  :class => "form-control", 
-                  :onchange => "var url='#{alert_records_path(:id => 'alertid')}'; if(this.value != '') {window.location=url.replace('alertid', this.value);}"
-              %>
-          </div>
-          <% end %>
-        </span>
       </h1>
     </div>
     <div class='table-header clearfix'>
@@ -42,9 +27,9 @@
     <table class="table table-hover table-elements">
       <thead>
         <tr>
-          <th class="col-xs-2 text-center"><%= t("alerts.index_records.table.status") %></th>
-          <th class="col-xs-5"><%= t("alerts.index_records.table.description") %></th>
-          <th class="col-xs-3"><%= t("alerts.index_records.table.registration_date") %></th>
+          <th class="col-xs-2 text-center"><%= t("hosts.alert_records.table.status") %></th>
+          <th class="col-xs-5"><%= t("hosts.alert_records.table.description") %></th>
+          <th class="col-xs-3"><%= t("hosts.alert_records.table.registration_date") %></th>
           <th class="col-xs-2"></th>
         </tr>
       </thead>
@@ -69,7 +54,7 @@
                 <%= raw t("alerts.record_description.all", :alert => alert_record.alert.name) %>
               <% end %>
             <% else %>
-            <span class="text-danger"><%= t("alerts.index_records.table.no_data") %></span>
+            <span class="text-danger"><%= t("hosts.alert_records.table.no_data") %></span>
             <% end %>
             <% if (alert_record.opened) %></strong><% end %>
           </td>
@@ -79,7 +64,7 @@
             <% if (alert_record.opened) %></strong><% end %>
           </td>
           <td align="right">
-            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.index_records.button.show")}</span>".html_safe, alert_record_path(alert_record), :class => "btn btn-sm btn-success", :title => t("alerts.index_records.button.show") %>
+            <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.alert_records.button.show")}</span>".html_safe, alert_record_path(alert_record), :class => "btn btn-sm btn-success", :title => t("hosts.alert_records.button.show") %>
           </td>
         </tr>
         <% end %>

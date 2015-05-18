@@ -1,0 +1,91 @@
+<% content_for :title, t("alerts.show_record.title") %>
+<div class='row-fluid'>
+  <div class='sidebar'>
+    <%= render :partial => "sidebar" %>
+  </div>
+  <div class='content'>
+    <div class="page-header clearfix">
+      <h1>
+        <%= t("alerts.show_record.title") %>
+        <small>
+          <%= t("alerts.show_record.subtitle") %>
+        </small>
+      </h1>
+    </div>
+    <%= bootstrap_flash %>
+    <div class='form-horizontal'>
+      <div class="form-group <% if (@alert_record.opened) %>has-error<% else %>has-success<% end %>">
+        <label for="salert_record_opened" class="col-sm-3 control-label"><%= t("alerts.show_record.form.opened") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static">
+            <strong class="<% if (@alert_record.opened) %>text-danger<% else %>text-success<% end %>">
+              <% if (@alert_record.opened) %>
+              <%= t("alerts.record_status.opened").upcase %>
+              <% else %>
+              <%= t("alerts.record_status.closed").upcase %>
+              <% end %>
+            </strong>
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alert_record_alert" class="col-sm-3 control-label"><%= t("alerts.show_record.form.alert") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert_record.alert.name %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alert_record_service" class="col-sm-3 control-label"><%= t("alerts.show_record.form.service") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert_record.service.name %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alert_record_hosts" class="col-sm-3 control-label"><%= t("alerts.show_record.form.hosts") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert_record.hosts.map{|h| h = h.name}.join(", ") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alert_record_created_at" class="col-sm-3 control-label"><%= t("alerts.show_record.form.created_at") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alert_record_updated_at" class="col-sm-3 control-label"><%= t("alerts.show_record.form.updated_at") %></label>
+        <div class="col-md-7 col-sm-9">
+          <p class="form-control-static"><%= @alert_record.updated_at.strftime("%d/%m/%Y - %H:%M") %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-md-7 col-sm-9">
+          <hr class='divider' />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-1 col-md-9 col-sm-12">
+          <div class='pull-right'>
+            <%= link_to "<i class='fa fa-exclamation-triangle'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.show_record.button.alert")}</span>".html_safe, alert_path(@alert_record.alert_id), :class => "btn btn-warning", :title => t("alerts.show_record.button.alert") %>
+          </div>
+          <%= link_to "<i class='fa fa-chevron-left'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("alerts.show_record.button.back")}</span>".html_safe, alert_records_path(), :class => "btn btn-default pull-left" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

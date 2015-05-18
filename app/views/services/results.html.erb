@@ -1,12 +1,12 @@
 <% content_for :title, t("services.results.title") %>
-<div class='content-full row-fluid'>
+<div class="content-full row-fluid">
   <div class="page-header clearfix">
     <h1>
       <%= t("services.results.title") %>
       <small>
         <%= @service.name %>
       </small>
-      <div id='service-selector' class='pull-right'>
+      <div id="service-selector" class="pull-right">
         <%= form_tag results_service_path(), :method => :post, :class => "form-inline", :role => "form" do -%>
           <div class="form-group">
             <%= select_tag "id", 
@@ -19,10 +19,10 @@
       </div>
     </h1>
   </div>
-  <div class='col-lg-9 col-md-8'>
+  <div class="col-lg-9 col-md-8">
     <%= bootstrap_flash %>
 
-    <div id='chart-panel' class="panel panel-primary chart-panel"> <!-- chart container -->
+    <div id="chart-panel" class="panel panel-primary chart-panel"> <!-- chart container -->
       <div class="panel-heading">
         <b><%= t("services.results.results_history") %></b>
         <div class="pull-right form-inline" >
@@ -35,25 +35,20 @@
                   :onchange => "changeChartResume(this.value)" } %>
         </div>
       </div>
-      <div id='chart-container' class='chart-container'></div>
+      <div id="chart-container" class="chart-container"></div>
     </div>
 
-    <div id='alerts-panel' class="panel panel-primary alerts-panel"> <!-- chart container -->
-      <div class="panel-heading">
-        <b><%= t("services.results.alerts_history", :service => @service.name) %></b>
-      </div>
-      <div class='panel-body'>
-        No data yet.
-      </div>
+    <div id ="alerts-info">
+      <%= render(:partial => "services/panels/alerts_info") %>
     </div>
   </div>
 
-  <div class='col-lg-3 col-md-4'>
-    <div id='hosts-results'>
+  <div class="col-lg-3 col-md-4">
+    <div id="hosts-results">
       <%= render(:partial => "services/panels/hosts_results") %>
     </div>
 
-    <div id='service-info'>
+    <div id="service-info">
       <%= render(:partial => "services/panels/service_info") %>
     </div>
   </div>

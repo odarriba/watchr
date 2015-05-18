@@ -24,6 +24,7 @@ en:
         new: "Create a host"
         show: "View"
         results: "Results"
+        alerts: "Alerts"
         edit: "Edit"
         destroy: "Destroy"
         destroy_confirmation: "Do you really want to destroy this host? The monitoring results and alert records for this host will also be destroyed."
@@ -52,6 +53,16 @@ en:
         subtitle: "Executed every %{interval} seconds"
         x_axis: "Time stamp"
         legend: "%{service} service"
+    alert_records:
+      title: "Host alert records"
+      subtitle: "viewing alert records on %{host} host"
+      button:
+        show: "View record"
+      table:
+        status: "Status"
+        description: "Description"
+        registration_date: "Date"
+        no_data: "No data available"
     sidebar:
       all: "View all hosts"
       view_by_type: "View hosts by type"

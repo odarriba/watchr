@@ -58,8 +58,8 @@
       <thead>
         <tr>
           <th class='col-xs-3'><%= t("hosts.table.name") %></th>
-          <th class='col-xs-3'><%= t("hosts.table.address") %></th>
-          <th class='col-xs-6'></th>
+          <th class='col-xs-2'><%= t("hosts.table.address") %></th>
+          <th class='col-xs-7'></th>
         </tr>
       </thead>
       <tbody>
@@ -74,7 +74,8 @@
           </td>
           <td align='right'>
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.show")}</span>".html_safe, host_path(host), :class => "btn btn-sm btn-success", :title => t("hosts.index.button.show") %>
-            <%= link_to "<i class='fa fa-bar-chart'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.results")}</span>".html_safe, results_host_path(host), :class => "btn btn-sm btn-primary", :title => t("services.index.button.results") %>
+            <%= link_to "<i class='fa fa-bar-chart'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.results")}</span>".html_safe, results_host_path(host), :class => "btn btn-sm btn-primary", :title => t("hosts.index.button.results") %>
+            <%= link_to "<i class='fa fa-exclamation-triangle'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.alerts")}</span>".html_safe, alert_records_host_path(host), :class => "btn btn-sm btn-warning", :title => t("hosts.index.button.alerts") %>
             <% if (current_user.is_normal?) %>
             <%= link_to "<i class='fa fa-pencil'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.edit")}</span>".html_safe, edit_host_path(host), :class => "btn btn-sm btn-info", :title => t("hosts.index.button.edit") %>
             <%= link_to "<i class='fa fa-trash-o'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.index.button.destroy")}</span>".html_safe, host_path(host), :method => :delete, :class => "btn btn-sm btn-danger", :title => t("hosts.index.button.destroy"), :data => {:confirm => t("hosts.index.button.destroy_confirmation")} %>

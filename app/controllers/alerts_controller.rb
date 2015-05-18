@@ -12,7 +12,7 @@ class AlertsController < ApplicationController
   # It also allows to search in the alerts by _name_ and/or _description_.
   #
   # [URL] 
-  #   GET /configuration/alerts
+  #   GET /alerts
   #
   # [Parameters] 
   #   * *page* - _(Optional)_ The page of results to show.
@@ -51,7 +51,7 @@ class AlertsController < ApplicationController
   # Action to show the service creation form.
   #
   # [URL] 
-  #   GET /configuration/alerts/new
+  #   GET /alerts/new
   #
   def new
     @alert = Alert.new
@@ -64,7 +64,7 @@ class AlertsController < ApplicationController
   # Action to create a new alert with the data received from the form.
   #
   # [URL] 
-  #   POST /configuration/alerts
+  #   POST /alerts
   #
   # [Parameters]
   #   * *alert* - All the data recolected of the new service.
@@ -99,7 +99,7 @@ class AlertsController < ApplicationController
   # Action to show a the information about an existing alert.
   #
   # [URL] 
-  #   GET /configuration/alerts/:id
+  #   GET /alerts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -116,7 +116,7 @@ class AlertsController < ApplicationController
   # Action to show a form to edit an existing alert.
   #
   # [URL] 
-  #   GET /configuration/alerts/:id/edit
+  #   GET /alerts/:id/edit
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -133,8 +133,8 @@ class AlertsController < ApplicationController
   # Action to update an existing alert with the data received from the form.
   #
   # [URL] 
-  #   PUT /configuration/alerts/:id
-  #   PATCH /configuration/alerts/:id
+  #   PUT /alerts/:id
+  #   PATCH /alerts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -179,7 +179,7 @@ class AlertsController < ApplicationController
   # Action to destroy an existing alert in the database.
   #
   # [URL] 
-  #   DELETE /configuration/alerts/:id
+  #   DELETE /alerts/:id
   #
   # [Parameters]
   #   * *id* - The identificator of the alert.
@@ -371,6 +371,23 @@ class AlertsController < ApplicationController
     end
   end
 
+  # Action to show a the information about an existing alert record.
+  #
+  # [URL] 
+  #   GET /alerts/record/:id
+  #
+  # [Parameters]
+  #   * *id* - The identificator of the alert record.
+  #
+  def show_record
+    load_alert_record
+    return if (@alert_record.blank?)
+
+    respond_to do|format|
+      format.html
+    end
+  end
+
   protected
 
   # Function to check the existence of the *active* parameter in the URL.
@@ -397,10 +414,13 @@ class AlertsController < ApplicationController
   #
   # It returns the Alert object and makes it available at @alert.
   #
+  # [Parameters]
+  #   * *redirect* - _(Optional)_ If user must be redirected if no alert is found (default: true)
+  #
   # [Returns]
   #   A valid _Alert_ object or _nil_ if it doesn't exists.
   #
-  def load_alert
+  def load_alert(redirect = true)
     if (params[:id].blank?)
       @alert = nil
       return @alert
@@ -408,13 +428,40 @@ class AlertsController < ApplicationController
 
     @alert = Alert.where(:_id => params[:id]).first
 
-    if (@alert.blank?)
+    if (@alert.blank? && redirect)
       # If not found, show an error and redirect
       flash[:error] = t("alerts.error.not_found")
       redirect_to alerts_path()
     end
 
     return @alert
+  end
+
+  # Function lo load an alert from the database using *id* parameter in the URL.
+  #
+  # It returns the Alert object and makes it available at @alert.
+  #
+  # [Parameters]
+  #   * *redirect* - _(Optional)_ If user must be redirected if no alert is found (default: true)
+  #
+  # [Returns]
+  #   A valid _Alert_ object or _nil_ if it doesn't exists.
+  #
+  def load_alert_record(redirect = true)
+    if (params[:id].blank?)
+      @alert_record = nil
+      return @alert_record
+    end
+
+    @alert_record = AlertRecord.where(:_id => params[:id]).first
+
+    if (@alert_record.blank? && redirect)
+      # If not found, show an error and redirect
+      flash[:error] = t("alerts.error.record_not_found")
+      redirect_to alert_records_path()
+    end
+
+    return @alert_record
   end
 
   # Function to check if there is any existing service before executing 
