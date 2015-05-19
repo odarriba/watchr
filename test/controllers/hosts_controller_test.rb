@@ -33,6 +33,12 @@ class HostsControllerTest < ActionController::TestCase
       assert_template :layout => :application
       assert_template :show
 
+      # Can view hosts' alert records
+      get :alert_records, :id => @host.id
+      assert_response :success
+      assert_template :layout => :application
+      assert_template :alert_records
+
       sign_out :user
     end
   end
@@ -204,6 +210,9 @@ class HostsControllerTest < ActionController::TestCase
 
     # Show action
     get :show, :id => "non-existing-id"
+    assert_redirected_to hosts_path
+
+    get :alert_records, :id => "non-existing-id"
     assert_redirected_to hosts_path
 
     # Edit action

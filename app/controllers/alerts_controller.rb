@@ -4,7 +4,7 @@
 #
 class AlertsController < ApplicationController
   # Check the privilege level required
-  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy, :new_user, :delete_user]
+  before_action :check_normal_user, :only => [:new, :create, :edit, :update, :destroy, :get_service_hosts, :new_user, :delete_user]
   # Check the existence of services first
   before_action :check_service_existence, :only => [:new, :create, :edit, :update]
 
@@ -214,7 +214,7 @@ class AlertsController < ApplicationController
   #   * *service_id* - The id of the service selected.
   #
   def get_service_hosts
-    if (!params[:id].blank?)
+    if ((!params[:id].blank?) && (params[:id] != "new"))
       load_alert
       return if (@alert.blank?)
     else
@@ -342,7 +342,8 @@ class AlertsController < ApplicationController
   def index_records
     # If there is an ID passed, try to load the alert
     if (!params[:id].blank?) && (params[:id] != "all")
-      @alert = Alert.where(:_id => params[:id]).first
+      load_alert
+      return if (@alert.blank?)
     end
 
     # if there is an alert loaded, filter the results
