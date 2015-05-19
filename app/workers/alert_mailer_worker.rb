@@ -4,7 +4,7 @@
 class AlertMailerWorker
   include Sidekiq::Worker
   
-  # Function to send a opened/closed alert record e-mail in the background.
+  # Function to send a open/closed alert record e-mail in the background.
   #
   # [Parameters]
   #   * *function* - (Symbol) The function in the _AlertMailer_ to call.
@@ -21,7 +21,7 @@ class AlertMailerWorker
     User.where(:alert_ids => alert_record.alert_id).each do |u|
       I18n.locale = u.lang
 
-      AlertMailer.alert_record_opened_email(alert_record, u).deliver if (function.to_sym == :alert_record_opened)
+      AlertMailer.alert_record_open_email(alert_record, u).deliver if (function.to_sym == :alert_record_open)
       AlertMailer.alert_record_closed_email(alert_record, u).deliver if (function.to_sym == :alert_record_closed)
     end
 

@@ -14,13 +14,13 @@
     </div>
     <%= bootstrap_flash %>
     <div class='form-horizontal'>
-      <div class="form-group <% if (@alert_record.opened) %>has-error<% else %>has-success<% end %>">
-        <label for="salert_record_opened" class="col-sm-3 control-label"><%= t("alerts.show_record.form.opened") %></label>
+      <div class="form-group <% if (@alert_record.open) %>has-error<% else %>has-success<% end %>">
+        <label for="salert_record_open" class="col-sm-3 control-label"><%= t("alerts.show_record.form.open") %></label>
         <div class="col-md-7 col-sm-9">
           <p class="form-control-static">
-            <strong class="<% if (@alert_record.opened) %>text-danger<% else %>text-success<% end %>">
-              <% if (@alert_record.opened) %>
-              <%= t("alerts.record_status.opened").upcase %>
+            <strong class="<% if (@alert_record.open) %>text-danger<% else %>text-success<% end %>">
+              <% if (@alert_record.open) %>
+              <%= t("alerts.record_status.open").upcase %>
               <% else %>
               <%= t("alerts.record_status.closed").upcase %>
               <% end %>

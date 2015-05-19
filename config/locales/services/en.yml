@@ -58,7 +58,7 @@ en:
       results_history: "Results history"
       alerts_history:
         title: "Alerts regarding %{service} service"
-        opened:
+        open:
           singular: "actived"
           plural: "actived"
       service_info: "Service information"

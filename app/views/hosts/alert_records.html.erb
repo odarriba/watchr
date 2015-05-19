@@ -37,16 +37,16 @@
         <% @alert_records.each do |alert_record| %>
         <tr class="element">
           <td class="text-center">
-            <strong class="<% if (alert_record.opened) %>text-danger<% else %>text-success<% end %>">
-              <% if (alert_record.opened) %>
-              <%= t("alerts.record_status.opened").upcase %>
+            <strong class="<% if (alert_record.open) %>text-danger<% else %>text-success<% end %>">
+              <% if (alert_record.open) %>
+              <%= t("alerts.record_status.open").upcase %>
               <% else %>
               <%= t("alerts.record_status.closed").upcase %>
               <% end %>
             </strong>
           </td>
           <td>
-            <% if (alert_record.opened) %><strong class='text-danger'><% end %>
+            <% if (alert_record.open) %><strong class='text-danger'><% end %>
             <% if (!alert_record.service.blank?) %>
               <% if (alert_record.host_ids.count == 1) %>
                 <%= raw t("alerts.record_description.host", :alert => alert_record.alert.name, :host => alert_record.hosts.first.name) %>
@@ -56,12 +56,12 @@
             <% else %>
             <span class="text-danger"><%= t("hosts.alert_records.table.no_data") %></span>
             <% end %>
-            <% if (alert_record.opened) %></strong><% end %>
+            <% if (alert_record.open) %></strong><% end %>
           </td>
           <td>
-            <% if (alert_record.opened) %><strong class='text-danger'><% end %>
+            <% if (alert_record.open) %><strong class='text-danger'><% end %>
             <%= alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %>
-            <% if (alert_record.opened) %></strong><% end %>
+            <% if (alert_record.open) %></strong><% end %>
           </td>
           <td align="right">
             <%= link_to "<i class='fa fa-eye'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("hosts.alert_records.button.show")}</span>".html_safe, alert_record_path(alert_record), :class => "btn btn-sm btn-success", :title => t("hosts.alert_records.button.show") %>

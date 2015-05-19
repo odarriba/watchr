@@ -353,7 +353,7 @@ class AlertsController < ApplicationController
     end
 
     # Ordering results
-    @alert_records = @alert_records.desc(:opened).desc(:updated_at)
+    @alert_records = @alert_records.desc(:open).desc(:updated_at)
 
     # If a page number is received, save it (if not, the page is the first)
     if (!params[:page].blank?)

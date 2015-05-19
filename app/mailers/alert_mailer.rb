@@ -9,14 +9,14 @@ class AlertMailer < ActionMailer::Base
   # Mailer to send the alert record opening e-mail to subscribed users.
   #
   # [Parameters] 
-  #   * *alert_record* - The _AlertRecord_ object opened.
+  #   * *alert_record* - The _AlertRecord_ object open.
   #   * *user* - The _User_ to which send the email
   #
-  def alert_record_opened_email(alert_record, user)
+  def alert_record_open_email(alert_record, user)
     @alert_record = alert_record
     @user = user
     
-    mail(to: @user.email, subject: t("alerts.email.alert_record_opened.subject", :alert => @alert_record.alert.name))
+    mail(to: @user.email, subject: t("alerts.email.alert_record_open.subject", :alert => @alert_record.alert.name))
   end
 
   # Mailer to send the alert record closing e-mail to subscribed users.

@@ -18,7 +18,7 @@ en:
       condition_target_all: "All monitored hosts"
       condition_target_one: "At least one monitored host"
     record_status:
-      opened: "Opened"
+      open: "open"
       closed: "Closed"
     record_description:
         host: "Actived alert <b>%{alert}</b> on host <b>%{host}</b>"
@@ -79,10 +79,10 @@ en:
       subtitle: "showing details"
       form:
         alert: "Alert"
-        opened: "Status"
+        open: "Status"
         service: "Service affected"
         hosts: "Hosts affected"
-        created_at: "Opened at"
+        created_at: "open at"
         updated_at: "Last update"
       button:
         alert: "View alert"
@@ -120,12 +120,12 @@ en:
       created_at: "Created at"
       updated_at: "Updated at"
     email:
-      alert_record_opened:
-        subject: "Watchr - Alert opened: %{alert}"
-        body: "Hello %{name}!<br /><br />This e-mail is to notify you that the alert called <b>%{alert}</b> (monitoring the results of %{service} service) has been opened generating an alert record (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>), concerning the following hosts:<br /><ul>%{hosts_li}</ul><br />Please, check the results on Watchr site as soon as you can to try to minimize the downtime."
+      alert_record_open:
+        subject: "Watchr - Alert open: %{alert}"
+        body: "Hello %{name}!<br /><br />This e-mail is to notify you that the alert called <b>%{alert}</b> (monitoring the results of %{service} service) has been activated generating an alert record (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>), concerning the following hosts:<br /><ul>%{hosts_li}</ul><br />Please, check the results on Watchr site as soon as you can to try to minimize the alert time."
       alert_record_closed:
         subject: "Watchr - Alert closed: %{alert}"
-        body: "Hello %{name}!<br /><br />This e-mail is to notify you that an opened alert record of the <b>%{alert}</b> alert (monitoring the results of %{service} service) has been closed (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>).<br /><br />This alert record has been opened since %{date}.<br /><br />For further information, check Watchr site for explained results information."
+        body: "Hello %{name}!<br /><br />This e-mail is to notify you that an open alert record of the <b>%{alert}</b> alert (monitoring the results of %{service} service) has been closed (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>).<br /><br />This alert record has been in open status since %{date}.<br /><br />For further information, check Watchr site for explained results information."
     notice:
       created: "Alert (%{name}) <b>created succesfully</b>."
       updated: "Alert (%{name}) <b>updated succesfully</b>."

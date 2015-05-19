@@ -214,7 +214,7 @@ class HostsController < ApplicationController
     load_host
     return if (@host.blank?)
 
-    @alert_records = AlertRecord.where(:host_ids => @host.id).desc(:opened).desc(:updated_at)
+    @alert_records = AlertRecord.where(:host_ids => @host.id).desc(:open).desc(:updated_at)
 
      # If a page number is received, save it (if not, the page is the first)
     if (!params[:page].blank?)

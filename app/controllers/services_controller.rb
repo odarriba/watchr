@@ -253,7 +253,7 @@ class ServicesController < ApplicationController
     return if (@service.blank?)
 
     # Alert records of this service
-    @alert_records = AlertRecord.where(:service_id => @service.id).desc(:opened).desc(:updated_at).limit(8)
+    @alert_records = AlertRecord.where(:service_id => @service.id).desc(:open).desc(:updated_at).limit(8)
 
     respond_to do |format|
       format.html
@@ -354,7 +354,7 @@ class ServicesController < ApplicationController
     end
 
     # Alert records of this service and host
-    @alert_records = AlertRecord.where(:service_id => @service.id, :host_ids => @host.id).desc(:opened).desc(:updated_at).limit(8)
+    @alert_records = AlertRecord.where(:service_id => @service.id, :host_ids => @host.id).desc(:open).desc(:updated_at).limit(8)
 
     respond_to do |format|
       format.html

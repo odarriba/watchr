@@ -10,15 +10,15 @@
     </b>
     <div class='pull-right'>
       <span class='badge'>
-        <% num_alerts_opened = @alert_records.limit(0).where(:opened => true).count
+        <% num_alerts_open = @alert_records.limit(0).where(:open => true).count
 
-        if (num_alerts_opened == 1)
-          badge_text = num_alerts_opened.to_s + " " + t("services.results.alerts_history.opened.singular")
+        if (num_alerts_open == 1)
+          badge_text = num_alerts_open.to_s + " " + t("services.results.alerts_history.open.singular")
         else
-          badge_text = num_alerts_opened.to_s + " " + t("services.results.alerts_history.opened.plural")
+          badge_text = num_alerts_open.to_s + " " + t("services.results.alerts_history.open.plural")
         end
 
-        if (num_alerts_opened == 0) %>
+        if (num_alerts_open == 0) %>
         <strong class='text-success'><%= badge_text.upcase %></strong>
         <% else %>
         <strong class='text-danger'><%= badge_text.upcase %></strong>
@@ -38,16 +38,16 @@
       <% @alert_records.each do |alert_record| %>
       <tr onclick="location.href='<%= alert_record_path(alert_record) %>'">
         <td class="text-center">
-          <strong class="<% if (alert_record.opened) %>text-danger<% else %>text-success<% end %>">
-            <% if (alert_record.opened) %>
-            <%= t("alerts.record_status.opened").upcase %>
+          <strong class="<% if (alert_record.open) %>text-danger<% else %>text-success<% end %>">
+            <% if (alert_record.open) %>
+            <%= t("alerts.record_status.open").upcase %>
             <% else %>
             <%= t("alerts.record_status.closed").upcase %>
             <% end %>
           </strong>
         </td>
         <td>
-          <% if (alert_record.opened) %><strong class='text-danger'><% end %>
+          <% if (alert_record.open) %><strong class='text-danger'><% end %>
           <% if (!alert_record.service.blank?) %>
             <% if (alert_record.host_ids.count == 1) %>
               <%= raw t("alerts.record_description.host", :alert => alert_record.alert.name, :host => alert_record.hosts.first.name) %>
@@ -57,12 +57,12 @@
           <% else %>
           <span class="text-danger"><%= t("alerts.table.no_data") %></span>
           <% end %>
-          <% if (alert_record.opened) %></strong><% end %>
+          <% if (alert_record.open) %></strong><% end %>
         </td>
         <td>
-          <% if (alert_record.opened) %><strong class='text-danger'><% end %>
+          <% if (alert_record.open) %><strong class='text-danger'><% end %>
           <%= alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %>
-          <% if (alert_record.opened) %></strong><% end %>
+          <% if (alert_record.open) %></strong><% end %>
         </td>
       </tr>
       <% end %>
