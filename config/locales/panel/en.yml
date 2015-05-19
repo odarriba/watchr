@@ -8,6 +8,7 @@ en:
       alerts_panel:
         title: "Alerts report"
       results_panel:
+        results: "View results"
         table:
           host: "Host"
           status: "Status"

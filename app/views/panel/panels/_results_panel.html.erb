@@ -1,9 +1,10 @@
-<div class="panel panel-primary">
+<div class="results-panel-index panel panel-primary">
   <div class="panel-heading clearfix">
     <div class="pull-left">
       <b><%= serv.name %></b>
     </div>
     <div class="pull-right">
+      <%= link_to t("panel.index.results_panel.results"), results_service_path(serv), :class => "btn btn-xs btn-success", :title => t("panel.index.results_panel.results") %>&nbsp;&nbsp;
       <%= status_badge(serv) %>
     </div>
   </div>
