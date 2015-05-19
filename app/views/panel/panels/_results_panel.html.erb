@@ -1,0 +1,51 @@
+<div class="panel panel-primary">
+  <div class="panel-heading clearfix">
+    <div class="pull-left">
+      <b><%= serv.name %></b>
+    </div>
+    <div class="pull-right">
+      <%= status_badge(serv) %>
+    </div>
+  </div>
+  <table class="table table-results">
+    <thead>
+      <tr>
+        <th class="col-xs-5"><%= t("panel.index.results_panel.table.host") %></th>
+        <th class="col-xs-3"><%= t("panel.index.results_panel.table.status") %></th>
+        <th class="col-xs-4"><%= t("panel.index.results_panel.table.result", :units => serv.get_units_short) %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if (!serv.results.last.blank?) %>
+      <% serv.results.last.host_results.each do |hresult| %>
+      <tr>
+        <td><%= hresult.host.name %></td>
+        <td><%= host_result_status_text(hresult) %></td>
+        <td><%= hresult.value.to_f %></td>
+      </tr>
+      <% end %>
+    <% else %>
+      <tr class="no-results">
+        <td colspan="3">
+          <%= t("services.results.hosts_results.table.no_results") %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+    <% if (!serv.results.last.blank?) %>
+    <tfoot>
+      <tr>
+        <td>
+          <b><%= t("panel.index.table.global") %></b>
+        </td>
+        <td>
+          <%= service_status_text(serv) %>
+        </td>
+        <td>
+          <%= serv.results.last.global_value %>
+        </td>
+      </tr>
+    </tfoot>
+    <% end %>
+  </table>
+</div>

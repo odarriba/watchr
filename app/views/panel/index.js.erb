@@ -1,0 +1,4 @@
+$("#alerts-panel").html("<%= escape_javascript(render(:partial => 'panel/panels/alerts_info'))%>");
+<% @services.each do |serv| %>
+$("#results-panel-<%= serv.id.to_s %>").html("<%= escape_javascript(render(:partial => 'panel/panels/results_panel', :locals => {:serv => serv}))%>");
+<% end %>

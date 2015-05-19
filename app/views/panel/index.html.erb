@@ -1,6 +1,6 @@
 <% content_for :title, t("panel.index.title") %>
-<div class='row-fluid'>
-  <div class='content'>
+<div class="content-index">
+  <div class="col-md-8">
     <div class="page-header">
       <h1>
         <%= t("panel.index.title") %>
@@ -9,64 +9,21 @@
         </small>
       </h1>
     </div>
-  </div>
-  <div class='content-index col-md-8'>
     <%= bootstrap_flash %>
-    <div class='results-panel fluid-columns'>
+    <% service_chart = @services.to_a.shuffle.first
+    if (!service_chart.blank?) %>
+    <div id="chart-panel" class="panel panel-primary chart-panel"> <!-- chart container -->
+      <div class="panel-heading">
+        <b><%= t("panel.index.main_chart.title", :service => service_chart.name) %></b>
+      </div>
+      <div id="chart-container" class="chart-container"></div>
+    </div>
+    <% end %>
+    <div class="results-panels fluid-columns">
       <div class="row">
         <% @services.each do |serv| %>
-        <div class='item'>
-          <div class="panel panel-primary">
-            <div class="panel-heading clearfix">
-              <div class='pull-left'>
-                <b><%= serv.name %></b>
-              </div>
-              <div class='pull-right'>
-                <%= status_badge(serv) %>
-              </div>
-            </div>
-            <table class="table table-results">
-              <thead>
-                <tr>
-                  <th class="col-xs-5"><%= t("panel.index.table.host") %></th>
-                  <th class="col-xs-3"><%= t("panel.index.table.status") %></th>
-                  <th class="col-xs-4"><%= t("panel.index.table.result", :units => serv.get_units_short) %></th>
-                </tr>
-              </thead>
-              <tbody>
-              <% if (!serv.results.last.blank?) %>
-                <% serv.results.last.host_results.each do |hresult| %>
-                <tr>
-                  <td><%= hresult.host.name %></td>
-                  <td><%= host_result_status_text(hresult) %></td>
-                  <td><%= hresult.value.to_f %></td>
-                </tr>
-                <% end %>
-              <% else %>
-                <tr class='no-results'>
-                  <td colspan="3">
-                    <%= t("services.results.hosts_results.table.no_results") %>
-                  </td>
-                </tr>
-              <% end %>
-              </tbody>
-              <% if (!serv.results.last.blank?) %>
-              <tfoot>
-                <tr>
-                  <td>
-                    <b><%= t("panel.index.table.global") %></b>
-                  </td>
-                  <td>
-                    <%= service_status_text(serv.status) %>
-                  </td>
-                  <td>
-                    <%= serv.results.last.global_value %>
-                  </td>
-                </tr>
-              </tfoot>
-              <% end %>
-            </table>
-          </div>
+        <div id="results-panel-<%= serv.id.to_s %>" class="results-panel item">
+          <%= render :partial => "panel/panels/results_panel", :locals => {:serv => serv} %>
         </div>
         <% end %>
       </div>
@@ -75,76 +32,38 @@
           <%= raw t("panel.index.no_element") %>
         </div>
       <% end %>
-      <hr class='divider' />
+      <hr class="divider" />
     </div>
   </div>
-  <div class='col-md-4'>
-    <div class="panel panel-primary">
-      <div class="panel-heading clearfix">
-        <div class='pull-left'>
-          <b>Alerts report</b>
-        </div>
-        <div class='pull-right'>
-      <span class='badge'>
-        <% num_alerts_open = @alert_records.limit(0).where(:open => true).count
-
-        if (num_alerts_open == 1)
-          badge_text = num_alerts_open.to_s + " " + t("services.results.alerts_history.open.singular")
-        else
-          badge_text = num_alerts_open.to_s + " " + t("services.results.alerts_history.open.plural")
-        end
-
-        if (num_alerts_open == 0) %>
-        <strong class='text-success'><%= badge_text.upcase %></strong>
-        <% else %>
-        <strong class='text-danger'><%= badge_text.upcase %></strong>
-        <% end %>
-      </span>
-    </div>
-      </div>
-      <table class="table table-hover table-elements">
-        <thead>
-          <tr>
-            <th class="col-xs-2 text-center"><%= t("alerts.index_records.table.status") %></th>
-            <th class="col-xs-6 col-sm-7 col-lg-8"><%= t("alerts.index_records.table.description") %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @alert_records.each do |alert_record| %>
-          <tr onclick="location.href='<%= alert_record_path(alert_record) %>'">
-            <td class="text-center">
-              <strong class="<% if (alert_record.open) %>text-danger<% else %>text-success<% end %>">
-                <% if (alert_record.open) %>
-                <%= t("alerts.record_status.open").upcase %>
-                <% else %>
-                <%= t("alerts.record_status.closed").upcase %>
-                <% end %>
-              </strong>
-            </td>
-            <td>
-              <% if (alert_record.open) %><strong class='text-danger'><% end %>
-              <% if (!alert_record.service.blank?) %>
-                <% if (alert_record.host_ids.count == 1) %>
-                  <%= raw t("alerts.record_description.host", :alert => alert_record.alert.name, :host => alert_record.hosts.first.name) %>
-                <% else %>
-                  <%= raw t("alerts.record_description.all", :alert => alert_record.alert.name) %>
-                <% end %>
-              <% else %>
-              <span class="text-danger"><%= t("alerts.table.no_data") %></span>
-              <% end %>
-              <% if (alert_record.open) %></strong><% end %>
-            </td>       
-          </tr>
-          <% end %>
-          <% if (@alert_records.count == 0) %>
-            <tr class="no-elements">
-              <td colspan="2">
-                <%= raw t("ui.table.no_element") %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+  <div class="col-md-4">
+    <div id="alerts-panel" class="alerts-panel">
+      <%= render :partial => "panel/panels/alerts_info" %>
+    </div><!-- alerts-panel -->
   </div>
 </div>
+
+<script>
+  var chart_id = null;
+
+  $(document).ready(function() {
+    chart_id = chartStart({
+      container: $("#chart-container"),
+      live: true,
+      interval: <%= service_chart.interval %>,
+      clean_interval: <%= service_chart.clean_interval %>,
+      texts: {
+        title: "<%= t('services.results.chart.title', :service => service_chart.name) %>",
+        subtitle: "<%= t('services.results.chart.subtitle', :interval => service_chart.interval) %>",
+        x_axis: "<%= t('services.results.chart.x_axis') %>",
+        y_axis: "<%= t('services.results.chart.y_axis') %> [<%= service_chart.get_units_short %>]",
+        legend: "<%= t('services.results.chart.legend', :service => service_chart.name) %>"
+      },
+      data_url: "<%= results_data_service_path(service_chart.id) %>",
+      resume: "<%= service_chart.resume %>"
+    });
+
+    setInterval(function() {
+      $.getScript("<%= root_path() %>");
+    }, <%= @services.map{|s| s = s.interval}.min %>*1000);
+  });
+</script>

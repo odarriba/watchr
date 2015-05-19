@@ -1,13 +1,8 @@
-<div id="alerts-info-panel" class="panel panel-primary alerts-info-panel"> 
-  <div class="panel-heading">
-    <b>
-      <% if ((!@service.blank?) && (!@host.blank?)) %>
-      <%= t("services.host_results.alerts_history.title", :service => @service.name, :host => @host.name) %>
-      <% elsif ((!@service.blank?) && (@host.blank?)) %>
-      <%= t("services.results.alerts_history.title", :service => @service.name) %>
-      <% else %>
-      <% end %>
-    </b>
+<div class="panel panel-primary">
+  <div class="panel-heading clearfix">
+    <div class="pull-left">
+      <b><%= t("panel.index.alerts_panel.title") %></b>
+    </div>
     <div class="pull-right">
       <span class="badge">
         <% num_alerts_open = @alert_records.limit(0).where(:open => true).count
@@ -25,13 +20,12 @@
         <% end %>
       </span>
     </div>
-  </div>
+  </div> <!-- panel-heading -->
   <table class="table table-hover table-elements">
     <thead>
       <tr>
         <th class="col-xs-2 text-center"><%= t("alerts.index_records.table.status") %></th>
         <th class="col-xs-6 col-sm-7 col-lg-8"><%= t("alerts.index_records.table.description") %></th>
-        <th class="col-xs-4 col-sm-3 col-lg-2"><%= t("alerts.index_records.table.registration_date") %></th>
       </tr>
     </thead>
     <tbody>
@@ -47,7 +41,7 @@
           </strong>
         </td>
         <td>
-          <% if (alert_record.open) %><strong class="text-danger"><% end %>
+          <% if (alert_record.open) %><strong class='text-danger'><% end %>
           <% if (!alert_record.service.blank?) %>
             <% if (alert_record.host_ids.count == 1) %>
               <%= raw t("alerts.record_description.host", :alert => alert_record.alert.name, :host => alert_record.hosts.first.name) %>
@@ -58,21 +52,16 @@
           <span class="text-danger"><%= t("alerts.table.no_data") %></span>
           <% end %>
           <% if (alert_record.open) %></strong><% end %>
-        </td>
-        <td>
-          <% if (alert_record.open) %><strong class="text-danger"><% end %>
-          <%= alert_record.created_at.strftime("%d/%m/%Y - %H:%M") %>
-          <% if (alert_record.open) %></strong><% end %>
-        </td>
+        </td>       
       </tr>
       <% end %>
       <% if (@alert_records.count == 0) %>
         <tr class="no-elements">
-          <td colspan="3">
+          <td colspan="2">
             <%= raw t("ui.table.no_element") %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-</div>
+</div><!-- panel -->
