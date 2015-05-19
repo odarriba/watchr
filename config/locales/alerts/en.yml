@@ -119,6 +119,13 @@ en:
       users: "Users subscribed"
       created_at: "Created at"
       updated_at: "Updated at"
+    email:
+      alert_record_opened:
+        subject: "Watchr - Alert opened: %{alert}"
+        body: "Hello %{name}!<br /><br />This e-mail is to notify you that the alert called <b>%{alert}</b> (monitoring the results of %{service} service) has been opened generating an alert record (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>), concerning the following hosts:<br /><ul>%{hosts_li}</ul><br />Please, check the results on Watchr site as soon as you can to try to minimize the downtime."
+      alert_record_closed:
+        subject: "Watchr - Alert closed: %{alert}"
+        body: "Hello %{name}!<br /><br />This e-mail is to notify you that an opened alert record of the <b>%{alert}</b> alert (monitoring the results of %{service} service) has been closed (<a href='%{alert_record_url}' alt='Alert record information' title='Alert record information'>view info</a>).<br /><br />This alert record has been opened since %{date}.<br /><br />For further information, check Watchr site for explained results information."
     notice:
       created: "Alert (%{name}) <b>created succesfully</b>."
       updated: "Alert (%{name}) <b>updated succesfully</b>."

@@ -1,0 +1,1 @@
+<%= raw t("alerts.email.alert_record_closed.body", :name => @user.name, :alert => @alert_record.alert.name, :service => @alert_record.service.name, :alert_record_url => alert_record_url(@alert_record), :date => @alert_record.created_at.strftime("%d/%m/%Y - %H:%M")) %>

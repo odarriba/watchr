@@ -1,0 +1,5 @@
+<%
+  # Create the host names list items
+  hosts_li = "<li>"+@alert_record.hosts.map{|h| h = h.name}.join("</li><li>")+"</li>"
+%>
+<%= raw t("alerts.email.alert_record_opened.body", :name => @user.name, :alert => @alert_record.alert.name, :service => @alert_record.service.name, :alert_record_url => alert_record_url(@alert_record), :hosts_li => hosts_li) %>
