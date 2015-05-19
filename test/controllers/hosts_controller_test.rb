@@ -212,6 +212,7 @@ class HostsControllerTest < ActionController::TestCase
     get :show, :id => "non-existing-id"
     assert_redirected_to hosts_path
 
+    # Show alert records of a host
     get :alert_records, :id => "non-existing-id"
     assert_redirected_to hosts_path
 
