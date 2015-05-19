@@ -86,7 +86,7 @@ class Alert
   # in latest results obtained.
   #
   # [Parameters]
-  #   * *result* An _Result_ object which we want to analyse.
+  #   * *result* - A _Result_ object which we want to analyse.
   #
   # [Returns]
   #   Nothing.
@@ -172,16 +172,16 @@ class Alert
     return Alert::AVAILABLE_CONDITIONS.include?(condition)
   end
 
-  # Function to check if a target is valid.
+  # Function to check if a condition target is valid.
   #
   # [Parameters]
-  #   * *target* - The target to check.
+  #   * *condition_target* - The condition target to check.
   #
   # [Returns]
   #   A boolean indicating if the target is valid or not.
   #
-  def self.valid_target?(target)
-    return Alert::AVAILABLE_TARGETS.include?(target)
+  def self.valid_condition_target?(condition_target)
+    return Alert::AVAILABLE_CONDITION_TARGETS.include?(condition_target)
   end
 
   protected
@@ -216,6 +216,12 @@ class Alert
   #   A boolean indicating if everything is ok.
   #
   def hosts_linked_to_service?
+    # Check host existence
+    if (self.host_ids.select{|hid| Host.where(:_id => hid).count == 0 }.count > 0)
+      errors.add(:hosts, "hosts inexistent added");
+      return false
+    end
+
     if (self.hosts.select{|h| h.service_ids.include?(self.service_id) == false}.count > 0)
       errors.add(:hosts, "hosts must be linked to service");
       return false
@@ -224,6 +230,12 @@ class Alert
     return true
   end
 
+  # Function to close the alerts if there is something changed in the current
+  # alert configuration,
+  #
+  # [Returns]
+  #   Nothing.
+  #
   def close_required_alerts
     if (self.active == false)
       # If inactive, close all opened alerts

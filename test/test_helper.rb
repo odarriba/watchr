@@ -28,7 +28,7 @@ class ActiveSupport::TestCase
     if (!data.blank? && data.is_a?(Hash))
       @host = Host.create(data)
     else
-      @host = Host.create(:name => "Test Host #{rand(1..1000)}", :type => Host::TYPE_ROUTER, :address => "google.com", :description => "Test host description.", :active => true)
+      @host = Host.create(:name => "Test Host #{rand(1..1000)}", :type => Host::TYPE_ROUTER, :address => "192.168.0.#{rand(1..200)}", :description => "Test host description.", :active => true)
     end
   end
 
@@ -55,7 +55,12 @@ class ActiveSupport::TestCase
       @alert = Alert.create(data)
     else
       create_service
-      @alert = Alert.create(:name => "Test Alert #{rand(1..1000)}", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :service_id => @service.id)
+      create_host
+
+      @service.hosts << @host
+      @service.save
+      
+      @alert = Alert.create(:name => "Test Alert #{rand(1..1000)}", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :condition_target => Alert::CONDITION_TARGET_ALL, :error_control => true, :service_id => @service.id, :hosts => [@host])
     end
   end
 

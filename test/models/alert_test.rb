@@ -3,13 +3,19 @@ require 'test_helper'
 class AlertTest < ActiveSupport::TestCase
   def setup
     create_service
+    create_host
+
+    @service.hosts << @host
+    @service.save
+    @host.save
 
     # MongoID hasn't got fixtures support :(
-    @alert = Alert.new(:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :service_id => @service.id)
+    @alert = Alert.new(:name => "Test Alert", :description => "Test alert description.", :active => true, :limit => 600, :condition => :greater_than, :condition_target => Alert::CONDITION_TARGET_ALL, :error_control => true, :service_id => @service.id, :hosts => [@host])
   end
 
   def teardown
     Service.destroy_all
+    Host.destroy_all
     Alert.destroy_all
   end
 
@@ -155,41 +161,56 @@ class AlertTest < ActiveSupport::TestCase
     assert_not @alert.errors[:condition].blank?
   end
 
-  test "should save an alert with a valid target" do
+  test "should save an alert with a valid condition target" do
     # Test with all the targets defined
-    Alert::AVAILABLE_TARGETS.each do |target|
-      @alert.target = target
+    Alert::AVAILABLE_CONDITION_TARGETS.each do |condition_target|
+      @alert.condition_target = condition_target
       assert @alert.save
       @alert.reload
-      assert_equal @alert.target, target
+      assert_equal @alert.condition_target, condition_target
     end
   end
 
-  test "should not save an alert without a valid target" do
-    # Invalid target
-    @alert.target = "invalid_target"
+  test "should not save an alert without a valid condition target" do
+    # Invalid condition_target
+    @alert.condition_target = "invalid_target"
     assert_not @alert.save
-    assert_not @alert.errors[:target].blank?
+    assert_not @alert.errors[:condition_target].blank?
 
-    # Invalid symbolic target
-    @alert.target = :invalid_target
+    # Invalid symbolic condition_target
+    @alert.condition_target = :invalid_target
     assert_not @alert.save
-    assert_not @alert.errors[:target].blank?
+    assert_not @alert.errors[:condition_target].blank?
 
     # Empty string
-    @alert.target = ""
+    @alert.condition_target = ""
     assert_not @alert.save
-    assert_not @alert.errors[:target].blank?
+    assert_not @alert.errors[:condition_target].blank?
 
     # Number
-    @alert.target = 0
+    @alert.condition_target = 0
     assert_not @alert.save
-    assert_not @alert.errors[:target].blank?
+    assert_not @alert.errors[:condition_target].blank?
 
     # Empty object
-    @alert.target = nil
+    @alert.condition_target = nil
     assert_not @alert.save
-    assert_not @alert.errors[:target].blank?
+    assert_not @alert.errors[:condition_target].blank?
+  end
+
+  test "should not save alert without a valid error control status" do
+    # Valid boolean
+    @alert.error_control = true
+    assert @alert.save
+
+    # Valid boolean
+    @alert.error_control = false
+    assert @alert.save
+
+    # Nil object
+    @alert.error_control = nil
+    assert_not @alert.save
+    assert_not @alert.errors[:error_control].blank?
   end
 
   test "should not save an alert without a valid service" do
@@ -207,11 +228,39 @@ class AlertTest < ActiveSupport::TestCase
     @alert.service_id = nil
     assert_not @alert.save
     assert_not @alert.errors[:service].blank?
+  end
+
+  test "should not save an alert without a valid host" do
+    # Invalid service
+    @alert.host_ids << "invalid_id"
+    assert_not @alert.save
+    assert_not @alert.errors[:hosts].blank?
 
     # Invalid service
-    @alert.service = nil
+    @alert.host_ids << ""
     assert_not @alert.save
-    assert_not @alert.errors[:service].blank?
+    assert_not @alert.errors[:hosts].blank?
+
+    # Invalid service
+    @alert.host_ids << nil
+    assert_not @alert.save
+    assert_not @alert.errors[:hosts].blank?
+  end
+
+  test "should not save an alert with a host not linked to the service" do
+    create_host
+
+    # Host not linked
+    @alert.hosts << @host
+    assert_not @alert.save
+    assert_not @alert.errors[:hosts].blank?
+
+    # Now link it to the service and try again
+    @service.hosts << @host
+    @service.save
+    @host.save
+
+    assert @alert.save
   end
 
   test "should be assignable to users" do
@@ -253,10 +302,10 @@ class AlertTest < ActiveSupport::TestCase
     end
   end
 
-  test "should recognise valid targets" do
+  test "should recognise valid condition targets" do
     # Test each condition
-    Alert::AVAILABLE_TARGETS.each do |target|
-      assert Alert.valid_target?(target)
+    Alert::AVAILABLE_CONDITION_TARGETS.each do |target|
+      assert Alert.valid_condition_target?(target)
     end
   end
 end
