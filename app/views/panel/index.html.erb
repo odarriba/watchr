@@ -41,7 +41,7 @@
     </div><!-- alerts-panel -->
   </div>
 </div>
-
+<% if (!service_chart.blank?) %>
 <script>
   var chart_id = null;
 
@@ -67,3 +67,4 @@
     }, <%= @services.map{|s| s = s.interval}.min %>*1000);
   });
 </script>
+<% end %>
