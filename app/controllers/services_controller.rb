@@ -302,7 +302,7 @@ class ServicesController < ApplicationController
           data = {:error => t("services.error.not_found")}
         else
           # Poblate the results array
-          @results.cache.each do |result|
+          @results.to_a.each do |result|
             data << {
               :id => result.id.to_s, 
               :date => [

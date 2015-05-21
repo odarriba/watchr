@@ -18,7 +18,7 @@ en:
       condition_target_all: "All monitored hosts"
       condition_target_one: "At least one monitored host"
     record_status:
-      open: "open"
+      open: "Open"
       closed: "Closed"
     record_description:
         host: "Actived alert <b>%{alert}</b> on host <b>%{host}</b>"
@@ -82,7 +82,7 @@ en:
         open: "Status"
         service: "Service affected"
         hosts: "Hosts affected"
-        created_at: "open at"
+        created_at: "Open at"
         updated_at: "Last update"
       button:
         alert: "View alert"

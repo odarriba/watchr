@@ -80,7 +80,7 @@ class Result
     results = []
 
     # Get the result values
-    self.host_results.each do |result|
+    self.host_results.to_a.each do |result|
       results << result.value if (result.is_ok?)
     end
 
