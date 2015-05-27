@@ -30,7 +30,11 @@ class Result
   #
   def get_host_result(host)
     host = host.id if (host.is_a?(Host))
-    return self.host_results.select{|u| u.host_id == host}.first
+
+    hr_index = self.host_results.index{|u| u.host_id == host}
+
+    return self.host_results[hr_index] if (hr_index != nil)
+    return nil
   end
 
   # Function to get the value associated to the host
@@ -42,8 +46,7 @@ class Result
   #   The _HostResult_ object.
   #
   def get_host_value(host)
-    host = host.id if (host.is_a?(Host))
-    return self.get_host_result(host).value.to_i.round(4)
+    return self.get_host_result(host).value.to_f.round(4)
   end
 
   # Function to get the resumed value of the results done to the hosts.
@@ -59,13 +62,11 @@ class Result
   #   The float with the global value rounded to 4 digits.
   #
   def global_value(resume = nil)
-    return 0.0 if (self.all_error?)
-
     # Put the resume to it's default value if it isn't recognised
     resume = self.service.resume if (!Service::AVAILABLE_RESUMES.include?(resume))
 
     # Return the value
-    return self.service.resume_values(self.get_values, resume).round(4)
+    return Service.resume_values(self.get_values, resume).round(4)
   end
 
   # Function to get an array with all the values of the results from the 
@@ -75,17 +76,8 @@ class Result
   #   An array with all the results
   #
   def get_values
-    return [0.0] if (!self.any_ok?)
-
-    results = []
-
     # Get the result values
-    self.host_results.to_a.each do |result|
-      results << result.value if (result.is_ok?)
-    end
-
-    # Return the value
-    return results
+    return self.host_results.map{ |res| res = res.value }.compact
   end
 
   # Function to know if there is an error in all the probes done
@@ -124,7 +116,7 @@ class Result
   #   A boolean that indicates if there is any valid result or not.
   #
   def any_ok?
-    return (!self.host_results.index{|h| h.is_ok?}.blank?)
+    return (self.host_results.index{|h| h.is_ok?} != nil)
   end
 
   # Function to get the timestamp of the result.
@@ -170,6 +162,11 @@ class Result
     return true
   end
 
+  # Function to check the alert status of all the alerts linked to the service
+  #
+  # [Returns]
+  #   Nothing.
+  #
   def check_alerts
     alerts = Alert.where(:service_id => self.service_id)
 

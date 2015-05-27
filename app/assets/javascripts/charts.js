@@ -117,16 +117,17 @@ function chartUpdate(config) {
     // Do the API call
     $.getJSON(call_url).success(function(data){
         for (var i = 0; i < data.length; i++) {
-            data[i].date[2]--; // Correct month number
+            //data[i].date[2]--; // Correct month number
 
             // Create date object
-            var date = Date.UTC.apply(this, data[i].date);
+            //var date = Date.UTC.apply(this, data[i].date);
+            //var date = new Date(data[i].date*1000).toISOString();
 
             // Do we need to remove the first point in the chart?
             if ((config.chart.series[0].activePointCount > 0) && (date - config.chart.series[0].xData[0] >= config.clean_interval*1000))
-                config.chart.series[0].addPoint([date, data[i].result], false, true);
+                config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false, true);
             else
-                config.chart.series[0].addPoint([date, data[i].result], false);
+                config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false);
         }
 
         // If there is data received, save the lastest id.

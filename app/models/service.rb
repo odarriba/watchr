@@ -157,6 +157,23 @@ class Service
   def resume_values(values, resume = nil)
     resume = self.resume if (!Service::AVAILABLE_RESUMES.include?(resume))
 
+    return Service.resume_values(values, resume)
+  end
+
+  # Function do the resume function over an array of results.
+  #
+  # [Parameters]
+  #   * *values* - An array with float values.
+  #   * *resume* - Resume type to use (if not passed or not valid, return nil)
+  #
+  # [Returns]
+  #   The resume value.
+  #
+  def self.resume_values(values, resume)
+    return nil if (!Service::AVAILABLE_RESUMES.include?(resume))
+
+    return 0.0 if (values.blank?)
+
     if (resume == :max_value)
       return values.max
     elsif (resume == :min_value)

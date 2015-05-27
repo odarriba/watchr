@@ -285,46 +285,38 @@ class ServicesController < ApplicationController
       # If a last param was received, try to locate the result with that id.
       if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
         # Get the results obtained AFTER the one which id was received
-        @results = Result.where(:service => @service.id, :_id.gt => params[:last]).order({:created_at => 1})
+        @results = Result.where(:service => @service.id, :_id.gt => params[:last])
       else
         # Get all the reuslts available
-        @results = Result.where(:service => @service.id).order({:created_at => 1})
+        @results = Result.where(:service => @service.id)
+      end
+
+      @results = @results.order({:created_at => 1})
+    end
+
+    if (@service.blank?)
+      # If not found, return an error
+      @results = {:error => t("services.error.not_found")}
+    else
+      # Poblate the results array
+      @results = @results.to_a.map do |result|
+        result = {
+          "id" => result.id.to_s, 
+          "date" => result.created_at.to_i,
+          # Call the resume_values function here to avoid high load on the DB produced by 
+          # loading the Service object every time in the result.global_value function.
+          "result" => @service.resume_values(result.get_values, resume)
+        }
       end
     end
 
     respond_to do |format|
       format.json {
-        # The results array
-        data = Array.new()
-
-        if (@service.blank?)
-          # If not found, return an error
-          data = {:error => t("services.error.not_found")}
-        else
-          # Poblate the results array
-          @results.to_a.each do |result|
-            data << {
-              :id => result.id.to_s, 
-              :date => [
-                result.created_at.year, 
-                result.created_at.month, 
-                result.created_at.day,
-                result.created_at.hour,
-                result.created_at.min,
-                result.created_at.sec
-              ],
-              # Call the resume_values function here to avoid high load on the DB produced by 
-              # loading the Service object every time in the result.global_value function.
-              :result => @service.resume_values(result.get_values, resume)
-            }
-          end
-        end
-
         # Render the results
         if (@service.blank?)
-          render :json => data, :status => 404
+          render :json => @results, :status => 404
         else
-          render :json => data
+          render :json => @results
         end
       }
     end
@@ -395,42 +387,32 @@ class ServicesController < ApplicationController
       end
     end
 
+    if (@service.blank?)
+      # If not found, return an error
+      @results = {:error => t("services.error.not_found")}
+    elsif (@host.blank?)
+      # If not found, return an error
+      @results = {:error => t("services.error.host_service_not_found")}
+    else
+      # Poblate the results array
+      @results = @results.to_a.map do |result|
+        result = {
+          "id" => result.id.to_s, 
+          "date" => result.created_at.to_i,
+          # Call the resume_values function here to avoid high load on the DB produced by 
+          # loading the Service object every time in the result.global_value function.
+          "result" => result.get_host_value(@host)
+        }
+      end
+    end
+
     respond_to do |format|
       format.json {
-        # The results array
-        data = Array.new()
-
-        if (@service.blank?)
-          # If not found, return an error
-          data = {:error => t("services.error.not_found")}
-        elsif (@host.blank?)
-          # If not found, return an error
-          data = {:error => t("services.error.host_service_not_found")}
-        else
-          # Poblate the results array
-          @results.cache.each do |result|
-            data << {
-              :id => result.id.to_s, 
-              :date => [
-                result.created_at.year, 
-                result.created_at.month, 
-                result.created_at.day,
-                result.created_at.hour,
-                result.created_at.min,
-                result.created_at.sec
-              ],
-              # Call the resume_values function here to avoid high load on the DB produced by 
-              # loading the Service object every time in the result.global_value function.
-              :result => result.get_host_value(@host)
-            }
-          end
-        end
-
         # Render the results
         if (@service.blank? || @host.blank?)
-          render :json => data, :status => 404
+          render :json => @results, :status => 404
         else
-          render :json => data
+          render :json => @results
         end
       }
     end
