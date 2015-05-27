@@ -285,27 +285,27 @@ class ServicesController < ApplicationController
       # If a last param was received, try to locate the result with that id.
       if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
         # Get the results obtained AFTER the one which id was received
-        @results = Result.where(:service => @service.id, :_id.gt => params[:last])
+        @results = Result.where(:service_id => @service.id, :_id.gt => params[:last])
       else
         # Get all the reuslts available
-        @results = Result.where(:service => @service.id)
+        @results = Result.where(:service_id => @service.id)
       end
 
-      @results = @results.order({:created_at => 1})
+      #@results = @results.order({:created_at => 1})
     end
+
+    @data = {}
 
     if (@service.blank?)
       # If not found, return an error
       @results = {:error => t("services.error.not_found")}
     else
       # Poblate the results array
-      @results = @results.to_a.map do |result|
+      @results = @results.map do |result|
         result = {
           "id" => result.id.to_s, 
           "date" => result.created_at.to_i,
-          # Call the resume_values function here to avoid high load on the DB produced by 
-          # loading the Service object every time in the result.global_value function.
-          "result" => @service.resume_values(result.get_values, resume)
+          "result" => result.global_value(resume)
         }
       end
     end

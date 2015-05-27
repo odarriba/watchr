@@ -157,7 +157,7 @@ class Service
   def resume_values(values, resume = nil)
     resume = self.resume if (!Service::AVAILABLE_RESUMES.include?(resume))
 
-    return Service.resume_values(values, resume)
+    return Service.resume_values(values, resume).round(4)
   end
 
   # Function do the resume function over an array of results.

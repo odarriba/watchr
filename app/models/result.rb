@@ -11,7 +11,10 @@ class Result
   belongs_to :service, :dependent => :nullify
 
   # Embeds many host results (one for every host associated to the service)
-  embeds_many :host_results, :as => true, :cascade_callbacks => true
+  embeds_many :host_results
+
+  index({ :service_id => 1 }, { name: "service_id_index", background: true })
+  index({ "host_results.host_id" => 1 }, { name: "host_result_host_id_index", background: true })
 
   after_create :check_alerts
 
@@ -76,8 +79,13 @@ class Result
   #   An array with all the results
   #
   def get_values
+    results = []
+
+    self.host_results.each do |hr|
+      results << hr.value
+    end
     # Get the result values
-    return self.host_results.map{ |res| res = res.value }.compact
+    return results.compact
   end
 
   # Function to know if there is an error in all the probes done
