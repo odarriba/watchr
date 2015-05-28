@@ -1,7 +1,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require twbs/bootstrap
-//= require highcharts
-//= require highcharts/highcharts-more
+//= require highstock
+//= require highstock/highcharts-more
 //
 //= require charts

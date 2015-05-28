@@ -53,6 +53,7 @@ en:
         subtitle: "Executed every %{interval} seconds"
         x_axis: "Time stamp"
         legend: "%{service} service"
+        loading: "Loading results..."
     alert_records:
       title: "Host alert records"
       subtitle: "viewing alert records on %{host} host"

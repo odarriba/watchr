@@ -68,6 +68,7 @@ en:
         x_axis: "Time stamp"
         y_axis: "Result"
         legend: "%{service} service"
+        loading: "Loading results..."
       hosts_results:
         title: "Latest results"
         table:
@@ -90,6 +91,7 @@ en:
         x_axis: "Time stamp"
         y_axis: "Result"
         legend: "%{service} service"
+        loading: "Loading results..."
       host_history:
         title: "Latest results"
         table:

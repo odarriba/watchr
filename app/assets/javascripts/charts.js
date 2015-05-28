@@ -5,14 +5,16 @@
  * {
  *    container: containerObject,
  *    live: true|false,
+ *    zoomable: true|false
  *    interval: updateIntervalInMiliseconds,
- *    clean_interval: cleanIntervalInMiliseconds,
+ *    points_limit: limitOfPointsToShow,
  *    texts: {
  *      title: "Title of the chart",
  *      subtitle: "Subtitle of the chart",
  *      x_axis: "X axis text",
  *      y_axis: "Y axis text",
- *      legend: "Legend of the data"
+ *      legend: "Legend of the data",
+ *      loading: "Loading text"
  *    },
  *    data_url: "URL to obtain the data using GET method",
  *    resume: "resume function passed to the URL by 'resume' parameter."
@@ -29,7 +31,7 @@ function chartStart(config) {
     config.resume = config.resume || "default";
     config.last_id = config.last_id || "";
 
-	$(config.container).highcharts({
+    var chart_config = {
         chart: {
             type: 'areaspline',
             height: config.height,
@@ -58,10 +60,44 @@ function chartStart(config) {
             min: 0
         },
         tooltip: {
-            headerFormat: '<b>{point.y:.4f}</b><br>',
-            pointFormat: '{point.x:%H:%M:%S - %d/%m/%Y}'
+            headerFormat: '',
+            pointFormat: '<b>{point.y:.4f}</b><br>{point.x:%H:%M:%S - %d/%m/%Y}'
         },
-
+        rangeSelector: {
+            enabled: true,
+            inputEnabled: false,
+            buttons: [{
+                type: 'hour',
+                count: 1,
+                text: '1h'
+            }, {
+                type: 'day',
+                count: 1,
+                text: '1d'
+            }, {
+                type: 'day',
+                count: 2,
+                text: '2d'
+            }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+            }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            selected: 0
+        },
+        navigator: {
+            enabled: true
+        },
+        scrollbar : {
+            enabled : false
+        },
         plotOptions: {
             areaspline: {
                 marker: {
@@ -75,10 +111,19 @@ function chartStart(config) {
             data: [
             ]
         }]
-    });
+    };
+
+    if (config.zoomable == false) {
+        chart_config.rangeSelector.enabled = false;
+        chart_config.navigator.enabled = false;
+    }
+
+	$(config.container).highcharts("StockChart", chart_config);
 
     // Get the chart object
     config.chart = $(config.container).highcharts();
+
+    config.chart.showLoading(config.texts.loading);
 
     // Update the chart
     chartUpdate(config);
@@ -108,23 +153,20 @@ function chartUpdate(config) {
         return;
 
     // Generate the URL
-    var base_url = config.data_url || window.location+"/data.json";
-    var call_url = base_url + "?resume="+config.resume
+    var base_url = config.data_url || window.location + "/data.json";
+    var call_url = base_url + "?resume=" + config.resume
     if (config.last_id != "") {
         call_url = call_url + "&last=" + config.last_id;
+    }
+    if (config.points_limit != undefined) {
+        call_url += "&limit=" + config.points_limit
     }
 
     // Do the API call
     $.getJSON(call_url).success(function(data){
         for (var i = 0; i < data.length; i++) {
-            //data[i].date[2]--; // Correct month number
-
-            // Create date object
-            //var date = Date.UTC.apply(this, data[i].date);
-            //var date = new Date(data[i].date*1000).toISOString();
-
             // Do we need to remove the first point in the chart?
-            if ((config.chart.series[0].activePointCount > 0) && (date - config.chart.series[0].xData[0] >= config.clean_interval*1000))
+            if ((config.points_limit != undefined) && (config.chart.series[0].activePointCount > config.points_limit))
                 config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false, true);
             else
                 config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false);
@@ -136,6 +178,10 @@ function chartUpdate(config) {
 
         // Redraw the chart
         config.chart.redraw();
+
+        config.chart.hideLoading();
     });
 
+    // Redraw the chart
+    config.chart.redraw();
 }

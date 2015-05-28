@@ -285,13 +285,15 @@ class ServicesController < ApplicationController
       # If a last param was received, try to locate the result with that id.
       if ((!params[:last].blank?) && (Result.where(:service => @service.id, :_id => params[:last]).count > 0))
         # Get the results obtained AFTER the one which id was received
-        @results = Result.where(:service_id => @service.id, :_id.gt => params[:last])
+        @results = Result.where(:service => @service.id, :_id.gt => params[:last]).desc(:created_at)
       else
         # Get all the reuslts available
-        @results = Result.where(:service_id => @service.id)
+        @results = Result.where(:service => @service.id).desc(:created_at)
       end
 
-      #@results = @results.order({:created_at => 1})
+      if ((!params[:limit].blank?) && (params[:limit].to_i.to_s == params[:limit]))
+        @results = @results.limit(params[:limit].to_i)
+      end
     end
 
     @data = {}
@@ -301,7 +303,7 @@ class ServicesController < ApplicationController
       @results = {:error => t("services.error.not_found")}
     else
       # Poblate the results array
-      @results = @results.map do |result|
+      @results = @results.to_a.map do |result|
         result = {
           "id" => result.id.to_s, 
           "date" => result.created_at.to_i,
@@ -383,7 +385,11 @@ class ServicesController < ApplicationController
         end
 
         # Only the results that include results from this host (and in descendent order by time)
-        @results = @results.where("host_results.host_id" => @host.id).asc(:created_at)
+        @results = @results.where("host_results.host_id" => @host.id).desc(:created_at)
+
+        if ((!params[:limit].blank?) && (params[:limit].to_i.to_s == params[:limit]))
+          @results = @results.limit(params[:limit].to_i)
+        end
       end
     end
 

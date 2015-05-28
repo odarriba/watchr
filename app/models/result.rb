@@ -79,13 +79,7 @@ class Result
   #   An array with all the results
   #
   def get_values
-    results = []
-
-    self.host_results.each do |hr|
-      results << hr.value
-    end
-    # Get the result values
-    return results.compact
+    return self.host_results.map{ |res| res = res.value }.compact
   end
 
   # Function to know if there is an error in all the probes done
