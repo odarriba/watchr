@@ -174,7 +174,7 @@ function chartUpdate(config) {
 
         // If there is data received, save the lastest id.
         if (data.length > 0)
-            config.last_id = data[data.length-1].id;
+            config.last_id = data[0].id;
 
         // Redraw the chart
         config.chart.redraw();
