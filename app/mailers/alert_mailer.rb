@@ -1,7 +1,6 @@
 # Mailer class to configure and send _Alert_ related e-mails.
 #
 class AlertMailer < ActionMailer::Base
-  default from: Watchr::Application::CONFIG["email"]["default_sender"]
   default template_path: "alerts/mailer"
 
   layout "email"

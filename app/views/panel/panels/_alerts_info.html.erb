@@ -46,7 +46,7 @@
             <% if (alert_record.host_ids.count == 1) %>
               <%= raw t("alerts.record_description.host", :alert => alert_record.alert.name, :host => alert_record.hosts.first.name) %>
             <% else %>
-              <%= raw t("alerts.record_description.all", :alert => alert_record.alert.name) %>
+              <%= raw t("alerts.record_description.hosts", :alert => alert_record.alert.name) %>
             <% end %>
           <% else %>
           <span class="text-danger"><%= t("alerts.table.no_data") %></span>

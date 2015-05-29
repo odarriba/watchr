@@ -1,3 +1,5 @@
+#:nodoc: all
+
 # Configuration file for Unicorn
 require 'yaml'
 

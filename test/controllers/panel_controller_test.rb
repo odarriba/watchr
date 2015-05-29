@@ -16,7 +16,7 @@ class PanelControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
 
     xhr :get, :index
-    assert_redirected_to new_user_session_path
+    assert_response 401
   end
 
   test "should get index if signed in" do

@@ -14,7 +14,7 @@ module Watchr
   # Application class extends from Rails::Application class and do the configuration
   # tasks at startup time.
   #
-  class Application < Rails::Application
+  class Application < Rails::Application #:nodoc: all
     require "probes"
 
     # The main configuration object that loads the application configuration.
@@ -41,6 +41,10 @@ module Watchr
       enable_starttls_auto: CONFIG["email"]["smtp"]["enable_starttls"]  
     }
 
+    config.action_mailer.default_options = {
+      from: CONFIG["email"]["default_sender"]
+    }
+
     # Lozalization preferences
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     # Add the locales of the probes to the autoload of i18n
@@ -65,6 +69,6 @@ module Watchr
     config.exceptions_app = self.routes
 
     # Load the probes
-    Watchr::Probes.load_probes
+    Probes.load_probes
   end
 end

@@ -1,4 +1,4 @@
-module Watchr
+module Watchr #:nodoc:
   # This class provides probe subsystem, with all the actions needed to
   # know which probes are loaded, as long as registering new probes or
   # get their objects.

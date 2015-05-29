@@ -1,7 +1,6 @@
 # Mailer class to configure and send _User_ related e-mails.
 #
 class UserMailer < ActionMailer::Base
-  default from: Watchr::Application::CONFIG["email"]["default_sender"]
   default template_path: "users/mailer"
 
   layout "email"

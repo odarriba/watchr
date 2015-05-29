@@ -7,7 +7,10 @@ class Alert
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  # Condition target to all hosts
   CONDITION_TARGET_ALL = :all
+  
+  #Condition target to only one host
   CONDITION_TARGET_ONE = :one
 
   # Array with the available conditions.
@@ -186,6 +189,14 @@ class Alert
 
   protected
 
+  # Function to check if the condition of the alert is matched in the host result passed.
+  #
+  # [Parameters]
+  #   * *host_result* - The _HostResult_ object to check
+  #
+  # [Returns]
+  #   A boolean indicating if the host result matched the condition or not.
+  #
   def condition_matched?(host_result)
     # Not matched if inactive
     return false if (host_result.status == HostResult::STATUS_INACTIVE)

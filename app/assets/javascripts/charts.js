@@ -164,7 +164,7 @@ function chartUpdate(config) {
 
     // Do the API call
     $.getJSON(call_url).success(function(data){
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.length-1; i++) {
             // Do we need to remove the first point in the chart?
             if ((config.points_limit != undefined) && (config.chart.series[0].activePointCount > config.points_limit))
                 config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false, true);
@@ -176,10 +176,16 @@ function chartUpdate(config) {
         if (data.length > 0)
             config.last_id = data[0].id;
 
-        // Redraw the chart
+        // First print
         config.chart.redraw();
 
-        config.chart.hideLoading();
+        // 10 msec later, print the latest point.
+        // This code is to solve a bug with the rangeSelector of HighStock
+        setTimeout(function(){
+            config.chart.series[0].addPoint([data[data.length-1].date*1000, data[data.length-1].result], false);
+            config.chart.redraw();
+            config.chart.hideLoading();
+        }, 10);
     });
 
     // Redraw the chart

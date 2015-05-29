@@ -1,6 +1,8 @@
 require 'test_helper'
 
-class UserMailerTest < ActionMailer::TestCase
+# Class that contains test of UserMailer
+#
+class UserMailerTest < ActionMailer::TestCase #:nodoc: all
   def setup
     # MongoID hasn't got fixtures support :(
     @user = User.new(:email => "hey@test.org", :password => "testtest", :password_confirmation => "testtest", :name => "Test User", :level => User::LEVEL_ADMINISTRATOR, :lang => I18n.default_locale)

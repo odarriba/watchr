@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class AlertsHelperTest < ActionView::TestCase
+class AlertsHelperTest < ActionView::TestCase #:nodoc:
 end

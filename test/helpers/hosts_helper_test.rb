@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class HostsHelperTest < ActionView::TestCase
+class HostsHelperTest < ActionView::TestCase #:nodoc:
 end
