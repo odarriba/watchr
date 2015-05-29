@@ -68,7 +68,7 @@
         x_axis: "<%= t('services.results.chart.x_axis') %>",
         y_axis: "<%= t('services.results.chart.y_axis') %> [<%= @service.get_units_short %>]",
         legend: "<%= t('services.results.chart.legend', :service => @service.name) %>",
-        loading: "<%= t('services.results.chart.loading' %>"
+        loading: "<%= t('services.results.chart.loading') %>"
       },
       data_url: "<%= results_data_service_path(@service.id) %>",
       resume: "<%= @service.resume %>"
