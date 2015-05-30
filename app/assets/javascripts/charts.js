@@ -120,6 +120,8 @@ function chartStart(config) {
 
 	$(config.container).highcharts("StockChart", chart_config);
 
+    config.config = chart_config;
+
     // Get the chart object
     config.chart = $(config.container).highcharts();
 
@@ -164,25 +166,35 @@ function chartUpdate(config) {
 
     // Do the API call
     $.getJSON(call_url).success(function(data){
-        for (var i = 0; i < data.length-1; i++) {
-            // Do we need to remove the first point in the chart?
-            if ((config.points_limit != undefined) && (config.chart.series[0].activePointCount > config.points_limit))
-                config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false, true);
-            else
-                config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false);
+        if (config.chart.series[0].data.length == 0) {
+            var chartData = [];
+
+            for (var i = data.length-1; i >= 0; i--)
+                chartData.push([data[i].date*1000, data[i].result]);
+
+            var chart = $(config.container).highcharts();
+            chart.series[0].setData(chartData);
+        }
+        else {
+            for (var i = 0; i < data.length-1; i++) {
+                // Do we need to remove the first point in the chart?
+                if ((config.points_limit != undefined) && (config.chart.series[0].data.count > config.points_limit))
+                    config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false, true);
+                else
+                    config.chart.series[0].addPoint([data[i].date*1000, data[i].result], false);
+            }
         }
 
         // If there is data received, save the lastest id.
         if (data.length > 0)
             config.last_id = data[0].id;
 
-        // First print
-        config.chart.redraw();
-
         // 10 msec later, print the latest point.
         // This code is to solve a bug with the rangeSelector of HighStock
-        setTimeout(function(){
-            config.chart.series[0].addPoint([data[data.length-1].date*1000, data[data.length-1].result], false);
+        setTimeout(function() {
+            if (data.length > 0)
+                config.chart.series[0].addPoint([data[data.length-1].date*1000, data[data.length-1].result], false);
+
             config.chart.redraw();
             config.chart.hideLoading();
         }, 10);
