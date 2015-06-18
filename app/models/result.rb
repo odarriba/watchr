@@ -170,7 +170,7 @@ class Result
   #   Nothing.
   #
   def check_alerts
-    alerts = Alert.where(:service_id => self.service_id)
+    alerts = Alert.where(:service_id => self.service_id, :active => true)
 
     alerts.each do |alert|
       alert.check_activation(self)

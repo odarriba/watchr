@@ -13,8 +13,13 @@
     <% service_chart = @services.to_a.shuffle.first
     if (!service_chart.blank?) %>
     <div id="chart-panel" class="panel panel-primary chart-panel"> <!-- chart container -->
-      <div class="panel-heading">
-        <b><%= t("panel.index.main_chart.title", :service => service_chart.name) %></b>
+      <div class="panel-heading clearfix">
+        <div class="pull-left">
+          <b><%= t("panel.index.main_chart.title", :service => service_chart.name) %></b>
+        </div>
+        <div class="pull-right">
+          <%= link_to t("panel.index.main_chart.results"), results_service_path(service_chart), :class => "btn btn-xs btn-success", :title => t("panel.index.main_chart.results") %>
+        </div>
       </div>
       <div id="chart-container" class="chart-container"></div>
     </div>
@@ -46,10 +51,17 @@
   var chart_id = null;
 
   $(document).ready(function() {
+    <% 
+      points_limit = (service_chart.clean_interval/service_chart.interval).ceil
+      points_limit = (3600/service_chart.interval).ceil if (points_limit > (3600/service_chart.interval).ceil)
+      %>
     chart_id = chartStart({
       container: $("#chart-container"),
       live: true,
+      zoomable: false,
       interval: <%= service_chart.interval %>,
+      points_limit: <%= points_limit %>,
+      height: 300,
       clean_interval: <%= service_chart.clean_interval %>,
       texts: {
         title: "<%= t('services.results.chart.title', :service => service_chart.name) %>",

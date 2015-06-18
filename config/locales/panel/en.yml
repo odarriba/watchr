@@ -5,6 +5,7 @@ en:
       subtitle: "monitored services"
       main_chart:
         title: "Results of %{service} service"
+        results: "View results"
       alerts_panel:
         title: "Alerts report"
       results_panel:
