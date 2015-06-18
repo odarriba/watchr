@@ -29,7 +29,7 @@ class AlertRecord
 
   protected
 
-  # Callback function to selnd opening email in case the created _AlertRecord_
+  # Callback function to send opening email in case the created _AlertRecord_
   # is in open status and the users subscribed has to be notified.
   #
   # [Returns]
