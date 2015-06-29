@@ -98,15 +98,15 @@ class Alert
     # Check hosts assignation and alert activation
     return if ((self.host_ids.blank?) || (self.is_active? != true))
 
-    # Host actived
-    hosts_actived = self.hosts.select{|h| h.is_active?}
+    # Host activated
+    hosts_activated = self.hosts.select{|h| h.is_active?}
     
-    # Obtain hosts actived which reuslts matched condition
-    hosts_matched = hosts_actived.select{|h| self.condition_matched?(result.get_host_result(h))}
+    # Obtain hosts activated which reuslts matched condition
+    hosts_matched = hosts_activated.select{|h| self.condition_matched?(result.get_host_result(h))}
 
     if (self.is_condition_target_all?)
-      # Does the alert match all the actived hosts?
-      if (hosts_actived.length == hosts_matched.length)
+      # Does the alert match all the activated hosts?
+      if (hosts_activated.length == hosts_matched.length)
         ##### Alert open!!!!!
 
         # Is there an alert open?

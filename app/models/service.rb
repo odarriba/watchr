@@ -52,7 +52,7 @@ class Service
   has_and_belongs_to_many :hosts, :dependent => :nullify, :after_remove => :clean_host_remove
 
   # Has results of testing the service over the hosts
-  has_many :results, :dependent => :destroy
+  has_many :results, :dependent => :delete
 
   # Has alerts that monitor the results of the service
   has_many :alerts, :dependent => :destroy
@@ -83,7 +83,7 @@ class Service
   before_save :check_interval_change
   after_save :manage_job
   after_create :manage_job
-  before_destroy :job_stop
+  before_destroy :clean_service_remove
 
 
   # Function to get the object of the probe associated to this
@@ -418,29 +418,48 @@ class Service
     return self.job_stop if (self.interval_changed?)
   end
 
+  # Function to remove the existing service cleanly.
+  #
+  # [Returns]
+  #   None
+  #
+  def clean_service_remove
+    # Stop the job
+    job_stop
+    
+    # Delete all results
+    Result.where(:service_id => self.id).delete_all
+
+    # Delete all alerts assigned
+    Alert.where(:service_id => self.id).destroy
+  end
+
   # Function to remove the existing data from a host that is no longer 
   # assigned to this service (and the alerts of this service).
   #
   # [Parameters]
   #   * *host* - A _Host_ object of the host deleted from this service.
   #
+  # [Returns]
+  #   None.
+  #
   def clean_host_remove(host)
-    # Get the results of this service with the deleted host
-    Result.where("host_results.host_id" => host.id, :service_id => self.id).each do |result|
-      # If it hasn't got more host results, destroy the result (violently).
-      if (result.host_results.select{|hresult| hresult.host_id != host.id}.count == 0)
-        result.destroy 
-      else
-        # If there is other host results, delete only this one.
-        result.host_results.select{|hresult| hresult.host_id == host.id}.each{|hr| hr.destroy}
-      end
-    end
+    # Remove host results
+    Result.where("host_results.host_id" => host.id, :service_id => self.id).pull(:host_results => {:host_id => host.id})
 
-    # Delete the host from the alerts that monitors it
-    Alert.where(:service_id => self.id, :host_ids => host.id).each do |alert|
+    # Remove from alerts
+    Alert.where(:service_id => self.id, :host_ids => host.id).pull(:host_ids => host.id)
+
+    # Clean alert records associated
+    AlertRecord.where(:service_id => self.id, :host_ids => host.id).cache.each do |ar|
+      p ar.inspect
       # Delete the host and save
-      alert.hosts.delete(host)
-      alert.save
+      if (ar.host_ids.count != 1)
+        ar.hosts.delete(host)
+        ar.save
+      else
+        ar.destroy
+      end
     end
   end
 end

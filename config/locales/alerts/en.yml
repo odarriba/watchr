@@ -21,8 +21,8 @@ en:
       open: "Open"
       closed: "Closed"
     record_description:
-        host: "Actived alert <b>%{alert}</b> on host <b>%{host}</b>"
-        hosts: "Actived alert <b>%{alert}</b> on <b>multiple hosts</b>"
+        host: "Activated alert <b>%{alert}</b> on host <b>%{host}</b>"
+        hosts: "Activated alert <b>%{alert}</b> on <b>multiple hosts</b>"
     index:
       title: "Alerts management"
       subtitle:
