@@ -306,7 +306,7 @@ class ServicesController < ApplicationController
       @results = @results.to_a.map do |result|
         result = {
           "id" => result.id.to_s, 
-          "date" => result.created_at.to_i,
+          "date" => result.created_at.to_i+result.created_at.utc_offset,
           "result" => result.global_value(resume)
         }
       end
@@ -404,7 +404,7 @@ class ServicesController < ApplicationController
       @results = @results.to_a.map do |result|
         result = {
           "id" => result.id.to_s, 
-          "date" => result.created_at.to_i,
+          "date" => result.created_at.to_i+result.created_at.utc_offset,
           # Call the resume_values function here to avoid high load on the DB produced by 
           # loading the Service object every time in the result.global_value function.
           "result" => result.get_host_value(@host)
