@@ -125,7 +125,7 @@
   <div class="form-group">
     <div class="col-md-offset-1 col-md-9 col-sm-12">
       <%= f.button "#{t("services.#{action_name}.continue")}&nbsp;&nbsp;<i class='fa fa-chevron-right'></i>".html_safe, :type => "submit", :class => "btn btn-primary pull-right" %>
-      <%= link_to "<i class='fa fa-chevron-left'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.new.back")}</span>".html_safe, hosts_path(:type => @type), :class => "btn btn-default pull-left" %>
+      <%= link_to "<i class='fa fa-chevron-left'></i><span class='hidden-sm hidden-xs'>&nbsp;&nbsp;#{t("services.new.back")}</span>".html_safe, services_path(:type => @type), :class => "btn btn-default pull-left" %>
     </div>
   </div>
 <% end %>
